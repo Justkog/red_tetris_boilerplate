@@ -1,0 +1,25 @@
+version: '2.1'
+
+services:
+  redtetris-server:
+    image: redtetris-server
+    build:
+      context: .
+      dockerfile: docker/server/Dockerfile
+    volumes:
+      - ./:/usr/src/app
+    environment:
+      NODE_ENV: development
+    ports:
+      - 3004:3004
+  redtetris-client:
+    image: redtetris-client
+    build:
+      context: .
+      dockerfile: docker/client/Dockerfile
+    volumes:
+      - ./:/usr/src/app
+    environment:
+      NODE_ENV: development
+    ports:
+      - 8080:8080

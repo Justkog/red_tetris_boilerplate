@@ -1,21 +1,30 @@
 var path = require('path');
 
 module.exports = {
-  entry: './src/client/index.js',
+	entry: './src/client/index.js',
 
-  output: {
-    path: path.join(__dirname, 'build'),
-    filename: 'bundle.js'
-  },
+	devServer: {
+		disableHostCheck: true,
+	},
 
-  module: {
-    loaders: [{
-      test: /\.js$/,
-      exclude: /node_modules/,
-      loader: 'babel',
-      query:{
-        presets: ["es2015", "react", "stage-0"]
-      }
-    }]
-  }
+	output: {
+		path: path.join(__dirname, 'build'),
+		filename: 'bundle.js',
+	},
+
+	module: {
+		loaders: [{
+			test: /\.js$/,
+			exclude: /node_modules/,
+			loader: 'babel',
+			query:{
+				presets: ["es2015", "react", "stage-0"]
+			}
+		}]
+	},
+
+	watchOptions: {
+		aggregateTimeout: 300,
+		poll: 1000
+	}
 };
