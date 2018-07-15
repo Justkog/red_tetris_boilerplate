@@ -1,0 +1,22 @@
+.board-container {
+
+}
+
+.board {
+	height: 100%;
+	width: 45vh;
+}
+
+html, body, #tetris, .container {
+	height: 100%;
+}
+
+.container {
+	display: flex;
+	justify-content: space-around;
+	padding: 5vh 0;
+}
+
+.board {
+	background-color: rgb(38, 13, 26);
+}

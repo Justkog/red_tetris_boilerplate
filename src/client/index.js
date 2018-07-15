@@ -9,6 +9,8 @@ import reducer from './reducers'
 import App from './containers/app'
 import {alert} from './actions/alert'
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 const initialState = {}
 
 const store = createStore(
