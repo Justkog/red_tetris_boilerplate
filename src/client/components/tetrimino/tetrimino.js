@@ -10,6 +10,11 @@ const tetriForm = [
 	[1, 1, 0],
 ];
 
+const tetri = {
+	form: tetriForm,
+	color: 'var(--pink)',
+}
+
 const exist = (cellValue) => {
 	return cellValue == 1 ? true : false;
 }
@@ -23,17 +28,17 @@ const defaultCellStyle = {
 	borderColor: 'transparent',
 }
 
-const cellStyle = (exist) => {
+const cellStyle = (exist, color) => {
 	if (!exist) {
 		return defaultCellStyle;
 	}
-	return R.merge(defaultCellStyle, {borderColor: 'white', backgroundColor: 'var(--pink)'});
+	return R.merge(defaultCellStyle, {borderColor: 'white', backgroundColor: color});
 }
 
 const tetriCells = (values) => {
 	const listCells = columnNumbers.map((number) => {
 		return (
-			<div key={number.toString()} style={cellStyle(exist(values[number]))}>
+			<div key={number.toString()} style={cellStyle(exist(values[number]), tetri.color)}>
 				
 			</div>
 		);
