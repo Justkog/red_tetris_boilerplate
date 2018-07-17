@@ -1,9 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux'
 import './board.css';
 import { Alert, Container } from 'reactstrap';
 import Tetrimino from "../tetrimino/tetrimino";
 import * as R from 'ramda';
-import { connect } from 'react-redux'
 
 const columnNumbers = R.range(0, 10);
 const rowNumbers = R.range(0, 20);
@@ -25,10 +25,9 @@ const Row = (props) => {
 }
 
 export const Board = ({activeTetrimino}) => {
-	console.dir(activeTetrimino);
 	const testListColumns = columnNumbers.map((number) =>
 		<Cell key={number.toString()}>
-			{ number == (activeTetrimino ? activeTetrimino.position.x : 0) && <Tetrimino/>}
+			{ number == (activeTetrimino ? activeTetrimino.position.x : 0) && <Tetrimino/> }
 		</Cell>
 	);
 	const listColumns = columnNumbers.map((number) =>
@@ -49,8 +48,10 @@ export const Board = ({activeTetrimino}) => {
 	)
 }
 
-function mapStateToProps(state) {
-	return { activeTetrimino: state.activeTetrimino }
+const mapStateToProps = (state) => {
+	return {
+		activeTetrimino: state.activeTetrimino
+	}
 }
 
-export default connect(mapStateToProps)(Board)
+export default connect(mapStateToProps, null)(Board)

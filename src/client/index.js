@@ -28,6 +28,10 @@ ReactDom.render((
 ), document.getElementById('tetris'))
 
 store.dispatch(alert('Soon, will be here a fantastic Tetris ...'))
+store.dispatch(alert('Soon, will be here a fantastic Tetris ... 2'))
+
+// test
+store.dispatch(keyDown({key: 'ArrowRight'}));
 
 const allowedKeys = [
 	'ArrowUp',
@@ -54,6 +58,8 @@ function listenToWindowEvent(name, mapEventToAction, filter = (e) => R.contains(
   
   // subscribe to event
   let unlistenkeyDown = store.dispatch(listenToWindowEvent('keydown', keyDown));
+
+  
 
   // eventually unsubscribe
 //   unlistenkeyDown();

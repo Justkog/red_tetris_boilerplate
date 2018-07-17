@@ -22,6 +22,8 @@ export default (state = { position: { x: 0, y: 0 } }, action) => {
 	switch (action.type) {
 		case KEY_DOWN:
 			return handleKey(state, action.key);
+			// console.log('new position');
+			// return { position: { x: 1, y: 0 } };
 		default:
 			return state;
 	}

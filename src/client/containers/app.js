@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Board } from '../components/board/board'
+import Board from '../components/board/board'
 
 const App = ({message}) => {
   return (
@@ -10,7 +10,7 @@ const App = ({message}) => {
 
 const mapStateToProps = (state) => {
   return {
-    message: state.message
+    message: state.alert.message
   }
 }
 export default connect(mapStateToProps, null)(App)
