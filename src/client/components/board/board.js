@@ -3,20 +3,10 @@ import './board.css';
 import { Alert, Container } from 'reactstrap';
 import Tetrimino from "../tetrimino/tetrimino";
 import * as R from 'ramda';
+import { connect } from 'react-redux'
 
 const columnNumbers = R.range(0, 10);
-// const listColumns = columnNumbers.map((number) =>
-// 	<div key={number.toString()} style={{flex: 1, textAlign: 'center', color: 'white', borderStyle: 'dashed', borderWidth: '2px', borderColor: 'orange', position: 'relative'}}>
-// 		{ number == 2 && <Tetrimino />}
-// 	</div>
-// );
-
 const rowNumbers = R.range(0, 20);
-// const listRows = rowNumbers.map((number) =>
-// 	<div key={number.toString()} style={{flex: 1, display: 'flex', flexDirection: 'row'}}>
-// 		{listColumns}
-// 	</div>
-// );
 
 const Cell = (props) => {
 	return (
@@ -34,10 +24,11 @@ const Row = (props) => {
 	);
 }
 
-export const Board = () => {
+export const Board = ({activeTetrimino}) => {
+	console.dir(activeTetrimino);
 	const testListColumns = columnNumbers.map((number) =>
 		<Cell key={number.toString()}>
-			{ number == 2 && <Tetrimino/>}
+			{ number == (activeTetrimino ? activeTetrimino.position.x : 0) && <Tetrimino/>}
 		</Cell>
 	);
 	const listColumns = columnNumbers.map((number) =>
@@ -57,3 +48,9 @@ export const Board = () => {
 		</Container>
 	)
 }
+
+function mapStateToProps(state) {
+	return { activeTetrimino: state.activeTetrimino }
+}
+
+export default connect(mapStateToProps)(Board)

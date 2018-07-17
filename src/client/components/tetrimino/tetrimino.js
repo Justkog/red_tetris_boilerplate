@@ -1,5 +1,6 @@
 import React from 'react';
 import * as R from 'ramda';
+import { connect } from 'react-redux'
 
 const columnNumbers = R.range(0, 3);
 const rowNumbers = R.range(0, 3);

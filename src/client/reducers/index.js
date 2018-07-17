@@ -1,5 +1,14 @@
+import { combineReducers } from 'redux'
+
 import alert from './alert'
-export default alert
+import keyBindings from './keyBindings'
+import activeTetrimino from './tetrimino'
+
+export default combineReducers({
+	alert,
+	activeTetrimino
+});
+
 
 
 
