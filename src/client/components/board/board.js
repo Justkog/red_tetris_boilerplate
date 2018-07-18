@@ -36,7 +36,7 @@ export const Board = ({activeTetrimino}) => {
 	);
 	const listRows = rowNumbers.map((number) =>
 		<Row key={number.toString()}>
-			{ number == 3 ? testListColumns : listColumns}
+			{ number == (activeTetrimino ? activeTetrimino.position.y : 0) ? testListColumns : listColumns}
 		</Row>
 	);
 	return (
