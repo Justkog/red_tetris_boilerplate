@@ -3,15 +3,15 @@ import { connect } from 'react-redux'
 import Board from '../components/board/board'
 
 const App = ({message}) => {
-  return (
-	<Board/>
-  )
+	return (
+		<Board/>
+	)
 }
 
 const mapStateToProps = (state) => {
-  return {
-    message: state.alert.message
-  }
+	return {
+		message: state.alert.message
+	}
 }
 export default connect(mapStateToProps, null)(App)
 

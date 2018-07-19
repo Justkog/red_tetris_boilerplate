@@ -1,15 +1,15 @@
-import React from 'react';
-import * as R from 'ramda';
+import React from 'react'
+import * as R from 'ramda'
 import { connect } from 'react-redux'
 
-const columnNumbers = R.range(0, 3);
-const rowNumbers = R.range(0, 3);
+const columnNumbers = R.range(0, 3)
+const rowNumbers = R.range(0, 3)
 
 const tetriForm = [
 	[0, 1, 0],
 	[0, 1, 0],
 	[1, 1, 0],
-];
+]
 
 const tetri = {
 	form: tetriForm,
@@ -17,7 +17,7 @@ const tetri = {
 }
 
 const exist = (cellValue) => {
-	return cellValue == 1 ? true : false;
+	return cellValue == 1 ? true : false
 }
 
 const defaultCellStyle = {
@@ -31,9 +31,9 @@ const defaultCellStyle = {
 
 const cellStyle = (exist, color) => {
 	if (!exist) {
-		return defaultCellStyle;
+		return defaultCellStyle
 	}
-	return R.merge(defaultCellStyle, {borderColor: 'white', backgroundColor: color});
+	return R.merge(defaultCellStyle, {borderColor: 'white', backgroundColor: color})
 }
 
 const tetriCells = (values) => {
@@ -42,9 +42,9 @@ const tetriCells = (values) => {
 			<div key={number.toString()} style={cellStyle(exist(values[number]), tetri.color)}>
 				
 			</div>
-		);
-	});
-	return listCells;
+		)
+	})
+	return listCells
 }
 
 const Grid = (props) => {
@@ -52,15 +52,15 @@ const Grid = (props) => {
 		<div key={number.toString()} style={{flex: 1, display: 'flex', flexDirection: 'row', height: '33.33%'}}>
 			{tetriCells(tetriForm[number])}
 		</div>
-	);
+	)
 	return (
 		<div style={{ height: '100%'}}>
 			{listRows}
 		</div>
-	);
+	)
 }
 
-const Tetrimino = () => {
+const Tetrimino = (props) => {
 	return (
 		<div style={{
 			width: 'calc(300% + 6 * 2px)',
@@ -69,10 +69,11 @@ const Tetrimino = () => {
 			left: 'calc(-100% - 3 * 2px)',
 			position: 'absolute',
 			zIndex: 100,
+			transform: 'rotate(' + props.orientation + 'deg)',
 		}}>
 			<Grid/>
 		</div>
-	);
+	)
 }
 
-export default Tetrimino;
+export default Tetrimino
