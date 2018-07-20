@@ -14,13 +14,15 @@ import { keyDown } from './actions/key'
 import * as R from 'ramda'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { boardManager } from './middleware/boardManager';
+import { addTetrimino } from './actions/tetrimino';
 
 const initialState = {}
 
 const store = createStore(
   reducer,
   initialState,
-  applyMiddleware(thunk, createLogger(), gameLoopManager)
+  applyMiddleware(thunk, createLogger(), gameLoopManager, boardManager)
 )
 
 ReactDom.render((
@@ -35,6 +37,7 @@ store.dispatch(alert('Soon, will be here a fantastic Tetris ... 2'))
 
 // test
 store.dispatch(keyDown({key: 'ArrowRight'}))
+store.dispatch(addTetrimino())
 
 const allowedKeys = [
 	'ArrowUp',

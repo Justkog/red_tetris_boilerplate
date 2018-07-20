@@ -2,6 +2,73 @@ import React from 'react'
 import * as R from 'ramda'
 import { connect } from 'react-redux'
 
+export const Tetri = {
+	Types: {
+		I: 'I',
+		O: 'O',
+		T: 'T',
+		J: 'J',
+		L: 'L',
+		S: 'S',
+		Z: 'Z'
+	}
+}
+
+const IForm = () => [
+	[1],
+	[1],
+	[1],
+	[1],
+]
+
+const OForm = () => [
+	[1, 1],
+	[1, 1],
+]
+
+const TForm = () => [
+	[0, 1, 0],
+	[1, 1, 1],
+	[0, 0, 0],
+]
+
+const JForm = () => [
+	[0, 1, 0],
+	[0, 1, 0],
+	[1, 1, 0],
+]
+
+const LForm = () => [
+	[0, 1, 0],
+	[0, 1, 0],
+	[0, 1, 1],
+]
+
+const SForm = () => [
+	[0, 1, 1],
+	[1, 1, 0],
+	[0, 0, 0],
+]
+
+const ZForm = () => [
+	[1, 1, 0],
+	[0, 1, 1],
+	[0, 0, 0],
+]
+
+export const tetriTypeToFormFactory = (type) => {
+	const typesToForm = {
+		'I': IForm,
+		'O': OForm,
+		'T': TForm,
+		'J': JForm,
+		'L': LForm,
+		'S': SForm,
+		'Z': ZForm,
+	}
+	return typesToForm[type]
+}
+
 const columnNumbers = R.range(0, 3)
 const rowNumbers = R.range(0, 3)
 
@@ -12,7 +79,7 @@ const tetriForm = [
 ]
 
 const tetri = {
-	form: tetriForm,
+	form: tetriTypeToFormFactory(Tetri.Types.L)(),
 	color: 'var(--pink)',
 }
 
@@ -50,7 +117,7 @@ const tetriCells = (values) => {
 const Grid = (props) => {
 	const listRows = rowNumbers.map((number) =>
 		<div key={number.toString()} style={{flex: 1, display: 'flex', flexDirection: 'row', height: '33.33%'}}>
-			{tetriCells(tetriForm[number])}
+			{tetriCells(tetri.form[number])}
 		</div>
 	)
 	return (

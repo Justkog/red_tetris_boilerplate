@@ -1,6 +1,7 @@
 import * as R from 'ramda'
 import { KEY_DOWN } from '../actions/key'
 import { LOOP_UPDATE } from '../actions/game'
+import { TETRIMINO_ADD, TETRIMINO_REMOVE } from '../actions/tetrimino';
 
 const clampH = R.curry(R.clamp)(0, 9)
 const clampV = R.curry(R.clamp)(0, 19)
@@ -21,9 +22,15 @@ const verticallyMove = (state, direction) => {
 	})
 }
 
+const resetOrientation = (orientation) => {
+	if (orientation == 360)
+		return 0;
+	return orientation;
+}
+
 const rotate = (state, angle) => {
 	return R.evolve(R.__, state)({
-		orientation: R.add(angle)
+		orientation: R.compose(resetOrientation, R.add(angle))
 	})
 }
 
@@ -42,8 +49,25 @@ const handleKey = (state, key) => {
 	}
 }
 
-export default (state = { position: { x: 0, y: 0 }, orientation: 0 }, action) => {
+const addNewTetri = (state, {position, orientation, formType}) => {
+	return R.merge(R.__, state)({
+		position: position ? position : {x: 4, y: -1},
+		orientation: orientation ? orientation : 0,
+		formType: formType,
+		id: state.id ? state.id + 1 : 1,
+	})
+}
+
+const removeTetri = (state, action) => {
+	return {}
+}
+
+export default (state = {}, action) => {
 	switch (action.type) {
+		case TETRIMINO_ADD:
+			return addNewTetri(state, action)
+		case TETRIMINO_REMOVE:
+			return removeTetri(state, action)
 		case KEY_DOWN:
 			return handleKey(state, action.key)
 		case LOOP_UPDATE:
