@@ -27,7 +27,7 @@ const Row = (props) => {
 export const Board = ({activeTetrimino}) => {
 	const testListColumns = columnNumbers.map((number) =>
 		<Cell key={number.toString()}>
-			{ number == R.pathOr(0, ['position', 'x'], activeTetrimino) && <Tetrimino orientation={ R.prop('orientation', activeTetrimino) }/> }
+			{ number == R.pathOr(0, ['position', 'x'], activeTetrimino) - 1 && <Tetrimino orientation={ R.prop('orientation', activeTetrimino) }/> }
 		</Cell>
 	)
 	const listColumns = columnNumbers.map((number) =>
@@ -36,7 +36,7 @@ export const Board = ({activeTetrimino}) => {
 	)
 	const listRows = rowNumbers.map((number) =>
 		<Row key={number.toString()}>
-			{ number == R.pathOr(0, ['position', 'y'], activeTetrimino) ? testListColumns : listColumns}
+			{ number == R.pathOr(0, ['position', 'y'], activeTetrimino) - 4 ? testListColumns : listColumns}
 		</Row>
 	)
 	return (

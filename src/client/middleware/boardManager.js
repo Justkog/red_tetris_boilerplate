@@ -1,6 +1,6 @@
 import * as R from 'ramda'
 import { updateBoard } from '../actions/board';
-// import { startGameLoop, stopGameLoop, startGame, stopGame } from '../actions/game'
+
 const getBoard = R.path(['board'])
 const getActiveTetrimino = R.path(['activeTetrimino'])
 
