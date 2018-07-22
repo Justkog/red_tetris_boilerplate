@@ -10,11 +10,47 @@ const emptyBoardN = (rows, columns) => R.map((n) => emptyRowN(columns), R.unfold
 
 const forEachIndexed = R.addIndex(R.forEach)
 
+const isTetriOverlappingBorders = (board, invalidMask) => {
+	return R.addIndex(R.any)((row, rowIndex) => {
+		return R.addIndex(R.any)((cell, cellIndex) => {
+			if (invalidMask[rowIndex][cellIndex] > 0 && cell > 0)
+				return true
+			return false
+		})(row)
+	})(board)
+}
+
+const isTetriOverlappingTetri = R.any(R.any(R.gt(R.__, 1)))
+
 // check that there is nothing in left, right columns and bottom row
 // check that there is no tetri overlap
-const isValidBoard = (board) => {
-
+export const isValidBoard = (board, invalidMask) => {
+	if (isTetriOverlappingBorders(board, invalidMask))
+		return false
+	if (isTetriOverlappingTetri(board))
+		return false
+	return true
 }
+
+const populateSideBorders = R.map((row) =>
+	R.compose(R.adjust((v) => 1, 0), R.adjust((v) => 1, row.length - 1))(row)
+)
+
+const populateBottomBorder = (board) => R.adjust((row) => R.map((v) => 1)(row), R.__)(R.length(board) - 1)(board)
+
+const populateBorders = R.compose(
+	populateSideBorders,
+	populateBottomBorder
+)
+
+const emptyGrid = R.map((row) => 
+	R.map((cell) => 0)(row)
+)
+
+export const bordersMask = R.compose(
+	populateBorders,
+	emptyGrid
+) 
 
 const updateCell = (op, tetriCell, position, stateCell) => {
 	return op(tetriCell)(stateCell)
@@ -32,8 +68,10 @@ const rotate90 = R.compose(
 	R.reverse,
 )
 
-const rotate180 = R.reverse
-
+const rotate180 = R.compose(
+	R.reverse,
+	R.map(R.reverse)
+)
 const rotate270 = R.compose(
 	R.reverse,
 	R.transpose,

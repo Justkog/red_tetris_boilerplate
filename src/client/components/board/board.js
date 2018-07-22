@@ -4,9 +4,16 @@ import './board.css'
 import { Alert, Container } from 'reactstrap'
 import Tetrimino from "../tetrimino/tetrimino"
 import * as R from 'ramda'
+import { bordersMask } from '../../reducers/board';
 
 const columnNumbers = R.range(0, 10)
 const rowNumbers = R.range(0, 20)
+
+const invertGrid = R.map(R.map(R.ifElse(R.gte(R.__,1), () => 0, () => 1)))
+
+const printableBoard = (board, printableMask) => {
+	// console.dir(printableMask)
+}
 
 const Cell = (props) => {
 	return (
@@ -24,7 +31,8 @@ const Row = (props) => {
 	)
 }
 
-export const Board = ({activeTetrimino}) => {
+export const Board = ({activeTetrimino, board}) => {
+	// console.dir(printableBoard(board, invertGrid(bordersMask(board))))
 	const testListColumns = columnNumbers.map((number) =>
 		<Cell key={number.toString()}>
 			{ number == R.pathOr(0, ['position', 'x'], activeTetrimino) - 1 && <Tetrimino orientation={ R.prop('orientation', activeTetrimino) }/> }
@@ -50,7 +58,8 @@ export const Board = ({activeTetrimino}) => {
 
 const mapStateToProps = (state) => {
 	return {
-		activeTetrimino: state.activeTetrimino
+		activeTetrimino: state.activeTetrimino,
+		board: state.board,
 	}
 }
 

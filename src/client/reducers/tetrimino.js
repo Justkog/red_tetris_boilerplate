@@ -2,12 +2,13 @@ import * as R from 'ramda'
 import { KEY_DOWN } from '../actions/key'
 import { LOOP_UPDATE } from '../actions/game'
 import { TETRIMINO_ADD, TETRIMINO_REMOVE } from '../actions/tetrimino';
-import { updateBoardState } from './board';
+import { updateBoardState, isValidBoard, bordersMask } from './board';
 
 const clampH = R.curry(R.clamp)(1, 10)
 const clampV = R.curry(R.clamp)(0, 23)
 const addClampH = R.compose(clampH, R.add)
 
+// not needed anymore (kept as extra protection)
 const addClampHTransformation = (direction) => R.curry(addClampH)(direction)
 const addClampVTransformation = (direction) => R.curry(R.compose(clampV, R.add))(direction)
 
@@ -70,11 +71,18 @@ export default (state = {}, action, board) => {
 		case TETRIMINO_REMOVE:
 			return removeTetri(state, action)
 		case KEY_DOWN:
-			console.dir(board)
-			console.dir({prevActiveTetrimino: state, currentActiveTetrimino: handleKey(state, action.key)})
-			const futureBoard = updateBoardState(board, {prevActiveTetrimino: state, currentActiveTetrimino: handleKey(state, action.key)})
-			console.dir(futureBoard)
-			return handleKey(state, action.key)
+			// console.log('board before action')
+			// console.dir(board)
+			// console.dir({prevActiveTetrimino: state, currentActiveTetrimino: handleKey(state, action.key)})
+			const nextTetriState = handleKey(state, action.key)
+			const futureBoard = updateBoardState(board, {prevActiveTetrimino: state, currentActiveTetrimino: nextTetriState})
+			// console.log('board after action')
+			// console.dir(futureBoard)
+			const isValid = isValidBoard(futureBoard, bordersMask(futureBoard))
+			// console.dir(isValid)
+			if (!isValid)
+				return state
+			return nextTetriState
 		case LOOP_UPDATE:
 			return verticallyMove(state, 1)
 		default:
