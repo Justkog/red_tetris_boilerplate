@@ -10,7 +10,7 @@ import reducer from './reducers'
 import App from './containers/app'
 import { alert } from './actions/alert'
 import { startGameLoop } from './actions/game'
-import { keyDown } from './actions/key'
+import { keyDown, listenToWindowEvent } from './actions/key'
 import * as R from 'ramda'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -39,34 +39,8 @@ store.dispatch(alert('Soon, will be here a fantastic Tetris ... 2'))
 store.dispatch(keyDown({key: 'ArrowRight'}))
 store.dispatch(addTetrimino())
 
-const allowedKeys = [
-	'ArrowUp',
-	'ArrowLeft',
-	'ArrowRight',
-	'ArrowDown',
-	'p'
-]
+// subscribe to event
+let unlistenkeyDown = store.dispatch(listenToWindowEvent('keydown', keyDown))
 
-// thunk action creator, needs redux-thunk
-function listenToWindowEvent(name, mapEventToAction, filter = (e) => R.contains(e.key, allowedKeys)) {
-	return function (dispatch) {
-	  function handleEvent(e) {
-		if (filter(e)) {
-		  dispatch(mapEventToAction(e))
-		}
-	  }
-  
-	  window.addEventListener(name, handleEvent)
-  
-	  // note: returns a function to unsubscribe
-	  return () => window.removeEventListener(name, handleEvent)
-	}
-  }
-  
-  // subscribe to event
-  let unlistenkeyDown = store.dispatch(listenToWindowEvent('keydown', keyDown))
-
-  
-
-  // eventually unsubscribe
+ // eventually unsubscribe
 //   unlistenkeyDown()

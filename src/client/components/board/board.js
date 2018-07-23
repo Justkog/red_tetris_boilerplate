@@ -9,18 +9,50 @@ import { bordersMask } from '../../reducers/board';
 const columnNumbers = R.range(0, 10)
 const rowNumbers = R.range(0, 20)
 
-const invertGrid = R.map(R.map(R.ifElse(R.gte(R.__,1), () => 0, () => 1)))
+const invertGrid = R.map(R.map(R.ifElse(R.gte(R.__, 1), () => 0, () => 1)))
+
+const removeExtraRows = R.compose(
+	R.drop(4),
+	R.dropLast(1)
+)
 
 const printableBoard = (board, printableMask) => {
-	// console.dir(printableMask)
+	const grid = R.addIndex(R.map)((row, rowIndex) => {
+		return R.addIndex(R.filter)((cell, cellIndex) => {
+			if (printableMask[rowIndex][cellIndex] > 0)
+				return true
+			else
+				return false
+		})(row)
+	})(board)
+	return removeExtraRows(grid)
 }
 
-const Cell = (props) => {
+const defaultCellStyle = {
+	flex: 1,
+	textAlign: 'center',
+	color: 'white',
+	borderStyle: 'dashed',
+	borderWidth: '2px',
+	borderColor: 'orange',
+	position: 'relative',
+}
+
+const GenericCell = (cellStyle) => {
 	return (
-		<div style={{flex: 1, textAlign: 'center', color: 'white', borderStyle: 'dashed', borderWidth: '2px', borderColor: 'orange', position: 'relative'}}>
-			{props.children}
+		<div style={cellStyle}>
 		</div>
 	)
+}
+
+const DefaultCell = () => GenericCell(defaultCellStyle)
+
+const TetriCell = (color) => GenericCell(R.merge(defaultCellStyle, {borderColor: 'white', backgroundColor: color}))
+
+const Cell = ({value}) => {
+	if (value == 1)
+		return TetriCell('var(--pink)')
+	return DefaultCell()
 }
 
 const Row = (props) => {
@@ -32,21 +64,19 @@ const Row = (props) => {
 }
 
 export const Board = ({activeTetrimino, board}) => {
-	// console.dir(printableBoard(board, invertGrid(bordersMask(board))))
-	const testListColumns = columnNumbers.map((number) =>
-		<Cell key={number.toString()}>
-			{ number == R.pathOr(0, ['position', 'x'], activeTetrimino) - 1 && <Tetrimino orientation={ R.prop('orientation', activeTetrimino) }/> }
+	const boardToDraw = printableBoard(board, invertGrid(bordersMask(board)))
+
+	const listColumns = (row) => R.addIndex(R.map)((cell, index) =>
+		<Cell key={index.toString()} value={cell}>
 		</Cell>
-	)
-	const listColumns = columnNumbers.map((number) =>
-		<Cell key={number.toString()}>
-		</Cell>
-	)
-	const listRows = rowNumbers.map((number) =>
-		<Row key={number.toString()}>
-			{ number == R.pathOr(0, ['position', 'y'], activeTetrimino) - 4 ? testListColumns : listColumns}
+	)(row)
+
+	const listRows = boardToDraw.map((row, index) =>
+		<Row key={index.toString()}>
+			{listColumns(row)}
 		</Row>
 	)
+
 	return (
 		<Container>
 			<div className="board" style={{display: 'flex', flexDirection: 'column'}}>
