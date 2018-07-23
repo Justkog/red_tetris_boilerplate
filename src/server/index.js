@@ -28,9 +28,18 @@ const initApp = (app, params, cb) => {
 }
 
 const initEngine = io => {
+
   io.on('connection', function(socket){
     loginfo("Socket connected: " + socket.id)
+
+    socket.on('room', function (room) {
+      socket.join(room);
+      io.sockets.in(room).emit('message', 'Is it working ?');
+    });
+
+    socket.emit('news', { hello: 'world' });
     socket.on('action', (action) => {
+      console.log('action: ', action);
       if(action.type === 'server/ping'){
         socket.emit('action', {type: 'pong'})
       }
