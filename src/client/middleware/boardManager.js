@@ -1,8 +1,8 @@
 import * as R from 'ramda'
 import { updateBoard } from '../actions/board';
 
-const getBoard = R.path(['board'])
-const getActiveTetrimino = R.path(['activeTetrimino'])
+export const getBoard = R.path(['board'])
+export const getActiveTetrimino = R.path(['activeTetrimino'])
 
 export const boardManager = ({ getState, dispatch }) => {
 	return (next) => (action) => {
