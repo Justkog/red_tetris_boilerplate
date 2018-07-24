@@ -6,7 +6,7 @@ import Tetrimino from "../tetrimino/tetrimino"
 import * as R from 'ramda'
 import { bordersMask } from '../../reducers/board';
 
-import io from 'socket.io-client';
+import { test_socket_io } from '../test_socket_io';
 
 const columnNumbers = R.range(0, 10)
 const rowNumbers = R.range(0, 20)
@@ -66,25 +66,8 @@ const Row = (props) => {
 }
 
 export const Board = ({activeTetrimino, board}) => {
-  // var socket = io(window.location.hostname + ':3004');
-  // console.log('socket started');
 
-  // socket.emit('connect', { data: 'data' });
-
-  // socket.on('connect', function () {
-  //   // Connected, let's sign-up for to receive messages for this room
-  //   socket.emit('room', window.location.hash);
-  // });
-
-  // socket.on('news', (data) =>
-  // {
-  //   console.log(data);
-  //   socket.emit('action', { type: 'server/ping' });
-  // });
-
-  // socket.on('message', function (data) {
-  //   console.log('Incoming message:', data);
-  // });
+  test_socket_io();
 
 	const boardToDraw = printableBoard(board, invertGrid(bordersMask(board)))
 

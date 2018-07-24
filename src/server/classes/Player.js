@@ -1,29 +1,40 @@
+import { emptyBoardN } from '../tools/constants';
+
 export default class Player
 {
-  constructor(room, name)
+  constructor(socket_id, supervisor)
+  {
+    this.socket_id = socket_id;
+    this.is_master = false;
+    this.score = 0;
+    this.game = null;
+    this.room = null;
+    this.name = null;
+    this.board = emptyBoardN(20, 10);
+  }
+
+  set_master(value)
+  {
+    this.is_master = value;
+  }
+
+  set_room(room)
   {
     this.room = room;
+  }
+
+  set_name(name)
+  {
     this.name = name;
-    this.score = 0;
+  }
+
+  set_game(game)
+  {
+    this.game = game;
   }
 
   update_score(value)
   {
     this.score += value;
-  }
-
-  get score()
-  {
-    return this.score;
-  }
-
-  get name()
-  {
-    return this.name;
-  }
-
-  get room()
-  {
-    return this.room;
   }
 }

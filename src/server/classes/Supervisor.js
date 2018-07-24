@@ -1,29 +1,6 @@
 import Player from './Player';
-import debug from 'debug'
 
-const logerror = debug('tetris:error')
-  , loginfo = debug('tetris:info')
-
-const initEngine = (io, supervisor) => {
-  io.on('connection', function (socket) {
-    loginfo("Socket connected: " + socket.id)
-
-    socket.on('room', function (room) {
-      socket.join(room);
-      supervisor.send_data(room, 'message', 'Is it working ?');
-    });
-
-    socket.emit('news', { hello: 'world' });
-
-    socket.on('action', (action) =>
-    {
-      if (action.type === 'server/ping')
-      {
-        socket.emit('action', { type: 'pong' })
-      }
-    })
-  })
-}
+import { initEngine } from '../tools/engine'
 
 export default class Supervisor
 {
@@ -44,20 +21,25 @@ export default class Supervisor
     this.io.sockets.in(room).emit(type, data);
   }
 
-  is_player_available(room, name)
+  find_player(socket_id)
   {
     this.players.forEach( (p) => 
       {
-        if (p.name() == name && p.room() == room)
-          return false;
+      if (p.socket_id == socket_id)
+          return p;
       }
     );
-    return true;
+    return null;
   }
 
-  add_player(room, name)
+  add_player(socket_id)
   {
-    this.players.push( new Player(room, name) );
+    this.players.push(new Player(socket_id, this));
+  }
+
+  add_game(room, player)
+  {
+    this.games.push(new Game(room, player, this));
   }
 
   remove_player(player)
@@ -76,10 +58,24 @@ export default class Supervisor
     );
   }
 
+  list_availables_rooms()
+  {
+    let rooms = [];
+
+    this.games.forEach((g) => {
+      if (g.is_available())
+      {
+        rooms.push(g.name());
+      }
+    }
+    );
+    return rooms;
+  }
+
+
   set_io(app)
   {
     this.io = require('socket.io')(app);
-    console.log('Done');
   }
 
   get_io()
