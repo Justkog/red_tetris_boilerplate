@@ -10,6 +10,7 @@ export default class Player
     this.game = null;
     this.room = null;
     this.name = null;
+    this.piece_index = 0;
     this.board = emptyBoardN(20, 10);
   }
 
@@ -36,5 +37,10 @@ export default class Player
   update_score(value)
   {
     this.score += value;
+  }
+
+  update_piece_index()
+  {
+    this.piece_index += 1;
   }
 }

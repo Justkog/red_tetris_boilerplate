@@ -1,4 +1,5 @@
 import Player from './Player';
+import Game from './Game';
 
 import { initEngine } from '../tools/engine'
 
@@ -16,20 +17,20 @@ export default class Supervisor
     initEngine(this.io, this);
   }
 
-  send_data(room, type, data)
+  send_data_to_room(room, type, data)
   {
     this.io.sockets.in(room).emit(type, data);
   }
 
   find_player(socket_id)
   {
-    this.players.forEach( (p) => 
+    let players_filtered = this.players.filter( (p) =>
       {
-      if (p.socket_id == socket_id)
+        if (p.socket_id === socket_id)
           return p;
       }
     );
-    return null;
+    return players_filtered[0];
   }
 
   add_player(socket_id)
@@ -37,9 +38,12 @@ export default class Supervisor
     this.players.push(new Player(socket_id, this));
   }
 
-  add_game(room, player)
+  add_game(room, player, tetri_number)
   {
-    this.games.push(new Game(room, player, this));
+    let game = new Game(room, player, tetri_number, this);
+    this.games.push(game);
+    game.addPieces(tetri_number);
+    return game;
   }
 
   remove_player(player)
@@ -65,7 +69,7 @@ export default class Supervisor
     this.games.forEach((g) => {
       if (g.is_available())
       {
-        rooms.push(g.name());
+        rooms.push(g.name);
       }
     }
     );

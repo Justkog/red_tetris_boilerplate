@@ -1,10 +1,14 @@
+import Piece from './Piece';
+
 export default class Game
 {
-  constructor(room, player, supervisor)
+  constructor(room, player, tetri_number, supervisor)
   {
     this.room = room;
+    this.tetri_number = tetri_number;
     this.supervisor = supervisor;
     this.players = [player];
+    this.pieces = [];
     this.is_running = false;
     player.game = this;
   }
@@ -18,6 +22,49 @@ export default class Game
   {
     player.game = this;
     this.players.push(player);
+  }
+
+  addPieces()
+  {
+    let new_pieces = Array.apply(null, { length: this.tetri_number }).map(() => { return new Piece(); } )
+    this.pieces.push.apply(this.pieces, new_pieces);
+  }
+
+  playersNames()
+  {
+    let names = [];
+
+    this.players.forEach(player => {
+      names.push(player.name);
+    });
+
+    return names;
+  }
+
+  allTetris()
+  {
+    let tetris = [];
+    this.pieces.forEach(tetri => {
+      tetris.push({identifier: tetri.identifier, rotation: tetri.rotation});
+    });
+
+    return tetris;
+  }
+
+  nextTetris(index)
+  {
+    return this.pieces.slice(index, index + this.tetri_number);
+  }
+
+  playersBoards()
+  {
+    let boards = {};
+
+    this.players.forEach(player => {
+      boards[player.name] = player.board;
+    });
+
+    return boards;
   }
 
   removePlayer(player)
@@ -37,10 +84,5 @@ export default class Game
         return ;
       }  
     });
-  }
-
-  get players()
-  {
-    return this.players;
   }
 }

@@ -6,8 +6,6 @@ import Tetrimino from "../tetrimino/tetrimino"
 import * as R from 'ramda'
 import { bordersMask } from '../../reducers/board';
 
-import { test_socket_io } from '../test_socket_io';
-
 const columnNumbers = R.range(0, 10)
 const rowNumbers = R.range(0, 20)
 
@@ -66,9 +64,6 @@ const Row = (props) => {
 }
 
 export const Board = ({activeTetrimino, board}) => {
-
-  test_socket_io();
-
 	const boardToDraw = printableBoard(board, invertGrid(bordersMask(board)))
 
 	const listColumns = (row) => R.addIndex(R.map)((cell, index) =>
