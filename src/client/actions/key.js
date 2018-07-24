@@ -1,4 +1,5 @@
 import * as R from 'ramda'
+import { moveLeftTetrimino, moveRightTetrimino, moveDownTetrimino, rotateTetrimino, attemptMoveDownTetrimino, attemptMoveRightTetrimino, attemptMoveLeftTetrimino, attemptRotateTetrimino } from './tetrimino';
 
 export const KEY_DOWN = 'KEY_DOWN';
 
@@ -12,7 +13,8 @@ const allowedKeys = [
 	'ArrowLeft',
 	'ArrowRight',
 	'ArrowDown',
-	'p'
+	'p',
+	' ',
 ]
 
 // thunk action creator, needs redux-thunk
@@ -28,5 +30,25 @@ export const listenToWindowEvent = (name, mapEventToAction, filter = (e) => R.co
 	
 		// note: returns a function to unsubscribe
 		return () => window.removeEventListener(name, handleEvent)
+	}
+}
+
+export const keyDownDispatcher = (e) => {
+	return (dispatch, getState) => {
+		dispatch(keyDown(e))
+		switch (e.key) {
+			case 'ArrowLeft':
+				return dispatch(attemptMoveLeftTetrimino())
+			case 'ArrowRight':
+				return dispatch(attemptMoveRightTetrimino())
+			case 'ArrowDown':
+				return dispatch(attemptMoveDownTetrimino())
+			case 'ArrowUp':
+				return dispatch(attemptRotateTetrimino())
+			case ' ':
+				return dispatch(attemptMoveDownTetrimino())
+			default:
+				return
+		}
 	}
 }

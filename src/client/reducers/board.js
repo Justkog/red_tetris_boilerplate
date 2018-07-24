@@ -53,7 +53,7 @@ export const bordersMask = R.compose(
 ) 
 
 const updateCell = (op, tetriCell, position, stateCell) => {
-	return op(tetriCell)(stateCell)
+	return op(stateCell)(tetriCell)
 }
 
 const updateRow = (cellUpdate, tetriRow, position, stateRow) => {
@@ -72,13 +72,14 @@ const rotate180 = R.compose(
 	R.reverse,
 	R.map(R.reverse)
 )
+
 const rotate270 = R.compose(
 	R.reverse,
 	R.transpose,
 )
 
 const rotateFns = {
-	0: (tetriForm) => tetriForm,
+	0: R.identity,
 	90: rotate90,
 	180: rotate180,
 	270: rotate270
@@ -108,10 +109,12 @@ const addTetriInState = R.curry(updateState)(addTetriInRow)
 const removeTetriInState = R.curry(updateState)(removeTetriInRow)
 
 export const updateBoardState = (state, { prevActiveTetrimino, currentActiveTetrimino }) => {
-	if (prevActiveTetrimino.id && prevActiveTetrimino.id == currentActiveTetrimino.id)
+	if (prevActiveTetrimino.id && prevActiveTetrimino.id == currentActiveTetrimino.id) {
 		state = removeTetriInState(state, prevActiveTetrimino)
-	if (currentActiveTetrimino && !R.isEmpty(currentActiveTetrimino))
+	}
+	if (currentActiveTetrimino && !R.isEmpty(currentActiveTetrimino)) {
 		state = addTetriInState(state, currentActiveTetrimino)
+	}
 	return state
 }
 

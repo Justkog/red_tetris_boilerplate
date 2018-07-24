@@ -10,12 +10,13 @@ import reducer from './reducers'
 import App from './containers/app'
 import { alert } from './actions/alert'
 import { startGameLoop } from './actions/game'
-import { keyDown, listenToWindowEvent } from './actions/key'
+import { keyDown, listenToWindowEvent, keyDownDispatcher } from './actions/key'
 import * as R from 'ramda'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { boardManager } from './middleware/boardManager';
 import { addTetrimino } from './actions/tetrimino';
+import { listenBoardUpdate } from './actions/gameEvents';
 
 const initialState = {}
 
@@ -31,6 +32,7 @@ ReactDom.render((
   </Provider>
 ), document.getElementById('tetris'))
 
+store.dispatch(listenBoardUpdate(store))
 store.dispatch(alert('Soon, will be here a fantastic Tetris ...'))
 store.dispatch(alert('Soon, will be here a fantastic Tetris ... 2'))
 // store.dispatch(startGameLoop())
@@ -40,7 +42,7 @@ store.dispatch(keyDown({key: 'ArrowRight'}))
 store.dispatch(addTetrimino())
 
 // subscribe to event
-let unlistenkeyDown = store.dispatch(listenToWindowEvent('keydown', keyDown))
+let unlistenkeyDown = store.dispatch(listenToWindowEvent('keydown', keyDownDispatcher))
 
  // eventually unsubscribe
 //   unlistenkeyDown()
