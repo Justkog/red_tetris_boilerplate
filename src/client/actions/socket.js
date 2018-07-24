@@ -69,6 +69,6 @@ export const startSocket = () => {
 export const registerSocketEvent = (event) => {
 	return (dispatch, getState) => {
 		const socket = getSocket(getState())
-		event(socket)
+		event(socket, dispatch, getState)
 	}
 }

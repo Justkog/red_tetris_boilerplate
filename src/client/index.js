@@ -21,8 +21,6 @@ import { connectSocket, startSocket, registerTests, registerSocketEvent } from '
 import { registerRoomsListShow } from './actions/rooms';
 import { test_socket_io } from './components/test_socket_io';
 
-import { test_socket_io } from './components/test_socket_io';
-
 const initialState = {}
 
 const store = createStore(
@@ -39,7 +37,7 @@ ReactDom.render((
 
 store.dispatch(startSocket())
 store.dispatch(registerSocketEvent(test_socket_io))
-// store.dispatch(registerRoomsListShow())
+store.dispatch(registerSocketEvent(registerRoomsListShow))
 store.dispatch(listenBoardUpdate(store))
 store.dispatch(alert('Soon, will be here a fantastic Tetris ...'))
 store.dispatch(alert('Soon, will be here a fantastic Tetris ... 2'))
@@ -48,7 +46,7 @@ store.dispatch(alert('Soon, will be here a fantastic Tetris ... 2'))
 // test
 store.dispatch(keyDown({key: 'ArrowRight'}))
 store.dispatch(addTetrimino())
-test_socket_io();
+// test_socket_io();
 
 // subscribe to event
 let unlistenkeyDown = store.dispatch(listenToWindowEvent('keydown', keyDownDispatcher))
