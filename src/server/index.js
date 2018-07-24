@@ -1,4 +1,4 @@
-import fs  from 'fs'
+import fs from 'fs'
 import debug from 'debug'
 
 const logerror = debug('tetris:error')
@@ -27,33 +27,13 @@ const initApp = (app, params, cb) => {
   })
 }
 
-const initEngine = io => {
-
-  io.on('connection', function(socket){
-    loginfo("Socket connected: " + socket.id)
-
-    socket.on('room', function (room) {
-      socket.join(room);
-      io.sockets.in(room).emit('message', 'Is it working ?');
-    });
-
-    socket.emit('news', { hello: 'world' });
-    socket.on('action', (action) => {
-      console.log('action: ', action);
-      if(action.type === 'server/ping'){
-        socket.emit('action', {type: 'pong'})
-      }
-    })
-  })
-}
-
-export function create(params){
+export function create(params, supervisor){
   const promise = new Promise( (resolve, reject) => {
     const app = require('http').createServer()
     initApp(app, params, () =>{
-      const io = require('socket.io')(app)
+      supervisor.set_io(app);
       const stop = (cb) => {
-        io.close()
+        supervisor.get_io().close()
         app.close( () => {
           app.unref()
         })
@@ -61,7 +41,7 @@ export function create(params){
         cb()
       }
 
-      initEngine(io)
+      supervisor.init_socket();
       resolve({stop})
     })
   })

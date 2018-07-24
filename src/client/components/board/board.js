@@ -66,25 +66,25 @@ const Row = (props) => {
 }
 
 export const Board = ({activeTetrimino, board}) => {
-  var socket = io(window.location.hostname + ':3004');
-  console.log('socket started');
+  // var socket = io(window.location.hostname + ':3004');
+  // console.log('socket started');
 
-  socket.emit('connect', { data: 'data' });
+  // socket.emit('connect', { data: 'data' });
 
-  socket.on('connect', function () {
-    // Connected, let's sign-up for to receive messages for this room
-    socket.emit('room', window.location.hash);
-  });
+  // socket.on('connect', function () {
+  //   // Connected, let's sign-up for to receive messages for this room
+  //   socket.emit('room', window.location.hash);
+  // });
 
-  socket.on('news', (data) =>
-  {
-    console.log(data);
-    socket.emit('action', { type: 'server/ping' });
-  });
+  // socket.on('news', (data) =>
+  // {
+  //   console.log(data);
+  //   socket.emit('action', { type: 'server/ping' });
+  // });
 
-  socket.on('message', function (data) {
-    console.log('Incoming message:', data);
-  });
+  // socket.on('message', function (data) {
+  //   console.log('Incoming message:', data);
+  // });
 
 	const boardToDraw = printableBoard(board, invertGrid(bordersMask(board)))
 
