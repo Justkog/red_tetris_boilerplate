@@ -4,9 +4,11 @@ import './board.css'
 import { Alert, Container } from 'reactstrap'
 import Tetrimino from "../tetrimino/tetrimino"
 import * as R from 'ramda'
-import { bordersMask } from '../../reducers/board';
+import { bordersMask } from '../../reducers/board'
 
-import { test_socket_io } from '../test_socket_io';
+import { test_socket_io } from '../test_socket_io'
+
+export const topLogicLinesCount = 4
 
 const columnNumbers = R.range(0, 10)
 const rowNumbers = R.range(0, 20)
@@ -14,9 +16,11 @@ const rowNumbers = R.range(0, 20)
 const invertGrid = R.map(R.map(R.ifElse(R.gte(R.__, 1), () => 0, () => 1)))
 
 const removeExtraRows = R.compose(
-	R.drop(4),
+	R.drop(topLogicLinesCount),
 	R.dropLast(1)
 )
+
+export const visualBoard = (board) => printableBoard(board, invertGrid(bordersMask(board)))
 
 const printableBoard = (board, printableMask) => {
 	const grid = R.addIndex(R.map)((row, rowIndex) => {

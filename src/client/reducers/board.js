@@ -1,4 +1,4 @@
-import { BOARD_UPDATE } from "../actions/board"
+import { BOARD_UPDATE, LINES_DELETE } from "../actions/board"
 import * as R from 'ramda'
 import { tetriTypeToFormFactory } from "../components/tetrimino/tetrimino"
 
@@ -43,7 +43,7 @@ const populateBorders = R.compose(
 	populateBottomBorder
 )
 
-const emptyGrid = R.map((row) => 
+const emptyGrid = R.map((row) =>
 	R.map((cell) => 0)(row)
 )
 
@@ -118,12 +118,22 @@ export const updateBoardState = (state, { prevActiveTetrimino, currentActiveTetr
 	return state
 }
 
+const deleteBoardLines = (state, { lines }) => {
+	R.forEach(R.__, lines) ((lineIndex) => {
+		state = R.prepend(emptyRowN(state[lineIndex].length), state)
+		state = R.remove(lineIndex + 1, 1, state)
+	})
+	return state
+}
+
 export default (state = emptyBoardN(25, 12), action) => {
 	switch (action.type) {
 		case BOARD_UPDATE:
 			if (!action.prevActiveTetrimino.formType && !action.currentActiveTetrimino.formType)
 				return state
 			return updateBoardState(state, action)
+		case LINES_DELETE:
+			return deleteBoardLines(state, action)
 		default:
 			return state
 	}

@@ -1,8 +1,9 @@
 import * as R from 'ramda'
-import { Tetri } from "../components/tetrimino/tetrimino";
-import { getActiveTetrimino, getBoard } from "../middleware/boardManager";
-import { verticallyMove, horizontallyMove, rotate } from "../reducers/tetrimino";
-import { updateBoardState, isValidBoard, bordersMask } from "../reducers/board";
+import { Tetri } from "../components/tetrimino/tetrimino"
+import { getActiveTetrimino, getBoard } from "../middleware/boardManager"
+import { verticallyMove, horizontallyMove, rotate } from "../reducers/tetrimino"
+import { updateBoardState, isValidBoard, bordersMask } from "../reducers/board"
+import { checkLines } from './board';
 
 export const TETRIMINO_ADD = 'TETRIMINO_ADD'
 export const TETRIMINO_SEAL = 'TETRIMINO_SEAL'
@@ -91,7 +92,8 @@ export const rotateTetrimino = () => {
 
 export const sealAndRenew = () => {
 	return (dispatch, getState) => {
-		dispatch(sealTetrimino());
-		dispatch(addTetrimino());
+		dispatch(sealTetrimino())
+		dispatch(checkLines())
+		dispatch(addTetrimino())
 	}
 }
