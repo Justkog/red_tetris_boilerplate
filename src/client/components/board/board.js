@@ -71,7 +71,7 @@ const Row = (props) => {
 
 export const Board = ({activeTetrimino, board}) => {
 
-  test_socket_io();
+//   test_socket_io();
 
 	const boardToDraw = printableBoard(board, invertGrid(bordersMask(board)))
 

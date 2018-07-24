@@ -17,6 +17,9 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { boardManager } from './middleware/boardManager';
 import { addTetrimino } from './actions/tetrimino';
 import { listenBoardUpdate } from './actions/gameEvents';
+import { connectSocket, startSocket, registerTests, registerSocketEvent } from './actions/socket';
+import { registerRoomsListShow } from './actions/rooms';
+import { test_socket_io } from './components/test_socket_io';
 
 const initialState = {}
 
@@ -32,6 +35,9 @@ ReactDom.render((
   </Provider>
 ), document.getElementById('tetris'))
 
+store.dispatch(startSocket())
+store.dispatch(registerSocketEvent(test_socket_io))
+// store.dispatch(registerRoomsListShow())
 store.dispatch(listenBoardUpdate(store))
 store.dispatch(alert('Soon, will be here a fantastic Tetris ...'))
 store.dispatch(alert('Soon, will be here a fantastic Tetris ... 2'))

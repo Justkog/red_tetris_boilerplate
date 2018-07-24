@@ -6,6 +6,7 @@ import keyBindings from './keyBindings'
 import activeTetrimino from './tetrimino'
 import game from './game'
 import board from './board'
+import socket from './socket'
 
 export default (state = {}, action) => {
 	return R.compose(
@@ -16,7 +17,8 @@ export default (state = {}, action) => {
 			alert,
 			game,
 			board,
-			activeTetrimino: (state = {}) => state	// to silence the combineReducer warning, see https://stackoverflow.com/questions/33677833/react-redux-combining-reducers-unexpected-keys
+			activeTetrimino: (state = {}) => state,	// to silence the combineReducer warning, see https://stackoverflow.com/questions/33677833/react-redux-combining-reducers-unexpected-keys
+			socket,
 		})
 	)(state, action)
 }
