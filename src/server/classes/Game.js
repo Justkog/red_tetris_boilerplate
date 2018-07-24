@@ -41,6 +41,11 @@ export default class Game
     return names;
   }
 
+  playersWithoutOne(player)
+  {
+    return this.players.filter((p) => { return p.socket_id != player.socket_id });
+  }
+
   allTetris()
   {
     let tetris = [];

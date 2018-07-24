@@ -40,5 +40,30 @@ export const initEngine = (io, supervisor) => {
       socket.emit(constants.NEXT_TETRI, { tetris: game.nextTetris(index) });
     });
 
+    socket.on(constants.BOARD_UPDATE, function (data) {
+      let player = supervisor.find_player(socket.id);
+      let game = player.game;
+
+      player.board = data.board;
+
+      game.playersWithoutOne(player).forEach((p) => {
+        socket.broadcast.to(p.socket_id).emit(constants.SPECTRUM_UPDATE, { user: player.name, board: player.board });
+      });
+    });
+
+    socket.on(constants.USER_LINE_DELETE, function (data) {
+      let player = supervisor.find_player(socket.id);
+      let game = player.game;
+
+      player.board = data.board;
+
+      if (game.players.length == 1 || data.linesNumber <= 1)
+        return;
+
+      game.playersWithoutOne(player).forEach(p => {
+        socket.broadcast.to(p.socket_id).emit(constants.INDESTRUCTIBLE_LINE_ADD, { linesNumber: data.linesNumber - 1 });
+      });
+    });
+
   })
 }
