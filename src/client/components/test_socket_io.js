@@ -1,4 +1,4 @@
-import { USER_LINE_DELETE, INDESTRUCTIBLE_LINE_ADD, ROOMS_LIST_SHOW, GAME_CREATION, ROOM_SHOW, GAME_START, NEXT_TETRI, BOARD_UPDATE, emptyBoardN } from '../../server/tools/constants';
+import { UPDATE_SCORE, USER_LINE_DELETE, INDESTRUCTIBLE_LINE_ADD, ROOMS_LIST_SHOW, GAME_CREATION, ROOM_SHOW, GAME_START, NEXT_TETRI, BOARD_UPDATE, emptyBoardN } from '../../server/tools/constants';
 
 export function test_socket_io(socket)
 {
@@ -35,7 +35,11 @@ export function test_socket_io(socket)
   });
 
   socket.on(INDESTRUCTIBLE_LINE_ADD, (data) => {
-    // Faur plusieurs joueurs pour cette route
+    // Faut plusieurs joueurs pour cette route
     console.log('Listening INDESTRUCTIBLE_LINE_ADD: ', data);
+  });
+
+  socket.on(UPDATE_SCORE, (data) => {
+    console.log('Listening UPDATE_SCORE: ', data);
   });
 }

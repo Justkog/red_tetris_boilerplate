@@ -56,6 +56,9 @@ export const initEngine = (io, supervisor) => {
       let game = player.game;
 
       player.board = data.board;
+      player.update_score(data.linesNumber);
+
+      supervisor.send_data_to_room(game.room, constants.UPDATE_SCORE, { scores: game.playersScores() });
 
       if (game.players.length == 1 || data.linesNumber <= 1)
         return;

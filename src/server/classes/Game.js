@@ -72,6 +72,17 @@ export default class Game
     return boards;
   }
 
+  playersScores()
+  {
+    let scores = {};
+
+    this.players.forEach(player => {
+      scores[player.name] = player.score;
+    });
+
+    return scores;
+  }
+
   removePlayer(player)
   {
     player.game = null;

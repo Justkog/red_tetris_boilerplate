@@ -21,5 +21,7 @@ export const SPECTRUM_UPDATE = 'SPECTRUM_UPDATE';
 
 export const NEW_PLAYER_IN_GAME = 'NEW_PLAYER_IN_GAME';
 
+export const UPDATE_SCORE = 'UPDATE_SCORE';
+
 export const emptyRowN = (columns) => R.map((n) => 0, R.unfold((n) => n > columns - 1 ? false : [n, n + 1], 0))
 export const emptyBoardN = (rows, columns) => R.map((n) => emptyRowN(columns), R.unfold((n) => n > rows - 1 ? false : [n, n + 1], 0))
