@@ -1,0 +1,5 @@
+button.room-entry:hover {
+	background-color: var(--info);
+	color: white;
+	border-color: var(--cyan);
+}

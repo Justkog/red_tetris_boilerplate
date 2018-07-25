@@ -17,10 +17,10 @@ export default (state = {}, action) => {
 		combineReducers({
 			alert,
 			game,
+			rooms,
 			board,
 			activeTetrimino: (state = {}) => state,	// to silence the combineReducer warning, see https://stackoverflow.com/questions/33677833/react-redux-combining-reducers-unexpected-keys
 			socket,
-			rooms,
 		})
 	)(state, action)
 }
