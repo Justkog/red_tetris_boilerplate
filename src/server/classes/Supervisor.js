@@ -74,7 +74,7 @@ export default class Supervisor
         rooms.push(g.name);
       }
 	});
-	rooms.push('testRoom', 'testRoom 2')
+	// rooms.push('testRoom', 'testRoom 2')
     return rooms;
   }
 
