@@ -12,7 +12,7 @@ import { alert } from './actions/alert'
 import { startGameLoop } from './actions/game'
 import { keyDown, listenToWindowEvent, keyDownDispatcher } from './actions/key'
 import * as R from 'ramda'
-
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { boardManager } from './middleware/boardManager';
 import { addTetrimino } from './actions/tetrimino';
@@ -24,15 +24,15 @@ import { test_socket_io } from './components/test_socket_io';
 const initialState = {}
 
 const store = createStore(
-  reducer,
-  initialState,
-  applyMiddleware(thunk, createLogger(), gameLoopManager, boardManager)
+	reducer,
+	initialState,
+	applyMiddleware(thunk, createLogger(), gameLoopManager, boardManager)
 )
 
 ReactDom.render((
-  <Provider store={store}>
-    <App/>
-  </Provider>
+	<Provider store={store}>
+		<App/>
+	</Provider>
 ), document.getElementById('tetris'))
 
 store.dispatch(startSocket())

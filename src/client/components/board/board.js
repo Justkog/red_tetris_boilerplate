@@ -83,7 +83,7 @@ export const Board = ({activeTetrimino, board}) => {
 	)
 
 	return (
-		<Container>
+		<Container className="board-container">
 			<div className="board" style={{display: 'flex', flexDirection: 'column'}}>
 				{listRows}
 			</div>
@@ -92,6 +92,7 @@ export const Board = ({activeTetrimino, board}) => {
 }
 
 const mapStateToProps = (state) => {
+	console.dir('mapStateToProps')
 	return {
 		activeTetrimino: state.activeTetrimino,
 		board: state.board,
