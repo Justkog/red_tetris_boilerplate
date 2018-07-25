@@ -4,6 +4,7 @@ import Board from '../components/board/board'
 import  { Route, Switch, BrowserRouter, HashRouter, withRouter } from 'react-router-dom'
 import { Login } from '../components/login/login';
 import Rooms from '../components/rooms/rooms';
+import Lobby from '../components/lobby/lobby';
 
 const App = ({message}) => {
 	return (
@@ -13,8 +14,9 @@ const App = ({message}) => {
 			/> */
 		<HashRouter>
 			<Switch>
-				<Route exact path='/' component={Login} />
+				<Route exact path='/' render={Login} />
 				<Route exact path='/rooms' render={Rooms} />
+				<Route exact path='/lobby' render={Lobby} />
 				{/* <Board/> */}
 			</Switch>
 		</HashRouter>
