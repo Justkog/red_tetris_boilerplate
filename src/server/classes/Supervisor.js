@@ -65,7 +65,6 @@ export default class Supervisor
 
   list_availables_rooms()
   {
-	  loginfo('list_availables_rooms')
     let rooms = [];
 
     this.games.forEach((g) => {
@@ -73,8 +72,7 @@ export default class Supervisor
       {
         rooms.push(g.name);
       }
-	});
-	// rooms.push('testRoom', 'testRoom 2')
+  	});
     return rooms;
   }
 

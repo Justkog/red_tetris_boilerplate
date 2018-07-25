@@ -9,16 +9,17 @@ export const initEngine = (io, supervisor) => {
     socket.emit(constants.ROOMS_LIST_SHOW, { rooms: supervisor.list_availables_rooms() });
 
     socket.on(constants.GAME_CREATION, function (data) {
+      loginfo(`Listening to ${constants.GAME_CREATION}: `, data);
       let player = supervisor.find_player(socket.id);
       player.set_name(data.userName);
 
       let game = supervisor.add_game(data.roomName, player, data.tetriNumber);
       socket.join(data.roomName);
-
       socket.emit(constants.ROOM_SHOW, { roomName: game.room, users: game.playersNames() } );
     });
 
     socket.on(constants.GAME_START, function (data) {
+      loginfo(`Listening to ${constants.GAME_START}: `, data);
       let player = supervisor.find_player(socket.id);
       let game = player.game;
 
@@ -27,7 +28,8 @@ export const initEngine = (io, supervisor) => {
       supervisor.send_data_to_room(game.room, constants.GAME_START, game_data)
     });
 
-    socket.on(constants.NEXT_TETRI, function () {
+    socket.on(constants.NEXT_TETRI, function (data) {
+      loginfo(`Listening to ${constants.NEXT_TETRI}: `, data);
       let player = supervisor.find_player(socket.id);
       let game = player.game;
 
@@ -41,6 +43,7 @@ export const initEngine = (io, supervisor) => {
     });
 
     socket.on(constants.BOARD_UPDATE, function (data) {
+      loginfo(`Listening to ${constants.BOARD_UPDATE}: `, data);
       let player = supervisor.find_player(socket.id);
       let game = player.game;
 
@@ -52,6 +55,7 @@ export const initEngine = (io, supervisor) => {
     });
 
     socket.on(constants.USER_LINE_DELETE, function (data) {
+      loginfo(`Listening to ${constants.USER_LINE_DELETE}: `, data);
       let player = supervisor.find_player(socket.id);
       let game = player.game;
 
