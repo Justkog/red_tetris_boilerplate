@@ -15,7 +15,7 @@ export function game_creation(socket, supervisor)
 
     player.set_name(data.userName);
 
-    if (!supervisor.player_name_available(data.roomName))
+    if (!supervisor.game_name_available(data.roomName))
     {
       socket.emit(constants.GAME_ERROR, { message: 'name already taken' });
       return;
@@ -23,6 +23,26 @@ export function game_creation(socket, supervisor)
 
     let game = supervisor.add_game(data.roomName, player, data.tetriNumber);
     socket.join(data.roomName);
+    socket.emit(constants.ROOM_UPDATE, { roomName: game.room, users: game.playersNames() });
+  });
+}
+
+export function game_creation_solo(socket, supervisor)
+{
+  socket.on(constants.GAME_CREATION_SOLO, function (data) {
+    loginfo(`Listening to ${constants.GAME_CREATION_SOLO}: `, data);
+    let player = supervisor.find_player(socket.id);
+
+    if (data.userName && !player.name && !supervisor.player_name_available(data.userName)) {
+      socket.emit(constants.PLAYER_ERROR, { message: 'name already taken' });
+      return;
+    }
+
+    player.set_name(data.userName);
+
+    const room = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    let game = supervisor.add_game(room, player, data.tetriNumber);
+    socket.join(room);
     socket.emit(constants.ROOM_UPDATE, { roomName: game.room, users: game.playersNames() });
   });
 }

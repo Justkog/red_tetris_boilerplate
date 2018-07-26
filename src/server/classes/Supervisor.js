@@ -32,7 +32,7 @@ export default class Supervisor
     return players_filtered[0] === undefined;
   }
 
-  player_game_available(name)
+  game_name_available(name)
   {
     let games_filtered = this.games.filter((g) => {
       return g.name === name;

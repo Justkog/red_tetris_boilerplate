@@ -6,6 +6,7 @@ export const ROOM_SHOW = 'ROOM_SHOW';
 export const ROOM_UPDATE = 'ROOM_UPDATE';
 
 export const GAME_CREATION = 'GAME_CREATION';
+export const GAME_CREATION_SOLO = 'GAME_CREATION_SOLO';
 export const REQUEST_GAME_START = 'REQUEST_GAME_START';
 export const GAME_START = 'GAME_START';
 export const GAME_JOIN = 'GAME_JOIN';
