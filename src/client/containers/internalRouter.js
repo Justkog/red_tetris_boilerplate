@@ -10,9 +10,11 @@ import * as R from 'ramda'
 
 export const hashUrlRegex = RegExp(/^#([^#[\]]*)\[([^#[\]]*)\]$/);
 
-const InternalRouter = ({history, room, login}) => {
-    console.log('InternalRouter', history.location.hash)
-    if (login && !R.isEmpty(room)) {
+const InternalRouter = ({history, room, login, game}) => {
+	console.log('InternalRouter', history.location.hash)
+	if (game.started)
+		return <Board/>
+    else if (login && !R.isEmpty(room)) {
         console.log('Lobby!')
         return <Lobby/>
     } else if (login && !hashUrlRegex.test(history.location.hash)) {
@@ -28,7 +30,8 @@ const InternalRouter = ({history, room, login}) => {
 const mapStateToProps = (state) => {
 	return {
         room: state.room,
-        login: state.user.login,
+		login: state.user.login,
+		game: state.game,
 	}
 }
 

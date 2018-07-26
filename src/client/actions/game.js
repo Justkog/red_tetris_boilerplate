@@ -1,7 +1,9 @@
 import * as R from 'ramda'
-import { moveDownTetrimino, attemptMoveDownTetrimino } from './tetrimino';
+import { moveDownTetrimino, attemptMoveDownTetrimino, sealTetrimino, addTetrimino } from './tetrimino';
 import { GAME_START } from '../../server/tools/constants';
 import { getSocket } from './socket';
+import { listenToWindowEvent, keyDownDispatcher } from './key';
+import { resetBoard } from './board';
 
 export const START_GAME = 'START_GAME'
 export const GAME_INIT = 'GAME_INIT'
@@ -9,9 +11,13 @@ export const STOP_GAME = 'STOP_GAME'
 export const LOOP_UPDATE = 'LOOP_UPDATE'
 export const REGISTER_LOOP_INTERVAL_ID = 'REGISTER_LOOP_INTERVAL_ID'
 export const GAME_START_REQUEST = 'GAME_START_REQUEST'
+export const KEY_DOWN_UNSUBSCRIBE_REGISTER = 'KEY_DOWN_UNSUBSCRIBE_REGISTER'
+export const HEAD_TETRI_REMOVE = 'HEAD_TETRI_REMOVE'
 
 const getLoopIntervalID = R.path(['game', 'loopIntervalID'])
+const getKeydownUnsubscribe = R.path(['game', 'keydownUnsubscribe'])
 const getGameStarted = R.path(['game', 'started'])
+export const getGameTetris = R.path(['game', 'tetris'])
 
 export const startGameLoop = () => {
 	return (dispatch, getState) => {
@@ -20,6 +26,8 @@ export const startGameLoop = () => {
 		}, 500)
 		dispatch(loopUpdate())
 		dispatch(registerLoopIntervalID(intervalID))
+		const unlistenkeyDown = dispatch(listenToWindowEvent('keydown', keyDownDispatcher))
+		dispatch(registerKeyDownUnsubscriber(unlistenkeyDown))
 	}
 }
 
@@ -27,6 +35,8 @@ export const stopGameLoop = () => {
 	return (dispatch, getState) => {
 		const intervalID = getLoopIntervalID(getState())
 		clearInterval(intervalID)
+		const keyDownUnsubscribe = getKeydownUnsubscribe(getState())
+		keyDownUnsubscribe()
 	}
 }
 
@@ -49,6 +59,11 @@ export const registerLoopIntervalID = (ID) => ({
 	loopIntervalID: ID
 })
 
+export const registerKeyDownUnsubscriber = (unsubscribe) => ({
+	type: KEY_DOWN_UNSUBSCRIBE_REGISTER,
+	unsubscribe: unsubscribe
+})
+
 export const requestGameStart = () => ({
 	type: GAME_START_REQUEST,
 })
@@ -66,12 +81,30 @@ export const initGame = ({ boards, tetris}) => ({
 	tetris: tetris,
 })
 
+export const removeHeadTetri = () => ({
+	type: HEAD_TETRI_REMOVE,
+})
+
+export const pullHeadTetri = () => {
+	return (dispatch, getState) => {
+		const headTetri = R.head(getGameTetris(getState()))
+		dispatch(removeHeadTetri())
+		return headTetri
+	}
+}
+
 export const registerGameStart = (socket, dispatch, getState) => {
 	console.log('registerGameStart')
 	socket.off(GAME_START)
 	socket.on(GAME_START, (data) => {
 		console.log('Listening GAME_START: ', data);
+		dispatch(sealTetrimino())
+		dispatch(resetBoard())
 		dispatch(initGame(data))
+		const newTetri = dispatch(pullHeadTetri())
+		dispatch(addTetrimino(newTetri))
 		dispatch(startGame())
+		// const unlistenkeyDown = dispatch(listenToWindowEvent('keydown', keyDownDispatcher))
+		// dispatch(registerKeyDownUnsubscriber(unlistenkeyDown))
 	})
 }

@@ -66,8 +66,8 @@ store.dispatch(alert('Soon, will be here a fantastic Tetris ... 2'))
 // store.dispatch(startGameLoop())
 
 // test
-store.dispatch(keyDown({key: 'ArrowRight'}))
-store.dispatch(addTetrimino())
+// store.dispatch(keyDown({key: 'ArrowRight'}))
+// store.dispatch(addTetrimino())
 // test_socket_io();
 
 // subscribe to event

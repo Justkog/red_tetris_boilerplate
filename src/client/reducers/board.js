@@ -1,4 +1,4 @@
-import { BOARD_UPDATE, LINES_DELETE } from "../actions/board"
+import { BOARD_UPDATE, LINES_DELETE, BOARD_RESET } from "../actions/board"
 import * as R from 'ramda'
 import { tetriTypeToFormFactory } from "../components/tetrimino/tetrimino"
 
@@ -134,6 +134,8 @@ export default (state = emptyBoardN(25, 12), action) => {
 			return updateBoardState(state, action)
 		case LINES_DELETE:
 			return deleteBoardLines(state, action)
+		case BOARD_RESET:
+			return emptyBoardN(25, 12)
 		default:
 			return state
 	}

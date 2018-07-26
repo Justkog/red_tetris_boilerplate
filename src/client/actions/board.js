@@ -3,6 +3,7 @@ import { getBoard } from "../middleware/boardManager";
 import * as R from 'ramda'
 
 export const BOARD_UPDATE = 'BOARD_UPDATE'
+export const BOARD_RESET = 'BOARD_RESET'
 export const LINES_DELETE = 'LINES_DELETE'
 
 export const updateBoard = (prevActiveTetrimino, currentActiveTetrimino) => {
@@ -17,6 +18,12 @@ export const deleteLines = (lines) => {
 	return {
 		type: LINES_DELETE,
 		lines: lines,
+	}
+}
+
+export const resetBoard = () => {
+	return {
+		type: BOARD_RESET,
 	}
 }
 

@@ -4,6 +4,7 @@ import { getActiveTetrimino, getBoard } from "../middleware/boardManager"
 import { verticallyMove, horizontallyMove, rotate } from "../reducers/tetrimino"
 import { updateBoardState, isValidBoard, bordersMask } from "../reducers/board"
 import { checkLines } from './board';
+import { getGameTetris, pullHeadTetri } from './game';
 
 export const TETRIMINO_ADD = 'TETRIMINO_ADD'
 export const TETRIMINO_SEAL = 'TETRIMINO_SEAL'
@@ -13,10 +14,11 @@ export const TETRIMINO_MOVE_LEFT = 'TETRIMINO_MOVE_LEFT'
 export const TETRIMINO_MOVE_RIGHT = 'TETRIMINO_MOVE_RIGHT'
 export const TETRIMINO_ROTATE = 'TETRIMINO_ROTATE'
 
-export const addTetrimino = () => {
+export const addTetrimino = ({identifier, rotation}) => {
 	return {
 		type: TETRIMINO_ADD,
-		formType: Tetri.Types.L,
+		formType: identifier,
+		orientation: rotation,
 	}
 }
 
@@ -94,6 +96,7 @@ export const sealAndRenew = () => {
 	return (dispatch, getState) => {
 		dispatch(sealTetrimino())
 		dispatch(checkLines())
-		dispatch(addTetrimino())
+		const newTetri = dispatch(pullHeadTetri())
+		dispatch(addTetrimino(newTetri))
 	}
 }
