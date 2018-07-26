@@ -32,7 +32,7 @@ export function user_line_delete(socket, supervisor)
       return;
 
     game.playersWithoutOne(player).forEach(p => {
-      socket.broadcast.to(p.socket_id).emit(constants.INDESTRUCTIBLE_LINE_ADD, { linesNumber: data.linesNumber - 1 });
+      socket.broadcast.to(p.socket_id).emit(constants.INDESTRUCTIBLE_LINES_ADD, { linesNumber: data.linesNumber - 1 });
     });
   });
 }

@@ -21,6 +21,8 @@ const removeExtraRows = R.compose(
 export const visualBoard = (board) => printableBoard(board, invertGrid(bordersMask(board)))
 
 const printableBoard = (board, printableMask) => {
+	// console.log('printableMask')
+	// console.dir(printableMask)
 	const grid = R.addIndex(R.map)((row, rowIndex) => {
 		return R.addIndex(R.filter)((cell, cellIndex) => {
 			if (printableMask[rowIndex][cellIndex] > 0)
@@ -54,8 +56,8 @@ const DefaultCell = () => GenericCell(defaultCellStyle)
 const TetriCell = (color) => GenericCell(R.merge(defaultCellStyle, {borderColor: 'white', backgroundColor: color}))
 
 const Cell = ({value}) => {
-	if (value == 1)
-		return TetriCell('var(--pink)')
+	if (R.length(value) > 0)
+		return TetriCell(R.head(value).color)
 	return DefaultCell()
 }
 
@@ -70,6 +72,7 @@ const Row = (props) => {
 export const Board = ({activeTetrimino, board}) => {
 
 	const boardToDraw = printableBoard(board, invertGrid(bordersMask(board)))
+	// console.dir(boardToDraw)
 
 	const listColumns = (row) => R.addIndex(R.map)((cell, index) =>
 		<Cell key={index.toString()} value={cell}>
@@ -92,7 +95,7 @@ export const Board = ({activeTetrimino, board}) => {
 }
 
 const mapStateToProps = (state) => {
-	console.dir('mapStateToProps')
+	// console.dir('mapStateToProps')
 	return {
 		activeTetrimino: state.activeTetrimino,
 		board: state.board,

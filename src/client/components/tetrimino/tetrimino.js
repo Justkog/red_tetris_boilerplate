@@ -69,6 +69,27 @@ export const tetriTypeToFormFactory = (type) => {
 	return typesToForm[type]
 }
 
+const IColor = () => 'var(--blue)'
+const OColor = () => 'var(--indigo)'
+const TColor = () => 'var(--pink)'
+const JColor = () => 'var(--red)'
+const LColor = () => 'var(--orange)'
+const SColor = () => 'var(--teal)'
+const ZColor = () => 'var(--purple)'
+
+export const tetriTypeToColorFactory = (type) => {
+	const typesToColor = {
+		'I': IColor,
+		'O': OColor,
+		'T': TColor,
+		'J': JColor,
+		'L': LColor,
+		'S': SColor,
+		'Z': ZColor,
+	}
+	return typesToColor[type]
+}
+
 const columnNumbers = R.range(0, 3)
 const rowNumbers = R.range(0, 3)
 

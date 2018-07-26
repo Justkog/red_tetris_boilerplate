@@ -1,6 +1,7 @@
 import { visualBoard, topLogicLinesCount } from "../components/board/board";
 import { getBoard } from "../middleware/boardManager";
 import * as R from 'ramda'
+import { INDESTRUCTIBLE_LINES_ADD } from "../../server/tools/constants";
 
 export const BOARD_UPDATE = 'BOARD_UPDATE'
 export const BOARD_RESET = 'BOARD_RESET'
@@ -27,8 +28,15 @@ export const resetBoard = () => {
 	}
 }
 
+export const addIndestructibleLines = ({linesNumber}) => {
+	return {
+		type: INDESTRUCTIBLE_LINES_ADD,
+		count: linesNumber,
+	}
+}
+
 const isTetri = (cell) => {
-	return R.gt(cell, 0)
+	return R.compose(R.gt(R.__, 0), R.length)(cell)
 }
 
 const isComplete = (line) => {
@@ -50,4 +58,13 @@ export const checkLines = () => {
 		if (lines.length > 0)
 			dispatch(deleteLines(lines))
 	}
+}
+
+export const registerIndestructibleLinesAdd = (socket, dispatch, getState) => {
+	console.log('registerIndestructibleLinesAdd')
+	socket.off(INDESTRUCTIBLE_LINES_ADD)
+	socket.on(INDESTRUCTIBLE_LINES_ADD, (data) => {
+		console.log('Listening INDESTRUCTIBLE_LINES_ADD: ', data);
+		dispatch(addIndestructibleLines(data))
+	})
 }

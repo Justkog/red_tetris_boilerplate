@@ -1,5 +1,6 @@
 import * as R from 'ramda'
 import { moveLeftTetrimino, moveRightTetrimino, moveDownTetrimino, rotateTetrimino, attemptMoveDownTetrimino, attemptMoveRightTetrimino, attemptMoveLeftTetrimino, attemptRotateTetrimino } from './tetrimino';
+import { addIndestructibleLines } from './board';
 
 export const KEY_DOWN = 'KEY_DOWN';
 
@@ -14,6 +15,7 @@ const allowedKeys = [
 	'ArrowRight',
 	'ArrowDown',
 	'p',
+	'i',
 	' ',
 ]
 
@@ -47,6 +49,8 @@ export const keyDownDispatcher = (e) => {
 				return dispatch(attemptRotateTetrimino())
 			case ' ':
 				return dispatch(attemptMoveDownTetrimino())
+			case 'i':
+				return dispatch(addIndestructibleLines(1))
 			default:
 				return
 		}

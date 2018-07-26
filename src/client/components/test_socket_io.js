@@ -1,4 +1,4 @@
-import { GAME_CREATION_SOLO, PLAYER_END, GAME_ERROR, PLAYER_ERROR, UPDATE_SCORE, USER_LINE_DELETE, INDESTRUCTIBLE_LINE_ADD, ROOMS_LIST_SHOW, GAME_CREATION, ROOM_UPDATE, GAME_START, NEXT_TETRI, BOARD_UPDATE, emptyBoardN} from '../../server/tools/constants';
+import { GAME_CREATION_SOLO, PLAYER_END, GAME_ERROR, PLAYER_ERROR, UPDATE_SCORE, USER_LINE_DELETE, INDESTRUCTIBLE_LINES_ADD, ROOMS_LIST_SHOW, GAME_CREATION, ROOM_UPDATE, GAME_START, NEXT_TETRI, BOARD_UPDATE, emptyBoardN} from '../../server/tools/constants';
 
 export function test_socket_io(socket)
 {
@@ -35,9 +35,9 @@ export function test_socket_io(socket)
     console.log('Listening BOARD_UPDATE: ', data);
   });
 
-  socket.on(INDESTRUCTIBLE_LINE_ADD, (data) => {
+  socket.on(INDESTRUCTIBLE_LINES_ADD, (data) => {
     // Faut plusieurs joueurs pour cette route
-    console.log('Listening INDESTRUCTIBLE_LINE_ADD: ', data);
+    console.log('Listening INDESTRUCTIBLE_LINES_ADD: ', data);
   });
 
   socket.on(UPDATE_SCORE, (data) => {
