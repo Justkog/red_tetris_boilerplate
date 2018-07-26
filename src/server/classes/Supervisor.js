@@ -67,9 +67,9 @@ export default class Supervisor
     this.players.push(new Player(socket_id, this));
   }
 
-  add_game(room, player, tetri_number)
+  add_game(room, player, tetri_number, is_solo)
   {
-    let game = new Game(room, player, tetri_number, this);
+    let game = new Game(room, player, tetri_number, is_solo, this);
     this.games.push(game);
     game.addPieces(tetri_number);
     player.is_master = true;

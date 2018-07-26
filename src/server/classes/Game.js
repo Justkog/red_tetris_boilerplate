@@ -2,7 +2,7 @@ import Piece from './Piece';
 
 export default class Game
 {
-  constructor(room, player, tetri_number, supervisor)
+  constructor(room, player, tetri_number, is_solo, supervisor)
   {
     this.room = room;
     this.tetri_number = tetri_number;
@@ -10,12 +10,13 @@ export default class Game
     this.players = [player];
     this.pieces = [];
     this.is_running = false;
+    this.is_solo = is_solo;
     player.game = this;
   }
 
   is_available()
   {
-    return !this.is_running;
+    return !this.is_running && !this.is_solo;
   }
 
   all_players_finished()
