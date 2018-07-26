@@ -21,7 +21,7 @@ export default class Game
 
   all_players_finished()
   {
-    let names = this.players.filter(player => { return !p.game_finished } );
+    let names = this.players.filter(player => { return !player.game_finished } );
 
     return names.length == 0;
   }
@@ -107,7 +107,7 @@ export default class Game
     player.game = null;
     this.players.forEach((p, index) =>
     {
-      if (p.name == player.name)
+      if (p.socket_id === player.socket_id)
       {
         this.players.splice(index, 1);
         if (player.is_master)

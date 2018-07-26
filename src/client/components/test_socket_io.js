@@ -5,7 +5,8 @@ export function test_socket_io(socket)
   socket.on(ROOMS_LIST_SHOW, (data) => {
     console.log('Listening ROOMS_LIST_SHOW: ', data);
     // je creais direct pour tester la route
-    socket.emit(GAME_CREATION_SOLO, { roomName: 'room', userName: 'name', tetriNumber: 15 });
+    socket.emit(GAME_CREATION, { roomName: 'room', userName: 'name', tetriNumber: 15 });
+    // socket.emit(GAME_CREATION_SOLO, { userName: 'name', tetriNumber: 15 });
   });
 
   socket.on(ROOM_UPDATE, (data) => {

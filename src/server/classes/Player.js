@@ -11,6 +11,7 @@ export default class Player
     this.game_finished = false;
     this.room = null;
     this.name = null;
+    this.supervisor = supervisor;
     this.piece_index = 0;
     this.board = emptyBoardN(20, 10);
   }

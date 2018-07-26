@@ -32,10 +32,10 @@ export default class Supervisor
     return players_filtered[0] === undefined;
   }
 
-  game_name_available(name)
+  game_name_available(room)
   {
     let games_filtered = this.games.filter((g) => {
-      return g.name === name;
+      return g.room === room;
     }
     );
     return games_filtered[0] === undefined;
@@ -52,10 +52,10 @@ export default class Supervisor
     return players_filtered[0];
   }
 
-  find_game(name)
+  find_game(room)
   {
     let games_filtered = this.games.filter((g) => {
-      if (g.name === name)
+      if (g.room === room)
         return g;
     }
     );
@@ -64,7 +64,9 @@ export default class Supervisor
 
   add_player(socket_id)
   {
-    this.players.push(new Player(socket_id, this));
+    let player = new Player(socket_id, this);
+    this.players.push(player);
+    return player;
   }
 
   add_game(room, player, tetri_number, is_solo)
@@ -109,7 +111,7 @@ export default class Supervisor
     this.games.forEach((g) => {
       if (g.is_available())
       {
-        rooms.push(g.name);
+        rooms.push(g.room);
       }
   	});
     return rooms;
