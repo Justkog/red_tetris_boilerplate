@@ -1,5 +1,5 @@
 import * as constants from './constants';
-import { game_creation, game_join, game_start } from './engine/game';
+import { game_creation, game_join, game_start, player_end } from './engine/game';
 import { next_tetri } from './engine/tetri';
 import { board_update, user_line_delete } from './engine/board';
 import { loginfo } from './logs';
@@ -20,5 +20,6 @@ export const initEngine = (io, supervisor) => {
     board_update(socket, supervisor);
     user_line_delete(socket, supervisor);
 
+    player_end(socket, supervisor);
   })
 }

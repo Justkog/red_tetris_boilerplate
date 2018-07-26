@@ -1,4 +1,4 @@
-import { UPDATE_SCORE, USER_LINE_DELETE, INDESTRUCTIBLE_LINE_ADD, ROOMS_LIST_SHOW, GAME_CREATION, ROOM_UPDATE, GAME_START, NEXT_TETRI, BOARD_UPDATE, emptyBoardN } from '../../server/tools/constants';
+import { GAME_ERROR, PLAYER_ERROR, UPDATE_SCORE, USER_LINE_DELETE, INDESTRUCTIBLE_LINE_ADD, ROOMS_LIST_SHOW, GAME_CREATION, ROOM_UPDATE, GAME_START, NEXT_TETRI, BOARD_UPDATE, emptyBoardN} from '../../server/tools/constants';
 
 export function test_socket_io(socket)
 {
@@ -42,4 +42,18 @@ export function test_socket_io(socket)
   socket.on(UPDATE_SCORE, (data) => {
     console.log('Listening UPDATE_SCORE: ', data);
   });
+
+  socket.on(PLAYER_ERROR, (data) => {
+    console.log('Listening PLAYER_ERROR: ', data);
+  });
+
+  socket.on(GAME_ERROR, (data) => {
+    console.log('Listening GAME_ERROR: ', data);
+  });
+
+  socket.on(PLAYER_END, (data) => {
+    // if data.game_finished == true ; the game has been erased
+    console.log('Listening PLAYER_END: ', data);
+  });
+
 }

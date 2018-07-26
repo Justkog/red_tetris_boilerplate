@@ -24,5 +24,8 @@ export const UPDATE_SCORE = 'UPDATE_SCORE';
 
 export const PLAYER_END = 'PLAYER_END';
 
+export const GAME_ERROR = 'GAME_ERROR';
+export const PLAYER_ERROR = 'PLAYER_ERROR';
+
 export const emptyRowN = (columns) => R.map((n) => 0, R.unfold((n) => n > columns - 1 ? false : [n, n + 1], 0))
 export const emptyBoardN = (rows, columns) => R.map((n) => emptyRowN(columns), R.unfold((n) => n > rows - 1 ? false : [n, n + 1], 0))

@@ -23,6 +23,24 @@ export default class Supervisor
     this.io.sockets.in(room).emit(type, data);
   }
 
+  player_name_available(name)
+  {
+    let players_filtered = this.players.filter((p) => {
+      return p.name === name;
+    }
+    );
+    return players_filtered[0] === undefined;
+  }
+
+  player_game_available(name)
+  {
+    let games_filtered = this.games.filter((g) => {
+      return g.name === name;
+    }
+    );
+    return games_filtered[0] === undefined;
+  }
+
   find_player(socket_id)
   {
     let players_filtered = this.players.filter( (p) =>
@@ -44,7 +62,6 @@ export default class Supervisor
     return games_filtered[0];
   }
 
-
   add_player(socket_id)
   {
     this.players.push(new Player(socket_id, this));
@@ -61,17 +78,27 @@ export default class Supervisor
 
   remove_player(player)
   {
-    let name = player.name();
-    let room = player.room();
+    let socket_id = player.socket_id;
 
-    this.players.forEach((p, index) =>
-      {
-        if (p.name() == name && p.room() == room)
-        {
-          this.players.splice(index, 1);
-          return ;
-        }
+    this.players.forEach((p, index) => {
+      if (p.socket_id === socket_id) {
+        this.players.splice(index, 1);
+        return;
       }
+    }
+    );
+  }
+
+  remove_game(game)
+  {
+    let room = game.room();
+
+    this.games.forEach((g, index) => {
+      if (g.room() === room) {
+        this.games.splice(index, 1);
+        return;
+      }
+    }
     );
   }
 

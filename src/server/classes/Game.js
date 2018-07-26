@@ -18,6 +18,13 @@ export default class Game
     return !this.is_running;
   }
 
+  all_players_finished()
+  {
+    let names = this.players.filter(player => { return !p.game_finished } );
+
+    return names.length == 0;
+  }
+
   addPlayer(player)
   {
     player.game = this;
@@ -81,6 +88,17 @@ export default class Game
     });
 
     return scores;
+  }
+  
+  playersInfos()
+  {
+    let infos = {};
+
+    this.players.forEach(player => {
+      infos[player.name] = {score: player.score, board: player.board};
+    });
+
+    return infos;
   }
 
   removePlayer(player)

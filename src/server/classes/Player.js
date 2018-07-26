@@ -8,6 +8,7 @@ export default class Player
     this.is_master = false;
     this.score = 0;
     this.game = null;
+    this.game_finished = false;
     this.room = null;
     this.name = null;
     this.piece_index = 0;
