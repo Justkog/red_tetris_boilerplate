@@ -62,6 +62,9 @@ export function game_join(socket, supervisor)
   
     let game = supervisor.find_game(data.roomName);
   
+    if (!game)
+      game = supervisor.add_game(data.roomName, player, data.tetriNumber, false);
+
     if (!game.is_available())
       return;
   

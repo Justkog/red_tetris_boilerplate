@@ -5,7 +5,9 @@ import { Alert, Container, Form, FormGroup, Label, Col, Input, Jumbotron, Row, B
 import * as R from 'ramda'
 import { withRouter } from 'react-router-dom';
 
-const Lobby = ({history, roomName, users, admin}) => {
+const Lobby = ({history, roomName, users, login}) => {
+
+	const admin = R.prop('is_master', R.head(R.filter((user) => user.name == login, users)))
 	
 	function startGame() {
 		console.log('starting')
@@ -15,7 +17,8 @@ const Lobby = ({history, roomName, users, admin}) => {
 		history.push('rooms')
 	}
 
-	users = ['Jblondea', 'Flevesq']
+	// users = ['Jblondea', 'Flevesq']
+	console.log('Lobby')
 
 	return (
 		<Container>
@@ -28,19 +31,19 @@ const Lobby = ({history, roomName, users, admin}) => {
 				</CardHeader>
 				<CardBody>
 					<Row className="justify-content-center">
-						<h4>Opponents</h4>
+						<h4>Players</h4>
 					</Row>
 					<Row className="justify-content-center" style={{}}>
 						<ListGroup style={{ width: '50%', minWidth: '570px'}}>
 							{users.map((user) => 
 								<Button 
-									key={user} 
+									key={user.name} 
 									className="list-group-item list-group-item-action room-entry" 
 									color="primary" 
 									size="lg" 
 									onClick={() => {  }}
 									// style={{color: 'white', backgroundColor: 'var(--primary)', }}
-								>{user}</Button>
+								>{user.name}</Button>
 							)}
 						</ListGroup>
 					</Row>
@@ -59,8 +62,8 @@ const Lobby = ({history, roomName, users, admin}) => {
 const mapStateToProps = (state) => {
 	return {
 		roomName: state.room.name,
-		users: state.room.users,
-		admin: state.room.admin,
+		users: state.room.users || [],
+		login: state.user.login,
 	}
 }
 
