@@ -34,6 +34,17 @@ export default class Supervisor
     return players_filtered[0];
   }
 
+  find_game(name)
+  {
+    let games_filtered = this.games.filter((g) => {
+      if (g.name === name)
+        return g;
+    }
+    );
+    return games_filtered[0];
+  }
+
+
   add_player(socket_id)
   {
     this.players.push(new Player(socket_id, this));
@@ -44,6 +55,7 @@ export default class Supervisor
     let game = new Game(room, player, tetri_number, this);
     this.games.push(game);
     game.addPieces(tetri_number);
+    player.is_master = true;
     return game;
   }
 

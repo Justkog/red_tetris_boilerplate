@@ -35,7 +35,7 @@ export default class Game
     let names = [];
 
     this.players.forEach(player => {
-      names.push(player.name);
+      names.push({ name: player.name, is_master: player.is_master });
     });
 
     return names;

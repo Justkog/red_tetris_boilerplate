@@ -1,4 +1,4 @@
-import { UPDATE_SCORE, USER_LINE_DELETE, INDESTRUCTIBLE_LINE_ADD, ROOMS_LIST_SHOW, GAME_CREATION, ROOM_SHOW, GAME_START, NEXT_TETRI, BOARD_UPDATE, emptyBoardN } from '../../server/tools/constants';
+import { UPDATE_SCORE, USER_LINE_DELETE, INDESTRUCTIBLE_LINE_ADD, ROOMS_LIST_SHOW, GAME_CREATION, ROOM_UPDATE, GAME_START, NEXT_TETRI, BOARD_UPDATE, emptyBoardN } from '../../server/tools/constants';
 
 export function test_socket_io(socket)
 {
@@ -8,8 +8,8 @@ export function test_socket_io(socket)
     socket.emit(GAME_CREATION, { roomName: 'room', userName: 'name', tetriNumber: 15 });
   });
 
-  socket.on(ROOM_SHOW, (data) => {
-    console.log('Listening ROOM_SHOW: ', data);
+  socket.on(ROOM_UPDATE, (data) => {
+    console.log('Listening ROOM_UPDATE: ', data);
     // je creais direct pour tester la route
     socket.emit(GAME_START, { roomName: 'room' });
   });
