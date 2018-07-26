@@ -9,7 +9,7 @@ import { gameLoopManager } from './middleware/gameLoopManager'
 import reducer from './reducers'
 import App from './containers/app'
 import { alert } from './actions/alert'
-import { startGameLoop } from './actions/game'
+import { startGameLoop, registerGameStart } from './actions/game'
 import { keyDown, listenToWindowEvent, keyDownDispatcher } from './actions/key'
 import * as R from 'ramda'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
@@ -59,6 +59,7 @@ ReactDom.render((
 store.dispatch(registerSocketEvent(test_socket_io))
 store.dispatch(registerSocketEvent(registerRoomsListShow))
 store.dispatch(registerSocketEvent(registerRoomUpdate))
+store.dispatch(registerSocketEvent(registerGameStart))
 store.dispatch(listenBoardUpdate(store))
 store.dispatch(alert('Soon, will be here a fantastic Tetris ...'))
 store.dispatch(alert('Soon, will be here a fantastic Tetris ... 2'))

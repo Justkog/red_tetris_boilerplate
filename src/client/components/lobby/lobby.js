@@ -4,13 +4,15 @@ import { connect } from 'react-redux'
 import { Alert, Container, Form, FormGroup, Label, Col, Input, Jumbotron, Row, Button, ListGroup, ListGroupItem, Card, CardBody, CardHeader } from 'reactstrap'
 import * as R from 'ramda'
 import { withRouter } from 'react-router-dom';
+import { requestGameStartAsync } from '../../actions/game';
 
-const Lobby = ({history, roomName, users, login}) => {
+const Lobby = ({history, roomName, users, login, onStartGame}) => {
 
 	const admin = R.prop('is_master', R.head(R.filter((user) => user.name == login, users)))
 	
 	function startGame() {
 		console.log('starting')
+		onStartGame(roomName)
 	}
 
 	function backToRooms() {
@@ -67,4 +69,13 @@ const mapStateToProps = (state) => {
 	}
 }
 
-export default withRouter(connect(mapStateToProps, null)(Lobby))
+const mapDispatchToProps = dispatch => {
+	return {
+		onStartGame: (roomName) => {
+			dispatch(requestGameStartAsync(roomName))
+		}
+	}
+}
+
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Lobby))

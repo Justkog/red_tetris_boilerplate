@@ -1,4 +1,4 @@
-import { START_GAME, LOOP_UPDATE, STOP_GAME, REGISTER_LOOP_INTERVAL_ID } from '../actions/game'
+import { START_GAME, LOOP_UPDATE, STOP_GAME, REGISTER_LOOP_INTERVAL_ID, GAME_INIT } from '../actions/game'
 import { KEY_DOWN } from '../actions/key'
 import * as R from 'ramda'
 
@@ -27,6 +27,8 @@ export default (state = {started: false, loopIntervalID: 0}, action) => {
 			return R.merge(state, {loopIntervalID: action.loopIntervalID})
 		case KEY_DOWN:
 			return handleKey(state, action.key)
+		case GAME_INIT:
+			return Object.assign({}, state, {tetris: action.tetris, boards: action.boards})
 		default:
 			return state
 	}
