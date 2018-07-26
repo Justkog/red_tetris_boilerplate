@@ -5,11 +5,13 @@ module.exports = {
 
 	devServer: {
 		disableHostCheck: true,
+		historyApiFallback: true,
 	},
 
 	output: {
 		path: path.join(__dirname, 'build'),
 		filename: 'bundle.js',
+		publicPath: '/',
 	},
 
 	module: {

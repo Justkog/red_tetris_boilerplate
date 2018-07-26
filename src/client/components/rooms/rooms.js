@@ -5,19 +5,30 @@ import './rooms.css'
 import { Alert, Container, Form, FormGroup, Label, Col, Input, Jumbotron, Row, Button, ListGroup, ListGroupItem, Card, CardBody } from 'reactstrap'
 import * as R from 'ramda'
 import { withRouter } from 'react-router-dom';
+import { setLogin } from '../../actions/user';
+import { joinRoom, joinRoomAsync } from '../../actions/room';
+import { showRoot } from '../../actions/rooms';
 
-const Rooms = ({rooms, roomName}) => {
+const Rooms = ({history, rooms, roomName, userName, onSetLogin, onJoinRoom}) => {
 	
+	if (!userName)
+	{
+		console.log('forward to login')
+		setTimeout(() => {
+			history.push(`/`)
+		}, 0);
+		return null
+	}
+
 	function handleChange(e) {
 		roomName = e.target.value
 	}
 
-	function createRoom(name) {
-		console.log(name)
-	}
-
 	function joinRoom(name) {
 		console.log(name)
+		console.log(`pushing /#${name}[${userName}]`)
+		onJoinRoom(name)
+		history.push(`/#${name}[${userName}]`)
 	}
 
 	return (
@@ -50,7 +61,7 @@ const Rooms = ({rooms, roomName}) => {
 									<Input value={roomName} onChange={handleChange} type="text" name="roomname" id="roomnameInput" placeholder="" bsSize="lg" />
 								</Col>
 								<Col sm={3}>
-									<Button color="primary" size="lg" onClick={() => { createRoom(roomName) }}>Create</Button>{' '}
+									<Button color="primary" size="lg" onClick={() => { joinRoom(roomName) }}>Create</Button>{' '}
 								</Col>
 							</FormGroup>
 						</Form>
@@ -65,7 +76,19 @@ const mapStateToProps = (state) => {
 	return {
 		rooms: state.rooms,
 		roomName: state.roomName,
+		userName: state.user.login,
 	}
 }
 
-export default withRouter(connect(mapStateToProps, null)(Rooms))
+const mapDispatchToProps = (dispatch, state) => {
+	return {
+		onSetLogin: login => {
+			dispatch(setLogin(login))
+        },
+        onJoinRoom: name => {
+			dispatch(joinRoomAsync(name))
+		},
+	}
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Rooms))

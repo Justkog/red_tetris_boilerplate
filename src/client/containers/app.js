@@ -5,6 +5,7 @@ import  { Route, Switch, BrowserRouter, HashRouter, withRouter } from 'react-rou
 import { Login } from '../components/login/login';
 import Rooms from '../components/rooms/rooms';
 import Lobby from '../components/lobby/lobby';
+import InternalRouter from './internalRouter';
 
 const App = ({message}) => {
 	return (
@@ -12,14 +13,12 @@ const App = ({message}) => {
 				path='/about'
 				render={(props) => <About {...props} extra={someVariable} />}
 			/> */
-		<HashRouter>
+		<BrowserRouter>
 			<Switch>
-				<Route exact path='/' render={Login} />
+				<Route exact path='/' render={InternalRouter} />
 				<Route exact path='/rooms' render={Rooms} />
-				<Route exact path='/lobby' render={Lobby} />
-				{/* <Board/> */}
 			</Switch>
-		</HashRouter>
+		</BrowserRouter>
 	)
 }
 

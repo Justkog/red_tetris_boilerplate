@@ -20,14 +20,35 @@ import { listenBoardUpdate } from './actions/gameEvents';
 import { connectSocket, startSocket, registerTests, registerSocketEvent } from './actions/socket';
 import { registerRoomsListShow } from './actions/rooms';
 import { test_socket_io } from './components/test_socket_io';
+import { setLogin } from './actions/user';
+import { joinRoom, joinRoomAsync } from './actions/room';
+import { hashUrlRegex } from './containers/internalRouter';
 
 const initialState = {}
+
+
+const hashSetup = (store) => {
+	console.log('hash setup', window.location.hash)
+	if (hashUrlRegex.test(window.location.hash)) {
+		const urlLogin = window.location.hash.match(hashUrlRegex)[2]
+		const urlRoom = window.location.hash.match(hashUrlRegex)[1]
+		store.dispatch(setLogin(urlLogin))
+		store.dispatch(joinRoomAsync(urlRoom))
+	}
+}
+
+window.onhashchange = () => {
+	console.log('hash change!', window.location.hash)
+	hashSetup(store)
+};
 
 const store = createStore(
 	reducer,
 	initialState,
 	applyMiddleware(thunk, createLogger(), gameLoopManager, boardManager)
 )
+
+hashSetup(store)
 
 ReactDom.render((
 	<Provider store={store}>
@@ -49,7 +70,7 @@ store.dispatch(addTetrimino())
 // test_socket_io();
 
 // subscribe to event
-let unlistenkeyDown = store.dispatch(listenToWindowEvent('keydown', keyDownDispatcher))
+// let unlistenkeyDown = store.dispatch(listenToWindowEvent('keydown', keyDownDispatcher))
 
  // eventually unsubscribe
 //   unlistenkeyDown()

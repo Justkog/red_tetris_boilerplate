@@ -4,14 +4,16 @@ import { connect } from 'react-redux'
 import { Alert, Container, Form, FormGroup, Label, Col, Input, Jumbotron, Row, Button } from 'reactstrap'
 import * as R from 'ramda'
 import { withRouter } from 'react-router-dom';
+import { setLogin } from '../../actions/user';
 
-export const Login = ({history, login}) => {
-	console.dir(history)
+const Login = ({history, login, onSetLogin}) => {
 	function play(userName) {
+		onSetLogin(userName)
 		history.push('rooms')
 	}
 
 	function handleChange(e) {
+		// onSetLogin(e.target.value)
 		login = e.target.value
 	}
 
@@ -39,8 +41,16 @@ export const Login = ({history, login}) => {
 
 const mapStateToProps = (state) => {
 	return {
-		login: state.login
+		login: undefined
 	}
 }
 
-export default withRouter(connect(mapStateToProps, null)(Login))
+const mapDispatchToProps = dispatch => {
+	return {
+		onSetLogin: login => {
+			dispatch(setLogin(login))
+		}
+	}
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login))

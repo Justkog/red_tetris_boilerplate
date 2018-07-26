@@ -58,9 +58,9 @@ const Lobby = ({history, roomName, users, admin}) => {
 
 const mapStateToProps = (state) => {
 	return {
-		roomName: state.roomName,
-		users: state.users,
-		admin: state.admin,
+		roomName: state.room.name,
+		users: state.room.users,
+		admin: state.room.admin,
 	}
 }
 
