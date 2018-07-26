@@ -149,7 +149,7 @@ const deleteBoardLinesState = (state, { lines }) => {
 }
 
 const addIndestructibleLinesState = (state, action) => {
-
+	
 	return state
 }
 

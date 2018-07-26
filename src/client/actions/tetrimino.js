@@ -53,7 +53,7 @@ const tetriRightMove = R.curry(horizontallyMove)(R.__, 1)
 const tetriRotate = R.curry(rotate)(R.__, 90)
 
 const checkBoardBeforeMove = (dispatch, getState, move, successAction, failureAction) => {
-	return R.ifElse(R.curry(isValidTetriMove)(getState()), () =>successAction && dispatch(successAction), () => failureAction && dispatch(failureAction))(move)
+	return R.ifElse(R.curry(isValidTetriMove)(getState()), () => successAction && dispatch(successAction), () => failureAction && dispatch(failureAction))(move)
 }
 
 const attemptMoveTetrimino = (move, successAction, failureAction) => R.curry(checkBoardBeforeMove)(R.__, R.__, move, successAction, failureAction)
