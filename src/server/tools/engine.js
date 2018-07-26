@@ -2,14 +2,12 @@ import * as constants from './constants';
 import { game_creation, game_join, game_start, player_end } from './engine/game';
 import { next_tetri } from './engine/tetri';
 import { board_update, user_line_delete } from './engine/board';
-import { loginfo } from './logs';
+import { login, logout } from './engine/connection';
 
 export const initEngine = (io, supervisor) => {
   io.on('connection', function (socket) {
-    loginfo("Socket connected: " + socket.id);
-
-    supervisor.add_player(socket.id);
-    socket.emit(constants.ROOMS_LIST_SHOW, { rooms: supervisor.list_availables_rooms() });
+    login(socket, supervisor);
+    logout(socket, supervisor);
 
     game_creation(socket, supervisor);
     game_start(socket, supervisor);
@@ -21,19 +19,5 @@ export const initEngine = (io, supervisor) => {
     user_line_delete(socket, supervisor);
 
     player_end(socket, supervisor);
-
-    socket.on('disconnect', function () {
-      loginfo('User disconnected');
-      let player = supervisor.find_player(socket.id);
-      let game = player.game;
-
-      if (game)
-      {
-        game.remove_player(player);
-        if (game.players.length == 0)
-          supervisor.remove_game(game);
-      }
-      supervisor.remove_player(player);
-    });
   })
 }
