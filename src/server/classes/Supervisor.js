@@ -23,6 +23,24 @@ export default class Supervisor
     this.io.sockets.in(room).emit(type, data);
   }
 
+  player_name_available(name)
+  {
+    let players_filtered = this.players.filter((p) => {
+      return p.name === name;
+    }
+    );
+    return players_filtered[0] === undefined;
+  }
+
+  game_name_available(room)
+  {
+    let games_filtered = this.games.filter((g) => {
+      return g.room === room;
+    }
+    );
+    return games_filtered[0] === undefined;
+  }
+
   find_player(socket_id)
   {
     let players_filtered = this.players.filter( (p) =>
@@ -34,47 +52,68 @@ export default class Supervisor
     return players_filtered[0];
   }
 
-  add_player(socket_id)
+  find_game(room)
   {
-    this.players.push(new Player(socket_id, this));
+    let games_filtered = this.games.filter((g) => {
+      if (g.room === room)
+        return g;
+    }
+    );
+    return games_filtered[0];
   }
 
-  add_game(room, player, tetri_number)
+  add_player(socket_id)
   {
-    let game = new Game(room, player, tetri_number, this);
+    let player = new Player(socket_id, this);
+    this.players.push(player);
+    return player;
+  }
+
+  add_game(room, player, tetri_number, is_solo)
+  {
+    let game = new Game(room, player, tetri_number, is_solo, this);
     this.games.push(game);
     game.addPieces(tetri_number);
+    player.is_master = true;
     return game;
   }
 
   remove_player(player)
   {
-    let name = player.name();
-    let room = player.room();
+    let socket_id = player.socket_id;
 
-    this.players.forEach((p, index) =>
-      {
-        if (p.name() == name && p.room() == room)
-        {
-          this.players.splice(index, 1);
-          return ;
-        }
+    this.players.forEach((p, index) => {
+      if (p.socket_id === socket_id) {
+        this.players.splice(index, 1);
+        return;
       }
+    }
+    );
+  }
+
+  remove_game(game)
+  {
+    let room = game.room;
+
+    this.games.forEach((g, index) => {
+      if (g.room === room) {
+        this.games.splice(index, 1);
+        return;
+      }
+    }
     );
   }
 
   list_availables_rooms()
   {
-	  loginfo('list_availables_rooms')
     let rooms = [];
 
     this.games.forEach((g) => {
       if (g.is_available())
       {
-        rooms.push(g.name);
+        rooms.push(g.room);
       }
-	});
-	// rooms.push('testRoom', 'testRoom 2')
+  	});
     return rooms;
   }
 

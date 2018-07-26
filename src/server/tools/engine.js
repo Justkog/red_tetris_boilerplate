@@ -1,72 +1,24 @@
 import * as constants from './constants';
-import { loginfo } from './logs';
+import { game_creation, game_join, game_start, game_creation_solo, player_end } from './engine/game';
+import { next_tetri } from './engine/tetri';
+import { board_update, user_line_delete } from './engine/board';
+import { login, logout } from './engine/connection';
 
 export const initEngine = (io, supervisor) => {
   io.on('connection', function (socket) {
-    loginfo("Socket connected: " + socket.id);
+    login(socket, supervisor);
+    logout(socket, supervisor);
 
-    supervisor.add_player(socket.id);
-    socket.emit(constants.ROOMS_LIST_SHOW, { rooms: supervisor.list_availables_rooms() });
+    game_creation(socket, supervisor);
+    game_creation_solo(socket, supervisor);
+    game_start(socket, supervisor);
+    game_join(socket, supervisor);
 
-    socket.on(constants.GAME_CREATION, function (data) {
-      let player = supervisor.find_player(socket.id);
-      player.set_name(data.userName);
+    next_tetri(socket, supervisor);
 
-      let game = supervisor.add_game(data.roomName, player, data.tetriNumber);
-      socket.join(data.roomName);
+    board_update(socket, supervisor);
+    user_line_delete(socket, supervisor);
 
-      socket.emit(constants.ROOM_SHOW, { roomName: game.room, users: game.playersNames() } );
-    });
-
-    socket.on(constants.GAME_START, function (data) {
-      let player = supervisor.find_player(socket.id);
-      let game = player.game;
-
-      game.is_running = true;
-      const game_data = { boards: game.playersBoards(), tetris: game.allTetris() };
-      supervisor.send_data_to_room(game.room, constants.GAME_START, game_data)
-    });
-
-    socket.on(constants.NEXT_TETRI, function () {
-      let player = supervisor.find_player(socket.id);
-      let game = player.game;
-
-      player.update_piece_index();
-      const index = player.piece_index * game.tetri_number;
-
-      if (index >= game.pieces.length )
-          game.addPieces();
-
-      socket.emit(constants.NEXT_TETRI, { tetris: game.nextTetris(index) });
-    });
-
-    socket.on(constants.BOARD_UPDATE, function (data) {
-      let player = supervisor.find_player(socket.id);
-      let game = player.game;
-
-      player.board = data.board;
-
-      game.playersWithoutOne(player).forEach((p) => {
-        socket.broadcast.to(p.socket_id).emit(constants.SPECTRUM_UPDATE, { user: player.name, board: player.board });
-      });
-    });
-
-    socket.on(constants.USER_LINE_DELETE, function (data) {
-      let player = supervisor.find_player(socket.id);
-      let game = player.game;
-
-      player.board = data.board;
-      player.update_score(data.linesNumber);
-
-      supervisor.send_data_to_room(game.room, constants.UPDATE_SCORE, { scores: game.playersScores() });
-
-      if (game.players.length == 1 || data.linesNumber <= 1)
-        return;
-
-      game.playersWithoutOne(player).forEach(p => {
-        socket.broadcast.to(p.socket_id).emit(constants.INDESTRUCTIBLE_LINE_ADD, { linesNumber: data.linesNumber - 1 });
-      });
-    });
-
+    player_end(socket, supervisor);
   })
 }

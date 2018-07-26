@@ -2,7 +2,7 @@ import Piece from './Piece';
 
 export default class Game
 {
-  constructor(room, player, tetri_number, supervisor)
+  constructor(room, player, tetri_number, is_solo, supervisor)
   {
     this.room = room;
     this.tetri_number = tetri_number;
@@ -10,12 +10,20 @@ export default class Game
     this.players = [player];
     this.pieces = [];
     this.is_running = false;
+    this.is_solo = is_solo;
     player.game = this;
   }
 
   is_available()
   {
-    return !this.is_running;
+    return !this.is_running && !this.is_solo;
+  }
+
+  all_players_finished()
+  {
+    let names = this.players.filter(player => { return !player.game_finished } );
+
+    return names.length == 0;
   }
 
   addPlayer(player)
@@ -35,7 +43,7 @@ export default class Game
     let names = [];
 
     this.players.forEach(player => {
-      names.push(player.name);
+      names.push({ name: player.name, is_master: player.is_master });
     });
 
     return names;
@@ -82,13 +90,24 @@ export default class Game
 
     return scores;
   }
+  
+  playersInfos()
+  {
+    let infos = {};
 
-  removePlayer(player)
+    this.players.forEach(player => {
+      infos[player.name] = {score: player.score, board: player.board};
+    });
+
+    return infos;
+  }
+
+  remove_player(player)
   {
     player.game = null;
     this.players.forEach((p, index) =>
     {
-      if (p.name == player.name)
+      if (p.socket_id === player.socket_id)
       {
         this.players.splice(index, 1);
         if (player.is_master)

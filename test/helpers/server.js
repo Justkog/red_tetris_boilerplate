@@ -1,9 +1,12 @@
 import * as server from '../../src/server/index'
+import Supervisor from '../../src/server/classes/Supervisor';
 import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 
 export const startServer = (params, cb) => {
-  server.create(params)
+  let supervisor = new Supervisor();
+
+  server.create(params, supervisor)
     .then( server => cb(null, server) )
     .catch( err => cb(err) )
 }
@@ -35,8 +38,9 @@ const myMiddleware = (types={}) => {
 }
 
 const socketIoMiddleWare = socket => ({dispatch, getState}) => {
-  if(socket) socket.on('action', dispatch)
+  if(socket) socket.on('game_creation', dispatch)
   return next => action => {
+    console.log('action: ', action);
     if(socket && action.type && action.type.indexOf('server/') === 0) socket.emit('action', action)
     return next(action)
   }

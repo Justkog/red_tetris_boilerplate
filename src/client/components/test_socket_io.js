@@ -1,4 +1,4 @@
-import { UPDATE_SCORE, USER_LINE_DELETE, INDESTRUCTIBLE_LINE_ADD, ROOMS_LIST_SHOW, GAME_CREATION, ROOM_SHOW, GAME_START, NEXT_TETRI, BOARD_UPDATE, emptyBoardN } from '../../server/tools/constants';
+import { GAME_CREATION_SOLO, PLAYER_END, GAME_ERROR, PLAYER_ERROR, UPDATE_SCORE, USER_LINE_DELETE, INDESTRUCTIBLE_LINE_ADD, ROOMS_LIST_SHOW, GAME_CREATION, ROOM_UPDATE, GAME_START, NEXT_TETRI, BOARD_UPDATE, emptyBoardN} from '../../server/tools/constants';
 
 export function test_socket_io(socket)
 {
@@ -6,10 +6,11 @@ export function test_socket_io(socket)
     console.log('Listening ROOMS_LIST_SHOW: ', data);
     // je creais direct pour tester la route
     socket.emit(GAME_CREATION, { roomName: 'room', userName: 'name', tetriNumber: 15 });
+    // socket.emit(GAME_CREATION_SOLO, { userName: 'name', tetriNumber: 15 });
   });
 
-  socket.on(ROOM_SHOW, (data) => {
-    console.log('Listening ROOM_SHOW: ', data);
+  socket.on(ROOM_UPDATE, (data) => {
+    console.log('Listening ROOM_UPDATE: ', data);
     // je creais direct pour tester la route
     socket.emit(GAME_START, { roomName: 'room' });
   });
@@ -42,4 +43,18 @@ export function test_socket_io(socket)
   socket.on(UPDATE_SCORE, (data) => {
     console.log('Listening UPDATE_SCORE: ', data);
   });
+
+  socket.on(PLAYER_ERROR, (data) => {
+    console.log('Listening PLAYER_ERROR: ', data);
+  });
+
+  socket.on(GAME_ERROR, (data) => {
+    console.log('Listening GAME_ERROR: ', data);
+  });
+
+  socket.on(PLAYER_END, (data) => {
+    // if data.game_finished == true ; the game has been erased
+    console.log('Listening PLAYER_END: ', data);
+  });
+
 }

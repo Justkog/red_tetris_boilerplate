@@ -9,11 +9,13 @@
     "client-dev": "webpack-dev-server --colors --hot --inline --host 0.0.0.0 --port 8080",
     "srv-dev": "DEBUG=tetris:* babel-watch -L -w src src/server/main.js",
     "srv-dist": "DEBUG=tetris:* babel src --out-dir dist",
-    "test": "mocha --require babel-core/register --reporter spec",
+    "test": "mocha --require ignore-styles --require babel-core/register --reporter spec",
     "coverage": "NODE_ENV=test nyc --include src --all -r text -r lcov -r text --require babel-core/register mocha "
   },
   "dependencies": {
     "bootstrap": "^4.1.2",
+    "chai-things": "^0.2.0",
+    "expect": "^23.4.0",
     "ramda": "^0.25.0",
     "react": "^15.0.2",
     "react-dom": "^15.0.2",
@@ -39,17 +41,18 @@
     "chai": "^3.5.0",
     "chai-as-promised": "^5.3.0",
     "chai-equal-jsx": "^1.0.9",
+    "css-loader": "^1.0.0",
     "eslint": "^2.13.1",
     "eslint-plugin-babel": "^3.3.0",
     "eslint-plugin-react": "^5.2.2",
+    "ignore-styles": "^5.0.1",
     "mocha": "^2.4.5",
     "nyc": "^6.4.4",
+    "style-loader": "^0.21.0",
     "webpack": "^1.13.0",
     "webpack-dev-middleware": "^1.6.1",
     "webpack-dev-server": "^1.14.1",
-    "webpack-hot-middleware": "^2.10.0",
-    "style-loader": "^0.21.0",
-    "css-loader": "^1.0.0"
+    "webpack-hot-middleware": "^2.10.0"
   },
   "nyc": {
     "exclude": [
