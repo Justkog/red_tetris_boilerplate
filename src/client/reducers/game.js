@@ -1,4 +1,4 @@
-import { START_GAME, LOOP_UPDATE, STOP_GAME, REGISTER_LOOP_INTERVAL_ID, GAME_INIT, KEY_DOWN_UNSUBSCRIBE_REGISTER, HEAD_TETRI_REMOVE } from '../actions/game'
+import { START_GAME, LOOP_UPDATE, STOP_GAME, REGISTER_LOOP_INTERVAL_ID, GAME_INIT, KEY_DOWN_UNSUBSCRIBE_REGISTER, HEAD_TETRI_REMOVE, TETRIS_UPDATE } from '../actions/game'
 import { KEY_DOWN } from '../actions/key'
 import * as R from 'ramda'
 
@@ -34,6 +34,10 @@ export default (state = {started: false, loopIntervalID: 0}, action) => {
 		case HEAD_TETRI_REMOVE:
 			return R.evolve(R.__, state)({
 				tetris: R.tail
+			})
+		case TETRIS_UPDATE:
+			return R.evolve(R.__, state) ({
+				tetris: R.concat(R.__, action.tetris)
 			})
 		default:
 			return state

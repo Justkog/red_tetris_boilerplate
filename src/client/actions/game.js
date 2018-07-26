@@ -1,6 +1,6 @@
 import * as R from 'ramda'
 import { moveDownTetrimino, attemptMoveDownTetrimino, sealTetrimino, addTetrimino } from './tetrimino';
-import { GAME_START } from '../../server/tools/constants';
+import { GAME_START, NEXT_TETRI_REQUEST, NEXT_TETRI } from '../../server/tools/constants';
 import { getSocket } from './socket';
 import { listenToWindowEvent, keyDownDispatcher } from './key';
 import { resetBoard } from './board';
@@ -9,6 +9,7 @@ export const START_GAME = 'START_GAME'
 export const GAME_INIT = 'GAME_INIT'
 export const STOP_GAME = 'STOP_GAME'
 export const LOOP_UPDATE = 'LOOP_UPDATE'
+export const TETRIS_UPDATE = 'TETRIS_UPDATE'
 export const REGISTER_LOOP_INTERVAL_ID = 'REGISTER_LOOP_INTERVAL_ID'
 export const GAME_START_REQUEST = 'GAME_START_REQUEST'
 export const KEY_DOWN_UNSUBSCRIBE_REGISTER = 'KEY_DOWN_UNSUBSCRIBE_REGISTER'
@@ -89,6 +90,8 @@ export const pullHeadTetri = () => {
 	return (dispatch, getState) => {
 		const headTetri = R.head(getGameTetris(getState()))
 		dispatch(removeHeadTetri())
+		if (R.length(getGameTetris(getState())) < 5)
+			dispatch(requestNextTetrisAsync())
 		return headTetri
 	}
 }
@@ -98,6 +101,31 @@ export const pullAndAddTetri = () => {
 		const newTetri = dispatch(pullHeadTetri())
 		dispatch(addTetrimino(newTetri))
 	}
+}
+
+export const requestNextTetri = () => ({
+	type: NEXT_TETRI_REQUEST,
+})
+
+export const tetrisUpdate = ({tetris}) => ({
+	type: TETRIS_UPDATE,
+	tetris: tetris,
+})
+
+export const requestNextTetrisAsync = (roomName) => {
+	return (dispatch, getState) => {
+		getSocket(getState()).emit(NEXT_TETRI, {})
+		dispatch(requestNextTetri())
+	}
+}
+
+export const registerNextTetri = (socket, dispatch, getState) => {
+	console.log('registerNextTetri')
+	socket.off(NEXT_TETRI)
+	socket.on(NEXT_TETRI, (data) => {
+		console.log('Listening NEXT_TETRI: ', data);
+		dispatch(tetrisUpdate(data))
+	})
 }
 
 export const registerGameStart = (socket, dispatch, getState) => {
