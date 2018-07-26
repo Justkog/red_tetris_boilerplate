@@ -81,7 +81,7 @@ export const initGame = ({ boards, tetris}) => ({
 	tetris: tetris,
 })
 
-export const removeHeadTetri = () => ({
+const removeHeadTetri = () => ({
 	type: HEAD_TETRI_REMOVE,
 })
 
@@ -93,6 +93,13 @@ export const pullHeadTetri = () => {
 	}
 }
 
+export const pullAndAddTetri = () => {
+	return (dispatch, getState) => {
+		const newTetri = dispatch(pullHeadTetri())
+		dispatch(addTetrimino(newTetri))
+	}
+}
+
 export const registerGameStart = (socket, dispatch, getState) => {
 	console.log('registerGameStart')
 	socket.off(GAME_START)
@@ -101,8 +108,7 @@ export const registerGameStart = (socket, dispatch, getState) => {
 		dispatch(sealTetrimino())
 		dispatch(resetBoard())
 		dispatch(initGame(data))
-		const newTetri = dispatch(pullHeadTetri())
-		dispatch(addTetrimino(newTetri))
+		dispatch(pullAndAddTetri())
 		dispatch(startGame())
 		// const unlistenkeyDown = dispatch(listenToWindowEvent('keydown', keyDownDispatcher))
 		// dispatch(registerKeyDownUnsubscriber(unlistenkeyDown))

@@ -4,7 +4,7 @@ import { getActiveTetrimino, getBoard } from "../middleware/boardManager"
 import { verticallyMove, horizontallyMove, rotate } from "../reducers/tetrimino"
 import { updateBoardState, isValidBoard, bordersMask } from "../reducers/board"
 import { checkLines } from './board';
-import { getGameTetris, pullHeadTetri } from './game';
+import { getGameTetris, pullHeadTetri, pullAndAddTetri } from './game';
 
 export const TETRIMINO_ADD = 'TETRIMINO_ADD'
 export const TETRIMINO_SEAL = 'TETRIMINO_SEAL'
@@ -96,7 +96,6 @@ export const sealAndRenew = () => {
 	return (dispatch, getState) => {
 		dispatch(sealTetrimino())
 		dispatch(checkLines())
-		const newTetri = dispatch(pullHeadTetri())
-		dispatch(addTetrimino(newTetri))
+		dispatch(pullAndAddTetri())
 	}
 }
