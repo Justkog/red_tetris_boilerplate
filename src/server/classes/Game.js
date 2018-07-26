@@ -101,7 +101,7 @@ export default class Game
     return infos;
   }
 
-  removePlayer(player)
+  remove_player(player)
   {
     player.game = null;
     this.players.forEach((p, index) =>

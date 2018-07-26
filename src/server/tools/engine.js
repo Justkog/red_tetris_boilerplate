@@ -21,5 +21,19 @@ export const initEngine = (io, supervisor) => {
     user_line_delete(socket, supervisor);
 
     player_end(socket, supervisor);
+
+    socket.on('disconnect', function () {
+      loginfo('User disconnected');
+      let player = supervisor.find_player(socket.id);
+      let game = player.game;
+
+      if (game)
+      {
+        game.remove_player(player);
+        if (game.players.length == 0)
+          supervisor.remove_game(game);
+      }
+      supervisor.remove_player(player);
+    });
   })
 }

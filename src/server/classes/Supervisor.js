@@ -91,10 +91,10 @@ export default class Supervisor
 
   remove_game(game)
   {
-    let room = game.room();
+    let room = game.room;
 
     this.games.forEach((g, index) => {
-      if (g.room() === room) {
+      if (g.room === room) {
         this.games.splice(index, 1);
         return;
       }
