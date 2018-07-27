@@ -1,8 +1,11 @@
 import * as R from 'ramda'
 import { KEY_DOWN } from '../actions/key'
 import { LOOP_UPDATE } from '../actions/game'
-import { TETRIMINO_ADD, TETRIMINO_REMOVE, TETRIMINO_SEAL, TETRIMINO_MOVE_RIGHT, TETRIMINO_MOVE_LEFT, TETRIMINO_MOVE_DOWN, TETRIMINO_ROTATE } from '../actions/tetrimino';
+import { TETRIMINO_ADD, TETRIMINO_REMOVE, TETRIMINO_SEAL, TETRIMINO_MOVE_RIGHT, TETRIMINO_MOVE_LEFT, TETRIMINO_MOVE_DOWN, TETRIMINO_ROTATE, TETRIMINO_MOVE_UP } from '../actions/tetrimino';
 import { updateBoardState, isValidBoard, bordersMask } from './board';
+import { INDESTRUCTIBLE_LINES_ADD } from '../../server/tools/constants';
+
+export const tetriStartPosition = () => ({x: 5, y: 0})
 
 const clampH = R.curry(R.clamp)(1, 10)
 const clampV = R.curry(R.clamp)(0, 23)
@@ -36,12 +39,12 @@ export const rotate = (state, angle) => {
 	})
 }
 
-const addNewTetri = (state, {position, orientation, formType}) => {
+const addNewTetri = (state, {position, orientation, formType, id}) => {
 	return R.merge(R.__, state)({
-		position: position ? position : {x: 5, y: 0},
+		position: position ? position : tetriStartPosition(),
 		orientation: orientation ? orientation : 0,
 		formType: formType,
-		id: state.id ? state.id + 1 : 1,
+		id: id,
 	})
 }
 
@@ -67,6 +70,8 @@ export default (state = {}, action, board) => {
 			return horizontallyMove(state, 1)
 		case TETRIMINO_MOVE_DOWN:
 			return verticallyMove(state, 1)
+		case TETRIMINO_MOVE_UP:
+			return verticallyMove(state, -1)
 		case TETRIMINO_ROTATE:
 			return rotate(state, 90)
 		default:

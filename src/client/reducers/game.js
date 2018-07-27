@@ -1,6 +1,7 @@
 import { START_GAME, LOOP_UPDATE, STOP_GAME, REGISTER_LOOP_INTERVAL_ID, GAME_INIT, KEY_DOWN_UNSUBSCRIBE_REGISTER, HEAD_TETRI_REMOVE, TETRIS_UPDATE } from '../actions/game'
 import { KEY_DOWN } from '../actions/key'
 import * as R from 'ramda'
+import { TETRIMINO_ADD } from '../actions/tetrimino';
 
 const handleKey = (state, key) => {
 	switch (key) {
@@ -13,7 +14,7 @@ const handleKey = (state, key) => {
 	}
 }
 
-export default (state = {started: false, loopIntervalID: 0}, action) => {
+export default (state = {started: false, loopIntervalID: 0, lastTetriID: 1}, action) => {
 	switch (action.type) {
 		case START_GAME:
 			return R.evolve(R.__, state)({
@@ -38,6 +39,10 @@ export default (state = {started: false, loopIntervalID: 0}, action) => {
 		case TETRIS_UPDATE:
 			return R.evolve(R.__, state) ({
 				tetris: R.concat(R.__, action.tetris)
+			})
+		case TETRIMINO_ADD:
+			return R.evolve(R.__, state) ({
+				lastTetriID: R.inc
 			})
 		default:
 			return state

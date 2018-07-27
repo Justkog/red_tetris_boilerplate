@@ -72,7 +72,6 @@ const Row = (props) => {
 export const Board = ({activeTetrimino, board}) => {
 
 	const boardToDraw = printableBoard(board, invertGrid(bordersMask(board)))
-	// console.dir(boardToDraw)
 
 	const listColumns = (row) => R.addIndex(R.map)((cell, index) =>
 		<Cell key={index.toString()} value={cell}>
@@ -97,7 +96,7 @@ export const Board = ({activeTetrimino, board}) => {
 const mapStateToProps = (state) => {
 	// console.dir('mapStateToProps')
 	return {
-		activeTetrimino: state.activeTetrimino,
+		// activeTetrimino: state.activeTetrimino,
 		board: state.board,
 	}
 }

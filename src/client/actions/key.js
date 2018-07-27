@@ -50,7 +50,7 @@ export const keyDownDispatcher = (e) => {
 			case ' ':
 				return dispatch(attemptMoveDownTetrimino())
 			case 'i':
-				return dispatch(addIndestructibleLines(1))
+				return dispatch(addIndestructibleLines({linesNumber: Math.floor(Math.random() * Math.floor(3)) + 1}))
 			default:
 				return
 		}
