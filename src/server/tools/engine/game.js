@@ -63,10 +63,20 @@ export function game_join(socket, supervisor)
     let game = supervisor.find_game(data.roomName);
   
     if (!game)
+    {
+      if (!supervisor.game_name_available(data.roomName))
+      {
+        socket.emit(constants.GAME_ERROR, { message: 'name already taken' });
+        return;
+      }
       game = supervisor.add_game(data.roomName, player, data.tetriNumber, false);
+    }
 
     if (!game.is_available())
+    {
+      socket.emit(constants.GAME_ERROR, { message: 'game already started' });
       return;
+    }
   
     socket.join(data.roomName);
     socket.emit(constants.ROOM_UPDATE, { roomName: game.room, users: game.playersNames() });
