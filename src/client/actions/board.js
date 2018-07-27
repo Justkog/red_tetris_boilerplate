@@ -1,7 +1,10 @@
 import { visualBoard, topLogicLinesCount } from "../components/board/board";
-import { getBoard } from "../middleware/boardManager";
+import { getBoard, getActiveTetrimino } from "../middleware/boardManager";
 import * as R from 'ramda'
 import { INDESTRUCTIBLE_LINES_ADD } from "../../server/tools/constants";
+import { isValidBoard, bordersMask } from "../reducers/board";
+import { moveUpTetrimino } from "./tetrimino";
+import { tetriStartPosition } from "../reducers/tetrimino";
 
 export const BOARD_UPDATE = 'BOARD_UPDATE'
 export const BOARD_RESET = 'BOARD_RESET'
@@ -29,18 +32,26 @@ export const resetBoard = () => {
 }
 
 export const addIndestructibleLines = ({linesNumber}) => {
-	return {
-		type: INDESTRUCTIBLE_LINES_ADD,
-		count: linesNumber,
+	return (dispatch, getState) => {
+		dispatch({
+			type: INDESTRUCTIBLE_LINES_ADD,
+			count: linesNumber,
+			activeTetri: getActiveTetrimino(getState())
+		})
+		while (!isValidBoard(getBoard(getState()), bordersMask(getBoard(getState()))) && getActiveTetrimino(getState()).position.y >= tetriStartPosition().y) {
+			dispatch(moveUpTetrimino())
+		}
 	}
 }
 
-const isTetri = (cell) => {
-	return R.compose(R.gt(R.__, 0), R.length)(cell)
+const isDestructibleBlock = R.propEq('destructible', true)
+
+const containsDestructibleTetri = (cell) => {
+	return R.and(R.all(isDestructibleBlock)(cell), R.compose(R.gt(R.__, 0), R.length)(cell))
 }
 
 const isComplete = (line) => {
-	return R.all(isTetri)(line)
+	return R.all(containsDestructibleTetri)(line)
 }
 
 const getCompletedLines = (board) => {

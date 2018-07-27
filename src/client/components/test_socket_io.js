@@ -1,4 +1,4 @@
-import { GAME_CREATION_SOLO, PLAYER_END, GAME_ERROR, PLAYER_ERROR, UPDATE_SCORE, USER_LINE_DELETE, INDESTRUCTIBLE_LINES_ADD, ROOMS_LIST_SHOW, GAME_CREATION, ROOM_UPDATE, GAME_START, NEXT_TETRI, BOARD_UPDATE, emptyBoardN} from '../../server/tools/constants';
+import { GAME_CREATION_SOLO, PLAYER_END, GAME_ERROR, PLAYER_ERROR, UPDATE_SCORE, USER_LINE_DELETE, INDESTRUCTIBLE_LINES_ADD, ROOMS_LIST_SHOW, GAME_CREATION, ROOM_UPDATE, GAME_START, NEXT_TETRI, BOARD_UPDATE, BoardN} from '../../server/tools/constants';
 
 export function test_socket_io(socket)
 {
@@ -28,7 +28,7 @@ export function test_socket_io(socket)
   socket.on(NEXT_TETRI, (data) => {
     console.log('Listening NEXT_TETRI: ', data);
     // je creais direct pour tester la route
-    socket.emit(BOARD_UPDATE, { board: emptyBoardN(20, 19) });
+    socket.emit(BOARD_UPDATE, { board: BoardN(20, 19) });
   });
 
   socket.on(BOARD_UPDATE, (data) => {

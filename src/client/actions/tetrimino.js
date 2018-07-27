@@ -10,15 +10,17 @@ export const TETRIMINO_ADD = 'TETRIMINO_ADD'
 export const TETRIMINO_SEAL = 'TETRIMINO_SEAL'
 export const TETRIMINO_REMOVE = 'TETRIMINO_REMOVE'
 export const TETRIMINO_MOVE_DOWN = 'TETRIMINO_MOVE_DOWN'
+export const TETRIMINO_MOVE_UP = 'TETRIMINO_MOVE_UP'
 export const TETRIMINO_MOVE_LEFT = 'TETRIMINO_MOVE_LEFT'
 export const TETRIMINO_MOVE_RIGHT = 'TETRIMINO_MOVE_RIGHT'
 export const TETRIMINO_ROTATE = 'TETRIMINO_ROTATE'
 
-export const addTetrimino = ({identifier, rotation}) => {
+export const addTetrimino = ({identifier, rotation}, id) => {
 	return {
 		type: TETRIMINO_ADD,
 		formType: identifier,
 		orientation: rotation,
+		id: id,
 	}
 }
 
@@ -37,6 +39,12 @@ export const removeTetrimino = () => {
 export const moveDownTetrimino = () => {
 	return {
 		type: TETRIMINO_MOVE_DOWN,
+	}
+}
+
+export const moveUpTetrimino = () => {
+	return {
+		type: TETRIMINO_MOVE_UP,
 	}
 }
 

@@ -19,6 +19,7 @@ const getLoopIntervalID = R.path(['game', 'loopIntervalID'])
 const getKeydownUnsubscribe = R.path(['game', 'keydownUnsubscribe'])
 const getGameStarted = R.path(['game', 'started'])
 export const getGameTetris = R.path(['game', 'tetris'])
+export const getGame = R.path(['game'])
 
 export const startGameLoop = () => {
 	return (dispatch, getState) => {
@@ -99,7 +100,8 @@ export const pullHeadTetri = () => {
 export const pullAndAddTetri = () => {
 	return (dispatch, getState) => {
 		const newTetri = dispatch(pullHeadTetri())
-		dispatch(addTetrimino(newTetri))
+		const id = getGame(getState()).lastTetriID;
+		dispatch(addTetrimino(newTetri, id))
 	}
 }
 

@@ -6,8 +6,11 @@ import { INDESTRUCTIBLE_LINES_ADD } from "../../server/tools/constants";
 // const emptyRow = () => R.map((n) => 0, R.unfold((n) => n > 9 ? false : [n, n+1], 0))
 // const emptyBoard = () => R.map((n) => emptyRow(), R.unfold((n) => n > 19 ? false : [n, n+1], 0))
 
-const emptyRowN = (columns, cellContent) => R.map((n) => cellContent, R.unfold((n) => n > columns - 1 ? false : [n, n+1], 0))
-const emptyBoardN = (rows, columns, cellContent) => R.map((n) => emptyRowN(columns, cellContent), R.unfold((n) => n > rows - 1 ? false : [n, n+1], 0))
+const emptyCell = () => []
+const indestructibleBlock = () => ({destructible: false, color: 'var(--gray)', id: -1})
+
+export const RowN = (columns, cellContent) => R.map((n) => cellContent, R.unfold((n) => n > columns - 1 ? false : [n, n+1], 0))
+export const BoardN = (rows, columns, cellContent) => R.map((n) => RowN(columns, cellContent), R.unfold((n) => n > rows - 1 ? false : [n, n+1], 0))
 
 const forEachIndexed = R.addIndex(R.forEach)
 
@@ -104,7 +107,7 @@ const addTetriInCell = R.curry(updateCell)(
 	R.curry(
 		(stateCell, tetriCell, activeTetri) => {
 			if (tetriCell > 0) {
-				return R.append({destructible: false, id: activeTetri.id, color: tetriTypeToColorFactory(activeTetri.formType)()}, stateCell)
+				return R.append({destructible: true, id: activeTetri.id, color: tetriTypeToColorFactory(activeTetri.formType)()}, stateCell)
 			}
 			return stateCell
 		}
@@ -142,18 +145,35 @@ export const updateBoardState = (state, { prevActiveTetrimino, currentActiveTetr
 
 const deleteBoardLinesState = (state, { lines }) => {
 	R.forEach(R.__, lines) ((lineIndex) => {
-		state = R.prepend(emptyRowN(state[lineIndex].length, []), state)
+		state = R.prepend(RowN(state[lineIndex].length, []), state)
 		state = R.remove(lineIndex + 1, 1, state)
 	})
 	return state
 }
 
-const addIndestructibleLinesState = (state, action) => {
-	
-	return state
+const populateMaskedCells = (row, rowMask, content) => {
+	return R.addIndex(R.map)((cell, index) => {
+		if (rowMask[index] > 0) {
+			return content
+		}
+		return cell
+	})(row)
 }
 
-export default (state = emptyBoardN(25, 12, []), action) => {
+// add line at the bottom
+// push up all other lines
+const addIndestructibleLinesState = (board, {activeTetri, count}) => {
+	if (activeTetri)
+		board = removeTetriInState(board, activeTetri)
+	const bordersMaskedRow = R.last(R.init(bordersMask(board)))
+	const indestructibleRow = populateMaskedCells(RowN(R.length(R.last(R.init(board))), [indestructibleBlock()]), bordersMaskedRow, emptyCell())
+	board = R.insert(R.length(board) - 1, indestructibleRow, board)
+	board = R.tail(board)
+	board = addTetriInState(board, activeTetri)
+	return board
+}
+
+export default (state = BoardN(25, 12, []), action) => {
 	switch (action.type) {
 		case BOARD_UPDATE:
 			if (!action.prevActiveTetrimino.formType && !action.currentActiveTetrimino.formType)
@@ -162,7 +182,7 @@ export default (state = emptyBoardN(25, 12, []), action) => {
 		case LINES_DELETE:
 			return deleteBoardLinesState(state, action)
 		case BOARD_RESET:
-			return emptyBoardN(25, 12, [])
+			return BoardN(25, 12, [])
 		case INDESTRUCTIBLE_LINES_ADD:
 			return addIndestructibleLinesState(state, action)
 		default:
