@@ -165,10 +165,13 @@ const populateMaskedCells = (row, rowMask, content) => {
 const addIndestructibleLinesState = (board, {activeTetri, count}) => {
 	if (activeTetri)
 		board = removeTetriInState(board, activeTetri)
-	const bordersMaskedRow = R.last(R.init(bordersMask(board)))
-	const indestructibleRow = populateMaskedCells(RowN(R.length(R.last(R.init(board))), [indestructibleBlock()]), bordersMaskedRow, emptyCell())
-	board = R.insert(R.length(board) - 1, indestructibleRow, board)
-	board = R.tail(board)
+	while (count > 0) {
+		const bordersMaskedRow = R.last(R.init(bordersMask(board)))
+		const indestructibleRow = populateMaskedCells(RowN(R.length(R.last(R.init(board))), [indestructibleBlock()]), bordersMaskedRow, emptyCell())
+		board = R.insert(R.length(board) - 1, indestructibleRow, board)
+		board = R.tail(board)
+		count--
+	}
 	board = addTetriInState(board, activeTetri)
 	return board
 }
