@@ -63,7 +63,6 @@ ReactDom.render((
 	</Provider>
 ), document.getElementById('tetris'))
 
-store.dispatch(registerSocketEvent(test_socket_io))
 store.dispatch(registerSocketEvent(registerRoomsListShow))
 store.dispatch(registerSocketEvent(registerRoomUpdate))
 store.dispatch(registerSocketEvent(registerGameStart))

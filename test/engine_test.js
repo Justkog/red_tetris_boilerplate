@@ -18,7 +18,6 @@ describe('Fake Engine test', function(){
   beforeEach(() => {
     supervisor = new Supervisor();
     startServer(params_test.server, supervisor, function (err, s) {
-      console.log('server: ', s);
       server = s
     });
     player_one = io('http://0.0.0.0:5000');

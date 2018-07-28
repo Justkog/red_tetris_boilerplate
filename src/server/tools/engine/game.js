@@ -23,7 +23,7 @@ export function game_creation(socket, supervisor)
 
     let game = supervisor.add_game(data.roomName, player, data.tetriNumber, false);
     socket.join(data.roomName);
-    socket.emit(constants.ROOM_UPDATE, { roomName: game.room, users: game.playersNames() });
+    socket.emit(constants.ROOM_UPDATE, { is_solo: game.is_solo, roomName: game.room, users: game.playersNames() });
   });
 }
 
@@ -43,7 +43,7 @@ export function game_creation_solo(socket, supervisor)
     const room = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     let game = supervisor.add_game(room, player, data.tetriNumber, true);
     socket.join(room);
-    socket.emit(constants.ROOM_UPDATE, { roomName: game.room, users: game.playersNames() });
+    socket.emit(constants.ROOM_UPDATE, { is_solo: game.is_solo, roomName: game.room, users: game.playersNames() });
   });
 }
 
@@ -79,7 +79,7 @@ export function game_join(socket, supervisor)
     }
   
     socket.join(data.roomName);
-    socket.emit(constants.ROOM_UPDATE, { roomName: game.room, users: game.playersNames() });
+    socket.emit(constants.ROOM_UPDATE, { is_solo: game.is_solo, roomName: game.room, users: game.playersNames() });
   });
 }
 
