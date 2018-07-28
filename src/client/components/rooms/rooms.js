@@ -8,6 +8,7 @@ import { withRouter } from 'react-router-dom';
 import { setLogin } from '../../actions/user';
 import { joinRoom, joinRoomAsync } from '../../actions/room';
 import { showRoot } from '../../actions/rooms';
+import { restartSocket } from '../../actions/socket';
 
 const Rooms = ({history, rooms, roomName, userName, onSetLogin, onJoinRoom}) => {
 	
@@ -87,7 +88,7 @@ const mapDispatchToProps = (dispatch, state) => {
         },
         onJoinRoom: name => {
 			dispatch(joinRoomAsync(name))
-		},
+		}
 	}
 }
 

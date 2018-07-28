@@ -5,8 +5,9 @@ import { Alert, Container, Form, FormGroup, Label, Col, Input, Jumbotron, Row, B
 import * as R from 'ramda'
 import { withRouter } from 'react-router-dom';
 import { requestGameStartAsync } from '../../actions/game';
+import { restartSocket } from '../../actions/socket';
 
-const Lobby = ({history, roomName, users, login, onStartGame}) => {
+const Lobby = ({history, roomName, users, login, onStartGame, onSocketRestart}) => {
 
 	const admin = R.prop('is_master', R.head(R.filter((user) => user.name == login, users)))
 	
@@ -17,6 +18,7 @@ const Lobby = ({history, roomName, users, login, onStartGame}) => {
 
 	function backToRooms() {
 		history.push('rooms')
+		onSocketRestart()
 	}
 
 	// users = ['Jblondea', 'Flevesq']
@@ -73,9 +75,11 @@ const mapDispatchToProps = dispatch => {
 	return {
 		onStartGame: (roomName) => {
 			dispatch(requestGameStartAsync(roomName))
+		},
+		onSocketRestart: () => {
+			dispatch(restartSocket())
 		}
 	}
 }
-
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Lobby))

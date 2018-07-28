@@ -66,6 +66,21 @@ export const startSocket = () => {
 	}
 }
 
+export const stopSocket = () => {
+	return (dispatch, getState) => {
+		console.log('socket stoped')
+		getSocket(getState()).disconnect()
+	}
+}
+
+export const restartSocket = () => {
+	return (dispatch, getState) => {
+		console.log('socket restarted')
+		dispatch(stopSocket())
+		dispatch(startSocket())
+	}
+}
+
 export const registerSocketEvent = (event) => {
 	return (dispatch, getState) => {
 		const socket = getSocket(getState())
