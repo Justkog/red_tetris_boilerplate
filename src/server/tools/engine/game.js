@@ -116,7 +116,7 @@ export function game_start(socket, supervisor)
 export function player_end(socket, supervisor)
 {
   socket.on(constants.PLAYER_END, function (data) {
-    loginfo(`Listening to ${constants.PLAYER_END}: `, data);
+    loginfo(`Listening to ${constants.PLAYER_END}: `);
     let player = supervisor.find_player(socket.id);
     let game = player.game;
 

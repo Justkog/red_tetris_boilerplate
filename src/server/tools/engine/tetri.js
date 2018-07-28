@@ -4,7 +4,7 @@ import { loginfo } from '../logs';
 export function next_tetri(socket, supervisor)
 {
   socket.on(constants.NEXT_TETRI, function (data) {
-    loginfo(`Listening to ${constants.NEXT_TETRI}: `, data);
+    loginfo(`Listening to ${constants.NEXT_TETRI}: `);
     let player = supervisor.find_player(socket.id);
     let game = player.game;
 

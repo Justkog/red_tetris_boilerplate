@@ -4,7 +4,7 @@ import { loginfo } from '../logs';
 export function board_update(socket, supervisor)
 {
   socket.on(constants.BOARD_UPDATE, function (data) {
-    loginfo(`Listening to ${constants.BOARD_UPDATE}: `, data);
+    loginfo(`Listening to ${constants.BOARD_UPDATE}: `);
     let player = supervisor.find_player(socket.id);
     let game = player.game;
 
@@ -24,7 +24,7 @@ export function board_update(socket, supervisor)
 export function user_line_delete(socket, supervisor)
 {
   socket.on(constants.USER_LINE_DELETE, function (data) {
-    loginfo(`Listening to ${constants.USER_LINE_DELETE}: `, data);
+    loginfo(`Listening to ${constants.USER_LINE_DELETE}: `);
     let player = supervisor.find_player(socket.id);
     let game = player.game;
 
