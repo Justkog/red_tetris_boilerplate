@@ -1,7 +1,7 @@
 import * as R from 'ramda'
 import { KEY_DOWN } from '../actions/key'
 import { LOOP_UPDATE } from '../actions/game'
-import { TETRIMINO_ADD, TETRIMINO_REMOVE, TETRIMINO_SEAL, TETRIMINO_MOVE_RIGHT, TETRIMINO_MOVE_LEFT, TETRIMINO_MOVE_DOWN, TETRIMINO_ROTATE, TETRIMINO_MOVE_UP } from '../actions/tetrimino';
+import { TETRIMINO_ADD, TETRIMINO_REMOVE, TETRIMINO_SEAL, TETRIMINO_MOVE_RIGHT, TETRIMINO_MOVE_LEFT, TETRIMINO_MOVE_DOWN, TETRIMINO_ROTATE, TETRIMINO_MOVE_UP, TETRIMINO_MOVE_FALL } from '../actions/tetrimino';
 import { updateBoardState, isValidBoard, bordersMask } from './board';
 import { INDESTRUCTIBLE_LINES_ADD } from '../../server/tools/constants';
 
@@ -14,6 +14,19 @@ const addClampH = R.compose(clampH, R.add)
 // not needed anymore (kept as extra protection)
 const addClampHTransformation = (direction) => R.curry(addClampH)(direction)
 const addClampVTransformation = (direction) => R.curry(R.compose(clampV, R.add))(direction)
+
+export const tetriShadow = (tetri, board) => {
+	let lastValidTetri = tetri
+	while (isValidBoard(board, bordersMask(board))) {
+		lastValidTetri = tetri
+		const nextTetri = verticallyMove(tetri, 1)
+		board = updateBoardState(board, {prevActiveTetrimino: tetri, currentActiveTetrimino: nextTetri})
+		tetri = nextTetri
+	}
+	return R.evolve(R.__, lastValidTetri)({
+		position: {y: () => lastValidTetri.position.y}
+	})
+}
 
 export const horizontallyMove = (state, direction) => {
 	return R.evolve(R.__, state)({
@@ -72,6 +85,8 @@ export default (state = {}, action, board) => {
 			return verticallyMove(state, 1)
 		case TETRIMINO_MOVE_UP:
 			return verticallyMove(state, -1)
+		case TETRIMINO_MOVE_FALL:
+			return verticallyMove(state, action.distance)
 		case TETRIMINO_ROTATE:
 			return rotate(state, 90)
 		default:

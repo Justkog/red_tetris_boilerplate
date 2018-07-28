@@ -1,7 +1,7 @@
 import * as R from 'ramda'
 import { Tetri } from "../components/tetrimino/tetrimino"
 import { getActiveTetrimino, getBoard } from "../middleware/boardManager"
-import { verticallyMove, horizontallyMove, rotate } from "../reducers/tetrimino"
+import { verticallyMove, horizontallyMove, rotate, tetriShadow } from "../reducers/tetrimino"
 import { updateBoardState, isValidBoard, bordersMask } from "../reducers/board"
 import { checkLines } from './board';
 import { getGameTetris, pullHeadTetri, pullAndAddTetri } from './game';
@@ -10,6 +10,7 @@ export const TETRIMINO_ADD = 'TETRIMINO_ADD'
 export const TETRIMINO_SEAL = 'TETRIMINO_SEAL'
 export const TETRIMINO_REMOVE = 'TETRIMINO_REMOVE'
 export const TETRIMINO_MOVE_DOWN = 'TETRIMINO_MOVE_DOWN'
+export const TETRIMINO_MOVE_FALL = 'TETRIMINO_MOVE_FALL'
 export const TETRIMINO_MOVE_UP = 'TETRIMINO_MOVE_UP'
 export const TETRIMINO_MOVE_LEFT = 'TETRIMINO_MOVE_LEFT'
 export const TETRIMINO_MOVE_RIGHT = 'TETRIMINO_MOVE_RIGHT'
@@ -42,6 +43,13 @@ export const moveDownTetrimino = () => {
 	}
 }
 
+export const moveFallTetrimino = (distance) => {
+	return {
+		type: TETRIMINO_MOVE_FALL,
+		distance: distance,
+	}
+}
+
 export const moveUpTetrimino = () => {
 	return {
 		type: TETRIMINO_MOVE_UP,
@@ -65,6 +73,17 @@ const checkBoardBeforeMove = (dispatch, getState, move, successAction, failureAc
 }
 
 const attemptMoveTetrimino = (move, successAction, failureAction) => R.curry(checkBoardBeforeMove)(R.__, R.__, move, successAction, failureAction)
+
+export const attemptMoveFallTetrimino = () => {
+	return (dispatch, getState) => {
+		const currentActiveTetrimino = getActiveTetrimino(getState())
+		const shadow = tetriShadow(currentActiveTetrimino, getBoard(getState()))
+		const distance = shadow.position.y - currentActiveTetrimino.position.y
+		if (distance > 0)
+			dispatch(moveFallTetrimino(distance))
+		dispatch(sealAndRenew())
+	}
+}
 
 export const attemptMoveDownTetrimino = () => {
 	return attemptMoveTetrimino(tetriDownMove, moveDownTetrimino(), sealAndRenew())

@@ -1,5 +1,5 @@
 import * as R from 'ramda'
-import { moveLeftTetrimino, moveRightTetrimino, moveDownTetrimino, rotateTetrimino, attemptMoveDownTetrimino, attemptMoveRightTetrimino, attemptMoveLeftTetrimino, attemptRotateTetrimino } from './tetrimino';
+import { moveLeftTetrimino, moveRightTetrimino, moveDownTetrimino, rotateTetrimino, attemptMoveDownTetrimino, attemptMoveRightTetrimino, attemptMoveLeftTetrimino, attemptRotateTetrimino, attemptMoveFallTetrimino } from './tetrimino';
 import { addIndestructibleLines } from './board';
 
 export const KEY_DOWN = 'KEY_DOWN';
@@ -48,7 +48,7 @@ export const keyDownDispatcher = (e) => {
 			case 'ArrowUp':
 				return dispatch(attemptRotateTetrimino())
 			case ' ':
-				return dispatch(attemptMoveDownTetrimino())
+				return dispatch(attemptMoveFallTetrimino())
 			case 'i':
 				return dispatch(addIndestructibleLines({linesNumber: Math.floor(Math.random() * Math.floor(3)) + 1}))
 			default:
