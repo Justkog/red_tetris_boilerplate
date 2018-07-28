@@ -2,6 +2,7 @@ import { START_GAME, LOOP_UPDATE, STOP_GAME, REGISTER_LOOP_INTERVAL_ID, GAME_INI
 import { KEY_DOWN } from '../actions/key'
 import * as R from 'ramda'
 import { TETRIMINO_ADD } from '../actions/tetrimino';
+import { UPDATE_SCORE } from '../../server/tools/constants';
 
 const handleKey = (state, key) => {
 	switch (key) {
@@ -23,7 +24,9 @@ export default (state = {started: false, paused: false, loopIntervalID: 0, lastT
 		case STOP_GAME:
 			return R.evolve(R.__, state)({
 				started: R.F
-			})
+      })
+    case UPDATE_SCORE:
+      return Object.assign({}, state, { scores: action.scores })
 		case PAUSE_GAME:
 			return R.evolve(R.__, state)({
 				paused: R.T

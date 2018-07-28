@@ -102,7 +102,7 @@ export function game_start(socket, supervisor)
       socket.emit(constants.PLAYER_ERROR, { message: 'player is not master' });
       return;
     }
-  
+    supervisor.send_data_to_room(game.room, constants.UPDATE_SCORE, { scores: game.playersScores() });
     game.is_running = true;
     const game_data = { boards: game.playersBoards(), tetris: game.allTetris() };
     supervisor.send_data_to_room(game.room, constants.GAME_START, game_data)
