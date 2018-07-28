@@ -90,8 +90,18 @@ export function game_start(socket, supervisor)
     let player = supervisor.find_player(socket.id);
     let game = player.game;
   
-    if (!player.is_master)
+    if (!game.is_available())
+    {
+      socket.emit(constants.GAME_ERROR, { message: 'game already started' });
+      // to fill 
       return;
+    }
+
+    if (!player.is_master)
+    {
+      socket.emit(constants.PLAYER_ERROR, { message: 'player is not master' });
+      return;
+    }
   
     game.is_running = true;
     const game_data = { boards: game.playersBoards(), tetris: game.allTetris() };

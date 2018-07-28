@@ -3,11 +3,9 @@ import Supervisor from '../../src/server/classes/Supervisor';
 import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 
-export const startServer = (params, cb) => {
-  let supervisor = new Supervisor();
-
+export const startServer = (params, supervisor, cb) => {
   server.create(params, supervisor)
-    .then( server => cb(null, server) )
+    .then( s => cb(null, s) )
     .catch( err => cb(err) )
 }
 
