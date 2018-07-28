@@ -22,13 +22,13 @@ export const updateRoom = ({ roomName, users }) => {
 
 export const joinRoomAsync = (name) => {
 	return (dispatch, getState) => {
-        getSocket(getState()).emit(GAME_JOIN, {userName: getUser(getState()).login, roomName: name, tetriNumber: 10})
+    getSocket(getState()).emit(GAME_JOIN, {userName: getUser(getState()).login, roomName: name, tetriNumber: 10})
 		dispatch(joinRoom(name))
 	}
 }
 
 export const registerRoomUpdate = (socket, dispatch, getState) => {
-	console.log('registerRoomsListShow')
+	console.log('registerRoomUpdate')
 	socket.off(ROOM_UPDATE)
 	socket.on(ROOM_UPDATE, (data) => {
 		console.log('Listening ROOM_UPDATE: ', data);
