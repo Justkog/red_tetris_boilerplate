@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Row, Col } from 'reactstrap'
-import * as R from 'ramda'
+import { Row } from 'reactstrap'
 
 const Score = ({scores}) => {
     console.log('score: ', scores)

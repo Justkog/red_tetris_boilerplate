@@ -71,6 +71,8 @@ export function game_join(socket, supervisor)
       }
       game = supervisor.add_game(data.roomName, player, data.tetriNumber, false);
     }
+    else
+      game.addPlayer(player);
 
     if (!game.is_available())
     {
@@ -79,7 +81,7 @@ export function game_join(socket, supervisor)
     }
   
     socket.join(data.roomName);
-    socket.emit(constants.ROOM_UPDATE, { is_solo: game.is_solo, roomName: game.room, users: game.playersNames() });
+    supervisor.send_data_to_room(game.room, constants.ROOM_UPDATE, { is_solo: game.is_solo, roomName: game.room, users: game.playersNames() })
   });
 }
 
