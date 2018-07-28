@@ -142,7 +142,10 @@ export function game_leave(socket, supervisor)
 
     game.remove_player(player);
 
-    if (game_data.players.length == 0)
+    if (game.players.length == 0)
+    {
       supervisor.remove_game(game);
+      supervisor.io.emit(constants.ROOMS_LIST_SHOW, { rooms: supervisor.list_availables_rooms() });
+    }
   });
 }
