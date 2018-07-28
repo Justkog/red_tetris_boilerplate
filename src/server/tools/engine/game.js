@@ -73,7 +73,7 @@ export function game_join(socket, supervisor)
       game = supervisor.add_game(data.roomName, player, data.tetriNumber, false);
       supervisor.io.emit(constants.ROOMS_LIST_SHOW, { rooms: supervisor.list_availables_rooms() });
     }
-    else
+    else if (!player.game)
       game.addPlayer(player);
 
     if (!game.is_available())
