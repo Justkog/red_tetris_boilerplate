@@ -6,8 +6,9 @@ import * as R from 'ramda'
 import { withRouter } from 'react-router-dom';
 import { requestGameStartAsync } from '../../actions/game';
 import { restartSocket } from '../../actions/socket';
+import { leaveRoomAsync } from '../../actions/room';
 
-const Lobby = ({history, roomName, users, login, onStartGame, onSocketRestart}) => {
+const Lobby = ({history, roomName, users, login, onStartGame, onLeaveRoom}) => {
 
 	const admin = R.prop('is_master', R.head(R.filter((user) => user.name == login, users)))
 	
@@ -18,7 +19,8 @@ const Lobby = ({history, roomName, users, login, onStartGame, onSocketRestart}) 
 
 	function backToRooms() {
 		history.push('rooms')
-		onSocketRestart()
+		// onSocketRestart()
+		onLeaveRoom()
 	}
 
 	// users = ['Jblondea', 'Flevesq']
@@ -76,9 +78,12 @@ const mapDispatchToProps = dispatch => {
 		onStartGame: (roomName) => {
 			dispatch(requestGameStartAsync(roomName))
 		},
-		onSocketRestart: () => {
-			dispatch(restartSocket())
+		onLeaveRoom: () => {
+			dispatch(leaveRoomAsync())
 		}
+		// onSocketRestart: () => {
+		// 	dispatch(restartSocket())
+		// }
 	}
 }
 
