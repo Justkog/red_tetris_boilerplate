@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import './board.css'
 import { Alert, Container } from 'reactstrap'
-import Tetrimino from "../tetrimino/tetrimino"
 import * as R from 'ramda'
 import { bordersMask } from '../../reducers/board'
 
@@ -69,7 +68,7 @@ const Row = (props) => {
 	)
 }
 
-export const Board = ({activeTetrimino, board}) => {
+const Board = ({activeTetrimino, board}) => {
 
 	const boardToDraw = printableBoard(board, invertGrid(bordersMask(board)))
 

@@ -8,6 +8,11 @@ export function board_update(socket, supervisor)
     let player = supervisor.find_player(socket.id);
     let game = player.game;
 
+    if (!game)
+    {
+      return ;
+    }
+
     player.board = data.board;
 
     game.playersWithoutOne(player).forEach((p) => {

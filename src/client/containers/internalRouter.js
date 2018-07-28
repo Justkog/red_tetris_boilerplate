@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import Board from '../components/board/board'
+import { GameScreen } from '../components/game_screen/game_screen'
 import Login from '../components/login/login';
 import Lobby from '../components/lobby/lobby';
 import { withRouter } from 'react-router-dom';
@@ -13,7 +13,7 @@ export const hashUrlRegex = RegExp(/^#([^#[\]]*)\[([^#[\]]*)\]$/);
 const InternalRouter = ({history, room, login, game}) => {
 	console.log('InternalRouter', history.location.hash)
 	if (game.started)
-		return <Board/>
+		return <GameScreen/>
     else if (login && !R.isEmpty(room)) {
         console.log('Lobby!')
         return <Lobby/>
@@ -41,5 +41,3 @@ const mapDispatchToProps = dispatch => {
 	}
 }
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(InternalRouter))
-
-
