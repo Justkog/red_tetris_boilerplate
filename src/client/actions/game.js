@@ -6,6 +6,8 @@ import { listenToWindowEvent, keyDownDispatcher } from './key';
 import { resetBoard } from './board';
 
 export const START_GAME = 'START_GAME'
+export const PAUSE_GAME = 'PAUSE_GAME'
+export const RESUME_GAME = 'RESUME_GAME'
 export const GAME_INIT = 'GAME_INIT'
 export const STOP_GAME = 'STOP_GAME'
 export const LOOP_UPDATE = 'LOOP_UPDATE'
@@ -18,6 +20,7 @@ export const HEAD_TETRI_REMOVE = 'HEAD_TETRI_REMOVE'
 const getLoopIntervalID = R.path(['game', 'loopIntervalID'])
 const getKeydownUnsubscribe = R.path(['game', 'keydownUnsubscribe'])
 const getGameStarted = R.path(['game', 'started'])
+const getGamePaused = R.path(['game', 'paused'])
 export const getGameTetris = R.path(['game', 'tetris'])
 export const getGame = R.path(['game'])
 
@@ -42,12 +45,36 @@ export const stopGameLoop = () => {
 	}
 }
 
+export const togglePause = () => {
+	return (dispatch, getState) => {
+		const paused = getGamePaused(getState())
+		if (paused) {
+			dispatch(resumeGame())
+			dispatch(startGameLoop())
+		}
+		else {
+			dispatch(pauseGame())
+			dispatch(stopGameLoop())
+			const unlistenkeyDown = dispatch(listenToWindowEvent('keydown', keyDownDispatcher))
+			dispatch(registerKeyDownUnsubscriber(unlistenkeyDown))
+		}
+	}
+}
+
 export const startGame = () => ({
 	type: START_GAME,
 })
 
 export const stopGame = () => ({
 	type: STOP_GAME,
+})
+
+export const pauseGame = () => ({
+	type: PAUSE_GAME,
+})
+
+export const resumeGame = () => ({
+	type: RESUME_GAME,
 })
 
 export const loopUpdate = () => {
