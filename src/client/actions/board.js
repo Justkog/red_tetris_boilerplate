@@ -1,10 +1,11 @@
 import { visualBoard, topLogicLinesCount } from "../components/board/board";
 import { getBoard, getActiveTetrimino } from "../middleware/boardManager";
 import * as R from 'ramda'
-import { INDESTRUCTIBLE_LINES_ADD } from "../../server/tools/constants";
+import { INDESTRUCTIBLE_LINES_ADD, LINE_DELETE, USER_LINE_DELETE } from "../../server/tools/constants";
 import { isValidBoard, bordersMask } from "../reducers/board";
 import { moveUpTetrimino } from "./tetrimino";
 import { tetriStartPosition } from "../reducers/tetrimino";
+import { getSocket } from "./socket";
 
 export const BOARD_UPDATE = 'BOARD_UPDATE'
 export const BOARD_RESET = 'BOARD_RESET'
@@ -66,8 +67,10 @@ const getCompletedLines = (board) => {
 export const checkLines = () => {
 	return (dispatch, getState) => {
 		const lines = getCompletedLines(visualBoard(getBoard(getState())))
-		if (lines.length > 0)
+		if (lines.length > 0) {
 			dispatch(deleteLines(lines))
+			getSocket(getState()).emit(USER_LINE_DELETE, {linesNumber: lines.length, board: getBoard(getState())})
+		}
 	}
 }
 
