@@ -49,13 +49,15 @@ export const togglePause = () => {
 	return (dispatch, getState) => {
 		const paused = getGamePaused(getState())
 		if (paused) {
+			const keyDownUnsubscribe = getKeydownUnsubscribe(getState())
+			keyDownUnsubscribe()
 			dispatch(resumeGame())
 			dispatch(startGameLoop())
 		}
 		else {
 			dispatch(pauseGame())
 			dispatch(stopGameLoop())
-			const unlistenkeyDown = dispatch(listenToWindowEvent('keydown', keyDownDispatcher))
+			const unlistenkeyDown = dispatch(listenToWindowEvent('keydown', keyDownDispatcher, (e) => R.contains(e.key, ['p', 's'])))
 			dispatch(registerKeyDownUnsubscriber(unlistenkeyDown))
 		}
 	}
