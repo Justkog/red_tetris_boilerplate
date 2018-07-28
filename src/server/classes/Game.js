@@ -1,3 +1,4 @@
+import * as constants from '../tools/constants';
 import Piece from './Piece';
 
 export default class Game
