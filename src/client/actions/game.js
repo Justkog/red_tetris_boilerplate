@@ -1,15 +1,19 @@
 import * as R from 'ramda'
 import { moveDownTetrimino, attemptMoveDownTetrimino, sealTetrimino, addTetrimino } from './tetrimino';
-import { GAME_START, NEXT_TETRI_REQUEST, NEXT_TETRI } from '../../server/tools/constants';
+import { GAME_START, NEXT_TETRI_REQUEST, NEXT_TETRI, PLAYER_END } from '../../server/tools/constants';
 import { getSocket } from './socket';
 import { listenToWindowEvent, keyDownDispatcher } from './key';
 import { resetBoard } from './board';
+import { getBoard, getActiveTetrimino } from '../middleware/boardManager';
+import { removeTetriInState } from '../reducers/board';
+import { visualBoard } from '../components/board/board';
 
-export const START_GAME = 'START_GAME'
-export const PAUSE_GAME = 'PAUSE_GAME'
-export const RESUME_GAME = 'RESUME_GAME'
+export const GAME_PAUSE = 'GAME_PAUSE'
+export const GAME_RESUME = 'GAME_RESUME'
 export const GAME_INIT = 'GAME_INIT'
-export const STOP_GAME = 'STOP_GAME'
+export const GAME_STOP = 'GAME_STOP'
+export const GAME_OVER = 'GAME_OVER'
+export const GAME_WIN = 'GAME_WIN'
 export const LOOP_UPDATE = 'LOOP_UPDATE'
 export const TETRIS_UPDATE = 'TETRIS_UPDATE'
 export const REGISTER_LOOP_INTERVAL_ID = 'REGISTER_LOOP_INTERVAL_ID'
@@ -63,20 +67,41 @@ export const togglePause = () => {
 	}
 }
 
+export const permanentylPause = () => {
+	return (dispatch, getState) => {
+		const paused = getGamePaused(getState())
+		if (!paused) {
+			dispatch(pauseGame())
+			dispatch(stopGameLoop())
+		} else {
+			const keyDownUnsubscribe = getKeydownUnsubscribe(getState())
+			keyDownUnsubscribe()
+		}
+	}
+}
+
 export const startGame = () => ({
-	type: START_GAME,
+	type: GAME_START,
 })
 
 export const stopGame = () => ({
-	type: STOP_GAME,
+	type: GAME_STOP,
 })
 
 export const pauseGame = () => ({
-	type: PAUSE_GAME,
+	type: GAME_PAUSE,
 })
 
 export const resumeGame = () => ({
-	type: RESUME_GAME,
+	type: GAME_RESUME,
+})
+
+export const overGame = () => ({
+	type: GAME_OVER,
+})
+
+export const winGame = () => ({
+	type: GAME_WIN,
 })
 
 export const loopUpdate = () => {
@@ -129,6 +154,8 @@ export const pullHeadTetri = () => {
 export const pullAndAddTetri = () => {
 	return (dispatch, getState) => {
 		const newTetri = dispatch(pullHeadTetri())
+		if (!newTetri)
+			return
 		const id = getGame(getState()).lastTetriID;
 		dispatch(addTetrimino(newTetri, id))
 	}
@@ -172,4 +199,31 @@ export const registerGameStart = (socket, dispatch, getState) => {
 		// const unlistenkeyDown = dispatch(listenToWindowEvent('keydown', keyDownDispatcher))
 		// dispatch(registerKeyDownUnsubscriber(unlistenkeyDown))
 	})
+}
+
+export const playerEnd = ({ users, game_finished }) => ({
+	type: PLAYER_END,
+	users: users,
+	game_finished: game_finished,
+})
+
+export const registerPlayerEnd = (socket, dispatch, getState) => {
+	console.log('registerPlayerEnd')
+	socket.off(PLAYER_END)
+	socket.on(PLAYER_END, (data) => {
+		console.log('Listening PLAYER_END: ', data);
+		dispatch(playerEnd(data))
+	})
+}
+
+export const sendPlayerEnd = () => {
+	return (dispatch, getState) => {
+		let board = getBoard(getState())
+		const activeTetri = getActiveTetrimino(getState())
+		if (!R.isEmpty(activeTetri))
+			board = removeTetriInState(board, activeTetri)
+		const tetriFreeBoard = visualBoard(board)
+		getSocket(getState()).emit(PLAYER_END, {board: tetriFreeBoard})
+		console.log('player end sent')
+	}
 }

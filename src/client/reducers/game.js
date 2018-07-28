@@ -1,7 +1,8 @@
-import { START_GAME, LOOP_UPDATE, STOP_GAME, REGISTER_LOOP_INTERVAL_ID, GAME_INIT, KEY_DOWN_UNSUBSCRIBE_REGISTER, HEAD_TETRI_REMOVE, TETRIS_UPDATE, PAUSE_GAME, RESUME_GAME } from '../actions/game'
+import { LOOP_UPDATE, REGISTER_LOOP_INTERVAL_ID, GAME_INIT, KEY_DOWN_UNSUBSCRIBE_REGISTER, HEAD_TETRI_REMOVE, TETRIS_UPDATE, GAME_PAUSE, GAME_RESUME, GAME_STOP, GAME_OVER, GAME_WIN } from '../actions/game'
 import { KEY_DOWN } from '../actions/key'
 import * as R from 'ramda'
 import { TETRIMINO_ADD } from '../actions/tetrimino';
+import { GAME_START } from '../../server/tools/constants';
 
 const handleKey = (state, key) => {
 	switch (key) {
@@ -16,22 +17,26 @@ const handleKey = (state, key) => {
 
 export default (state = {started: false, paused: false, loopIntervalID: 0, lastTetriID: 1}, action) => {
 	switch (action.type) {
-		case START_GAME:
+		case GAME_START:
 			return R.evolve(R.__, state)({
 				started: R.T
 			})
-		case STOP_GAME:
+		case GAME_STOP:
 			return R.evolve(R.__, state)({
 				started: R.F
 			})
-		case PAUSE_GAME:
+		case GAME_PAUSE:
 			return R.evolve(R.__, state)({
 				paused: R.T
 			})
-		case RESUME_GAME:
+		case GAME_RESUME:
 			return R.evolve(R.__, state)({
 				paused: R.F
 			})
+		case GAME_OVER:
+			return Object.assign({}, state, {victorious: false})
+		case GAME_WIN:
+			return Object.assign({}, state, {victorious: true})
 		case REGISTER_LOOP_INTERVAL_ID:
 			return Object.assign({}, state, {loopIntervalID: action.loopIntervalID})
 		case KEY_DOWN:
