@@ -2,7 +2,7 @@ import { visualBoard, topLogicLinesCount } from "../components/board/board";
 import { getBoard, getActiveTetrimino } from "../middleware/boardManager";
 import * as R from 'ramda'
 import { INDESTRUCTIBLE_LINES_ADD, LINE_DELETE, USER_LINE_DELETE } from "../../server/tools/constants";
-import { isValidBoard, bordersMask } from "../reducers/board";
+import { isValidBoard, bordersMask, removeTetriInState } from "../reducers/board";
 import { moveUpTetrimino } from "./tetrimino";
 import { tetriStartPosition } from "../reducers/tetrimino";
 import { getSocket } from "./socket";
@@ -81,4 +81,17 @@ export const registerIndestructibleLinesAdd = (socket, dispatch, getState) => {
 		console.log('Listening INDESTRUCTIBLE_LINES_ADD: ', data);
 		dispatch(addIndestructibleLines(data))
 	})
+}
+
+export const sendBoardUpdate = () => {
+	return (dispatch, getState) => {
+		let board = getBoard(getState())
+		const activeTetri = getActiveTetrimino(getState())
+		if (!R.isEmpty(activeTetri))
+			board = removeTetriInState(board, activeTetri)
+		const tetriFreeBoard = visualBoard(board)
+		getSocket(getState()).emit(BOARD_UPDATE, {board: tetriFreeBoard})
+		console.log('board update sent')
+		console.dir(tetriFreeBoard)
+	}
 }

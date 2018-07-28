@@ -23,6 +23,8 @@ import { test_socket_io } from './components/test_socket_io';
 import { setLogin } from './actions/user';
 import { joinRoom, joinRoomAsync, registerRoomUpdate } from './actions/room';
 import { hashUrlRegex } from './containers/internalRouter';
+import { createEpicMiddleware } from 'redux-observable';
+import { rootEpic } from './epics/root';
 
 const initialState = {}
 
@@ -41,11 +43,16 @@ window.onhashchange = () => {
 	hashSetup(store)
 };
 
+
+const epicMiddleware = createEpicMiddleware();
+
 const store = createStore(
 	reducer,
 	initialState,
-	applyMiddleware(thunk, createLogger(), gameLoopManager, boardManager)
+	applyMiddleware(thunk, epicMiddleware, createLogger(), gameLoopManager, boardManager)
 )
+
+epicMiddleware.run(rootEpic);
 
 store.dispatch(startSocket())
 hashSetup(store)

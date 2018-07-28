@@ -98,7 +98,9 @@ const updateState = (rowUpdate, state, activeTetri) => {
 	if (activeTetri.position.y < 0)
 		return state
 	forEachIndexed(R.__, tetriForm) ((row, rowIndex) => {
-		state = R.adjust(rowUpdate(row, activeTetri), activeTetri.position.y + rowIndex - 1, state)
+		const stateRowIndex = activeTetri.position.y + rowIndex - 1
+		if (stateRowIndex >= 0)
+			state = R.adjust(rowUpdate(row, activeTetri), activeTetri.position.y + rowIndex - 1, state)
 	})
 	return state
 }
@@ -131,7 +133,7 @@ const addTetriInRow = R.curry(updateRow)(addTetriInCell)
 const removeTetriInRow = R.curry(updateRow)(removeTetriInCell)
 
 const addTetriInState = R.curry(updateState)(addTetriInRow)
-const removeTetriInState = R.curry(updateState)(removeTetriInRow)
+export const removeTetriInState = R.curry(updateState)(removeTetriInRow)
 
 export const updateBoardState = (state, { prevActiveTetrimino, currentActiveTetrimino }) => {
 	if (prevActiveTetrimino.id && prevActiveTetrimino.id == currentActiveTetrimino.id) {
