@@ -23,6 +23,7 @@ export function game_creation(socket, supervisor)
 
     let game = supervisor.add_game(data.roomName, player, data.tetriNumber, false);
     socket.join(data.roomName);
+    supervisor.io.emit(constants.ROOMS_LIST_SHOW, { rooms: supervisor.list_availables_rooms() });
     socket.emit(constants.ROOM_UPDATE, { is_solo: game.is_solo, roomName: game.room, users: game.playersNames() });
   });
 }
@@ -70,6 +71,7 @@ export function game_join(socket, supervisor)
         return;
       }
       game = supervisor.add_game(data.roomName, player, data.tetriNumber, false);
+      supervisor.io.emit(constants.ROOMS_LIST_SHOW, { rooms: supervisor.list_availables_rooms() });
     }
     else
       game.addPlayer(player);
