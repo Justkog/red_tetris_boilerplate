@@ -128,3 +128,17 @@ export function player_end(socket, supervisor)
     supervisor.send_data_to_room(room, constants.PLAYER_END, game_data)
   });
 }
+
+export function game_leave(socket, supervisor)
+{
+  socket.on(constants.ROOM_LEAVE, function (data) {
+    loginfo(`Listening to ${constants.ROOM_LEAVE}: `, data);
+    let player = supervisor.find_player(socket.id);
+    let game = player.game;
+
+    game.remove_player(player);
+
+    if (game_data.players.length == 0)
+      supervisor.remove_game(game);
+  });
+}

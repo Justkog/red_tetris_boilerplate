@@ -4,6 +4,7 @@ export const ROOMS_LIST_SHOW = 'ROOMS_LIST_SHOW';
 export const ROOM_CREATE = 'ROOM_CREATE';
 export const ROOM_SHOW = 'ROOM_SHOW';
 export const ROOM_UPDATE = 'ROOM_UPDATE';
+export const ROOM_LEAVE = 'ROOM_LEAVE';
 
 export const GAME_CREATION = 'GAME_CREATION';
 export const GAME_CREATION_SOLO = 'GAME_CREATION_SOLO';
