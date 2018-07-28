@@ -24,7 +24,7 @@ export default class Game
   {
     let names = this.players.filter(player => { return !player.game_finished } );
 
-    return names.length == 0;
+    return names.length <= 1;
   }
 
   addPlayer(player)
