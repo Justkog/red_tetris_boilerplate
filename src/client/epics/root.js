@@ -3,7 +3,7 @@ import { LINES_DELETE, sendBoardUpdate } from '../actions/board'
 import { INDESTRUCTIBLE_LINES_ADD, PLAYER_END } from '../../server/tools/constants'
 import { TETRIMINO_REMOVE, TETRIMINO_SEAL } from '../actions/tetrimino'
 import { map } from 'rxjs/operators'
-import { GAME_OVER, permanentylPause, winGame, sendPlayerEnd } from '../actions/game';
+import { GAME_OVER, permanentylPause, winGame, sendPlayerEnd, getGame } from '../actions/game';
 import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';
 import * as R from 'ramda'
@@ -35,9 +35,9 @@ const onPlayerEnd = (action$, state$) => action$.pipe(
     ofType(
         PLAYER_END
     ),
-    map(() => {
+    map((action) => {
         return (dispatch, getState) => {
-            if (action$.game_finished && !R.has('victorious')) {
+            if (action.game_finished && !R.has('victorious', getGame(getState()))) {
                 dispatch(permanentylPause())
                 dispatch(winGame())
             }
