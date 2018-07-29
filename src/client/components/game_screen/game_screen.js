@@ -3,6 +3,7 @@ import React from 'react'
 import Board from '../board/board'
 import Score from '../score/score'
 import { Col } from 'reactstrap'
+import { GameEndModal } from '../game_end_modal/game_end_modal';
 
 export const GameScreen = () => {
 
@@ -11,6 +12,7 @@ export const GameScreen = () => {
       <Score />
       <Board />
       <Score />
+      <GameEndModal/>
     </ div>
   )
 }
