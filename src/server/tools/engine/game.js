@@ -1,33 +1,6 @@
 import * as constants from '../constants';
 import { loginfo } from '../logs';
 
-export function game_creation(socket, supervisor)
-{
-  socket.on(constants.GAME_CREATION, function (data) {
-    loginfo(`Listening to ${constants.GAME_CREATION}: `, data);
-    let player = supervisor.find_player(socket.id);
-
-    if (!player.name && !supervisor.player_name_available(data.userName))
-    {
-      socket.emit(constants.PLAYER_ERROR, { message: 'name already taken' });
-      return;
-    }
-
-    player.set_name(data.userName);
-
-    if (!supervisor.game_name_available(data.roomName))
-    {
-      socket.emit(constants.GAME_ERROR, { message: 'name already taken' });
-      return;
-    }
-
-    let game = supervisor.add_game(data.roomName, player, data.tetriNumber, false);
-    socket.join(data.roomName);
-    supervisor.io.emit(constants.ROOMS_LIST_SHOW, { rooms: supervisor.list_availables_rooms() });
-    socket.emit(constants.ROOM_UPDATE, { is_solo: game.is_solo, roomName: game.room, users: game.playersNames() });
-  });
-}
-
 export function game_creation_solo(socket, supervisor)
 {
   socket.on(constants.GAME_CREATION_SOLO, function (data) {
@@ -41,8 +14,19 @@ export function game_creation_solo(socket, supervisor)
 
     player.set_name(data.userName);
 
+    if (player.game)
+    {
+      let old_game = player.game;
+      old_game.remove_player(player);
+      if (old_game.players.length == 0)
+        supervisor.remove_game(old_game);
+    }
+
     const room = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
     let game = supervisor.add_game(room, player, data.tetriNumber, true);
+
+
     socket.join(room);
     socket.emit(constants.ROOM_UPDATE, { is_solo: game.is_solo, roomName: game.room, users: game.playersNames() });
   });
@@ -75,6 +59,15 @@ export function game_join(socket, supervisor)
     }
     else if (!player.game)
       game.addPlayer(player);
+    else if (player.game.room != game.room)
+    {
+      let old_game = player.game;
+      old_game.remove_player(player);
+      if (old_game.players.length == 0)
+        supervisor.remove_game(old_game);
+      player.game = game;
+      game.addPlayer(player);
+    }
 
     if (!game.is_available())
     {
@@ -127,7 +120,7 @@ export function player_end(socket, supervisor)
     const room = game.room;
 
     if (game_data['game_finished'])
-      supervisor.remove_game(game);
+      game.reset();
 
     supervisor.send_data_to_room(room, constants.PLAYER_END, game_data)
   });

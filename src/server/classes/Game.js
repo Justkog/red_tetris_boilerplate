@@ -122,4 +122,13 @@ export default class Game
       }  
     });
   }
+
+  reset()
+  {
+    game.is_running = false;
+    this.players.forEach((p) =>
+    {
+      p.game_finished = false;
+    });
+  }
 }
