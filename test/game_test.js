@@ -44,13 +44,10 @@ describe('Fake Game test', function () {
   });
 
   it('should know if game finished', function () {
-    expect(game.all_players_finished()).to.be.false;
     let player_two = new Player("plop", supervisor);
     game.addPlayer(player_two);
     expect(game.all_players_finished()).to.be.false;
     player_two.game_finished = true;
-    expect(game.all_players_finished()).to.be.false;
-    player.game_finished = true;
     expect(game.all_players_finished()).to.be.true;
   });
 

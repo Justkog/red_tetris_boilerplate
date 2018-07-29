@@ -117,7 +117,8 @@ export default class Game
             this.players[0].set_master(true);
           player.set_master(false);
         }
-        this.supervisor.send_data_to_room(this.room, constants.ROOM_UPDATE, { is_solo: this.is_solo, roomName: this.room, users: this.playersNames() })
+        if (this.supervisor.io)
+          this.supervisor.send_data_to_room(this.room, constants.ROOM_UPDATE, { is_solo: this.is_solo, roomName: this.room, users: this.playersNames() })
         return ;
       }  
     });
@@ -125,7 +126,7 @@ export default class Game
 
   reset()
   {
-    game.is_running = false;
+    this.is_running = false;
     this.players.forEach((p) =>
     {
       p.game_finished = false;

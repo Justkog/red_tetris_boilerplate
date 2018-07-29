@@ -4,6 +4,7 @@ import Board from '../board/board'
 import Score from '../score/score'
 import { Col } from 'reactstrap'
 import { GameEndModal } from '../game_end_modal/game_end_modal';
+import Spectre from '../spectre/spectre'
 
 export const GameScreen = () => {
 
@@ -11,8 +12,8 @@ export const GameScreen = () => {
     <div style={{ display: 'flex', flexDirection: 'row', flex: 5, justifyContent: 'space-around', height: '100%', width: '90%' }} >
       <Score />
       <Board />
-      <Score />
       <GameEndModal/>
+      <Spectre />
     </ div>
   )
 }
