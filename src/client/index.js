@@ -27,6 +27,7 @@ import { createEpicMiddleware } from 'redux-observable';
 import { rootEpic } from './epics/root';
 import { registerIndestructibleLinesAdd } from './actions/board';
 import { registerScoreUpdate } from './actions/score';
+import { registerSpectrumUpdate } from './actions/spectre';
 
 const initialState = {}
 
@@ -72,6 +73,7 @@ store.dispatch(registerSocketEvent(registerNextTetri))
 store.dispatch(registerSocketEvent(registerScoreUpdate))
 store.dispatch(registerSocketEvent(registerIndestructibleLinesAdd))
 store.dispatch(registerSocketEvent(registerPlayerEnd))
+store.dispatch(registerSocketEvent(registerSpectrumUpdate))
 store.dispatch(listenBoardUpdate(store))
 store.dispatch(alert('Soon, will be here a fantastic Tetris ...'))
 store.dispatch(alert('Soon, will be here a fantastic Tetris ... 2'))
