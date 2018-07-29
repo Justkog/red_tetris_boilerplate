@@ -30,7 +30,7 @@ describe('Fake Engine test', function(){
 
   it('GAME_CREATION_SOLO', function(done){
     player_one.connect();
-    player_one.emit(constant.GAME_CREATION, { userName: 'name', tetriNumber: 15});
+    player_one.emit(constant.GAME_CREATION_SOLO, { userName: 'name', tetriNumber: 15});
     player_one.on(constant.ROOM_UPDATE, (data) => {
       expect(JSON.stringify(data.users)).to.be.eq(JSON.stringify([{ 'name': 'name', 'is_master': true }]));
       expect(data.roomName).to.be.not.a('null');
