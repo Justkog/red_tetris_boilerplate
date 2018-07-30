@@ -6,7 +6,7 @@ import * as R from 'ramda'
 import { withRouter } from 'react-router-dom';
 import { setLogin } from '../../actions/user';
 
-const Login = ({history, login, onSetLogin}) => {
+const LoginComponent = ({history, login, onSetLogin}) => {
 	function play(userName) {
 		onSetLogin(userName)
 		history.push('rooms')
@@ -53,4 +53,4 @@ const mapDispatchToProps = dispatch => {
 	}
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login))
+export const Login = withRouter(connect(mapStateToProps, mapDispatchToProps)(LoginComponent))

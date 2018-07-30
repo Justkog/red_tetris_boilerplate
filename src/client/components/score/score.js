@@ -16,10 +16,6 @@ const Score = ({scores}) => {
             </Col>
           </Row>
         </Container>
-        // <div style={{ display: 'flex', flexDirection: 'row', flex: 2, justifyContent: 'space-around' }} >
-        //   <div><h3>{name}</h3></div>
-        //   <div><h3>{score}</h3></div>
-        // </div>
     )};
   
   function listRows (data) { 

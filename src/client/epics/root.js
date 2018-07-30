@@ -7,7 +7,7 @@ import { GAME_OVER, permanentylPause, winGame, sendPlayerEnd, getGame, GAME_STOP
 import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';
 import * as R from 'ramda'
-import { ROOM_JOIN, playerReadyAsync } from '../actions/room';
+import { ROOM_JOIN, readyPlayerAsync } from '../actions/room';
 
 const sendBoardEpic = (action$, state$) => action$.pipe(
     ofType(
@@ -39,7 +39,7 @@ const onGameStop = (action$, state$) => action$.pipe(
     map(() => {
         return (dispatch, getState) => {
             dispatch(resetGame())
-            dispatch(playerReadyAsync())
+            dispatch(readyPlayerAsync())
         }
     })
 )
@@ -64,7 +64,7 @@ const onRoomJoin = (action$, state$) => action$.pipe(
     ),
     map((action) => {
         return (dispatch, getState) => {
-            dispatch(playerReadyAsync())
+            dispatch(readyPlayerAsync())
         }
     })
 )

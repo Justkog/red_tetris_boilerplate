@@ -1,13 +1,21 @@
 import { getSocket } from "./socket";
-import { GAME_JOIN, ROOM_UPDATE, ROOM_LEAVE, PLAYER_READY } from "../../server/tools/constants";
+import { GAME_JOIN, ROOM_UPDATE, ROOM_LEAVE, PLAYER_READY, GAME_CREATION_SOLO } from "../../server/tools/constants";
 import { getUser } from "../reducers/user";
+import { requestGameStartAsync } from "./game";
 
 export const ROOM_JOIN = 'ROOM_JOIN'
+export const SOLO_ROOM_JOIN = 'SOLO_ROOM_JOIN'
 
 export const joinRoom = (name) => {
   return {
     type: ROOM_JOIN,
     name: name,
+  }
+}
+
+export const joinSoloRoom = () => {
+  return {
+    type: SOLO_ROOM_JOIN,
   }
 }
 
@@ -39,6 +47,15 @@ export const joinRoomAsync = (name) => {
 	}
 }
 
+export const joinSoloRoomAsync = (name) => {
+	return (dispatch, getState) => {
+    getSocket(getState()).emit(GAME_CREATION_SOLO, {userName: getUser(getState()).login, tetriNumber: 10})
+    dispatch(joinSoloRoom())
+    // dispatch(readyPlayerAsync())
+    dispatch(requestGameStartAsync())
+	}
+}
+
 export const leaveRoomAsync = (name) => {
 	return (dispatch, getState) => {
     getSocket(getState()).emit(ROOM_LEAVE, {})
@@ -46,7 +63,7 @@ export const leaveRoomAsync = (name) => {
 	}
 }
 
-export const playerReadyAsync = (name) => {
+export const readyPlayerAsync = (name) => {
 	return (dispatch, getState) => {
     getSocket(getState()).emit(PLAYER_READY, {})
 		dispatch(readyPlayer())

@@ -7,6 +7,7 @@ import { withRouter } from 'react-router-dom';
 import { setLogin } from '../actions/user';
 import { joinRoom, joinRoomAsync } from '../actions/room';
 import * as R from 'ramda'
+import { Home } from '../components/home/home';
 
 export const hashUrlRegex = RegExp(/^#([^#[\]]*)\[([^#[\]]*)\]$/);
 
@@ -14,15 +15,15 @@ const InternalRouter = ({history, room, login, game}) => {
 	console.log('InternalRouter', history.location.hash)
 	if (game.started)
 		return <GameScreen/>
-    else if (login && !R.isEmpty(room)) {
+    else if (!R.isEmpty(room) && (login || room.solo)) {
         console.log('Lobby!')
         return <Lobby/>
     } else if (login && !hashUrlRegex.test(history.location.hash)) {
         console.log('rooms!')
         history.push('rooms')
     } else {
-        console.log('Login!')
-        return <Login/>
+        console.log('Home!')
+        return <Home/>
     }
     return (null)
 }

@@ -17,6 +17,7 @@ const App = ({message}) => {
 			<Switch>
 				<Route exact path='/' render={InternalRouter} />
 				<Route exact path='/rooms' render={Rooms} />
+				<Route exact path='/login' render={Login} />
 			</Switch>
 		</BrowserRouter>
 	)
