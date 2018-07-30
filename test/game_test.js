@@ -124,7 +124,7 @@ describe('Fake Game test', function () {
   it('should output players infos', function () {
     player.set_name('toto');
     player.update_score(3);
-    expect(game.playersInfos()).to.be.eql({ toto: { score: 3, board: emptyBoardN(20, 10)} });
+    expect(game.playersInfos()).to.be.eql({ toto: { score: 3, board: emptyBoardN(20, 10), ready: false, is_master: true} });
     let player_two = new Player("plop", supervisor);
     game.addPlayer(player_two);
     player_two.set_name('titi');
