@@ -1,6 +1,7 @@
 import chai from "chai"
 import Supervisor from '../src/server/classes/Supervisor';
 import * as constant from '../src/server/tools/constants';
+import { emptyBoardN } from '../src/server/tools/constants';
 
 import { startServer } from './helpers/server'
 import io from 'socket.io-client'
@@ -32,7 +33,7 @@ describe('Fake Engine test', function(){
     player_one.connect();
     player_one.emit(constant.GAME_CREATION_SOLO, { userName: 'name', tetriNumber: 15});
     player_one.on(constant.ROOM_UPDATE, (data) => {
-      expect(JSON.stringify(data.users)).to.be.eq(JSON.stringify([{ 'name': 'name', 'is_master': true }]));
+      expect(JSON.stringify(data.users)).to.be.eq(JSON.stringify({'name': {'score': 0, 'board': emptyBoardN(20, 10), 'ready': false, 'is_master': true }}));
       expect(data.roomName).to.be.not.a('null');
       done()
     }

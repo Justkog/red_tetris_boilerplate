@@ -124,7 +124,7 @@ describe('Fake Game test', function () {
   it('should output players infos', function () {
     player.set_name('toto');
     player.update_score(3);
-    expect(game.playersInfos()).to.be.eql({ toto: { score: 3, board: emptyBoardN(20, 10)} });
+    expect(game.playersInfos()).to.be.eql({ toto: { score: 3, board: emptyBoardN(20, 10), ready: false, is_master: true} });
     let player_two = new Player("plop", supervisor);
     game.addPlayer(player_two);
     player_two.set_name('titi');
@@ -152,5 +152,23 @@ describe('Fake Game test', function () {
     expect(player_two.is_master).to.be.false;
     game.remove_player(player);
     expect(player_two.is_master).to.be.true;
+  });
+
+  it('should reset all players', function () {
+    expect(player.is_ready).to.be.false;
+    player.is_ready = true;
+    expect(player.is_ready).to.be.true;
+    game.reset();
+    expect(player.is_ready).to.be.false;
+  });
+
+  it('should know is the game is ready', function () {
+    expect(game.is_game_ready()).to.be.false;
+    player.is_ready = true;
+    let player_two = supervisor.add_player('new_player_two');
+    game.addPlayer(player_two);
+    expect(game.is_game_ready()).to.be.false;
+    player_two.is_ready = true;
+    expect(game.is_game_ready()).to.be.true;
   });
 });
