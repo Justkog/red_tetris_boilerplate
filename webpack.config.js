@@ -30,6 +30,10 @@ module.exports = {
 
 	watchOptions: {
 		aggregateTimeout: 300,
-		poll: 1000
+		poll: 5000,
+		ignored: [
+			path.resolve(__dirname, 'dist'),
+			path.resolve(__dirname, 'node_modules'),
+		  ]
 	}
 };
