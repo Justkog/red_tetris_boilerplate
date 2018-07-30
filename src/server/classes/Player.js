@@ -6,6 +6,7 @@ export default class Player
   {
     this.socket_id = socket_id;
     this.is_master = false;
+    this.is_ready = false;
     this.score = 0;
     this.game = null;
     this.game_finished = false;
@@ -49,6 +50,7 @@ export default class Player
   reset()
   {
     this.game_finished = false;
+    this.is_ready = false;
     this.piece_index = 0;
     this.score = 0;
     this.board = emptyBoardN(20, 10);

@@ -25,6 +25,7 @@ export const SPECTRUM_UPDATE = 'SPECTRUM_UPDATE';
 export const UPDATE_SCORE = 'UPDATE_SCORE';
 
 export const PLAYER_END = 'PLAYER_END';
+export const PLAYER_READY = 'PLAYER_READY';
 
 export const GAME_ERROR = 'GAME_ERROR';
 export const PLAYER_ERROR = 'PLAYER_ERROR';

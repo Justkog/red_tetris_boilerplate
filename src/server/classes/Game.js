@@ -27,6 +27,15 @@ export default class Game
     return names.length <= 1;
   }
 
+  is_game_ready()
+  {
+    if (this.is_solo)
+      return true;
+    let player_ready = this.players.filter(player => { return !player.is_ready });
+
+    return player_ready.length == 0;
+  }
+
   addPlayer(player)
   {
     player.game = this;
@@ -97,7 +106,7 @@ export default class Game
     let infos = {};
 
     this.players.forEach(player => {
-      infos[player.name] = {score: player.score, board: player.board};
+      infos[player.name] = {score: player.score, board: player.board, ready: player.is_ready, is_master: player.is_master};
     });
 
     return infos;

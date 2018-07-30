@@ -28,7 +28,7 @@ export function game_creation_solo(socket, supervisor)
 
 
     socket.join(room);
-    socket.emit(constants.ROOM_UPDATE, { is_solo: game.is_solo, roomName: game.room, users: game.playersNames() });
+    socket.emit(constants.ROOM_UPDATE, { is_solo: game.is_solo, roomName: game.room, users: game.playersInfos() });
   });
 }
 
@@ -76,8 +76,28 @@ export function game_join(socket, supervisor)
     }
   
     socket.join(data.roomName);
-    supervisor.send_data_to_room(game.room, constants.ROOM_UPDATE, { is_solo: game.is_solo, roomName: game.room, users: game.playersNames() })
+    supervisor.send_data_to_room(game.room, constants.ROOM_UPDATE, { is_solo: game.is_solo, roomName: game.room, users: game.playersInfos() })
   });
+}
+
+game_start_errors(socket, game, player)
+{
+  if (!player.is_master)
+  {
+    socket.emit(constants.PLAYER_ERROR, { message: 'player is not master' });
+    return true;
+  }
+  if (!game.is_available())
+  {
+    socket.emit(constants.GAME_ERROR, { message: 'game already started' });
+    return true;
+  }
+  if (!game.is_game_ready())
+  {
+    socket.emit(constants.GAME_ERROR, { message: 'waiting for players' });
+    return true;
+  }
+  return false;
 }
 
 export function game_start(socket, supervisor)
@@ -87,42 +107,13 @@ export function game_start(socket, supervisor)
     let player = supervisor.find_player(socket.id);
     let game = player.game;
   
-    if (!game.is_available())
-    {
-      socket.emit(constants.GAME_ERROR, { message: 'game already started' });
-      // to fill 
-      return;
-    }
+    if (game_start_errors(socket, game, player))
+      return ;
 
-    if (!player.is_master)
-    {
-      socket.emit(constants.PLAYER_ERROR, { message: 'player is not master' });
-      return;
-    }
     supervisor.send_data_to_room(game.room, constants.UPDATE_SCORE, { scores: game.playersScores() });
     game.is_running = true;
     const game_data = { boards: game.playersBoards(), tetris: game.allTetris() };
     supervisor.send_data_to_room(game.room, constants.GAME_START, game_data)
-  });
-}
-
-export function player_end(socket, supervisor)
-{
-  socket.on(constants.PLAYER_END, function (data) {
-    loginfo(`Listening to ${constants.PLAYER_END}: `);
-    let player = supervisor.find_player(socket.id);
-    let game = player.game;
-
-    player.board = data.board;
-    player.game_finished = true;
-
-    const game_data = { users: game.playersInfos(), game_finished: game.all_players_finished() };
-    const room = game.room;
-
-    if (game_data['game_finished'])
-      game.reset();
-
-    supervisor.send_data_to_room(room, constants.PLAYER_END, game_data)
   });
 }
 
