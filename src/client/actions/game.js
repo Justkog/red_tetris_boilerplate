@@ -258,7 +258,9 @@ export const waitGameEndAsync = () => {
 			first()
 		)
 		onGameFinished$.subscribe(() => {
+			console.log('stopGame from waitGameEndAsync store observer')
 			dispatch(stopGame())
+			console.log('stopGame end from waitGameEndAsync store observer')
 		})
 	}
 }

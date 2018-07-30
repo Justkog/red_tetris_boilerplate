@@ -33,7 +33,7 @@ export default (state = defaultGame(), action) => {
 				started: R.F
 			})
 		case GAME_RESET:
-			return Object.assign({}, defaultGame(), { keydownUnsubscribe: state.keydownUnsubscribe })
+			return Object.assign({}, defaultGame(), { keydownUnsubscribe: state.keydownUnsubscribe, loopIntervalID: action.loopIntervalID})
 		case PLAYER_END:
 			return Object.assign({}, state, { finished: action.game_finished })
 		case WAIT_GAME_END:

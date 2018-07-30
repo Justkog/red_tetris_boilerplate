@@ -48,7 +48,7 @@ const onPlayerEnd = (action$, state$) => action$.pipe(
     ),
     map((action) => {
         return (dispatch, getState) => {
-            if (action.game_finished && !R.has('victorious', getGame(getState()))) {
+            if (getState().game.started && action.game_finished && !R.has('victorious', getGame(getState()))) {
                 dispatch(permanentylPause())
                 dispatch(winGame())
             }

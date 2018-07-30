@@ -10,11 +10,11 @@ export const gameLoopManager = ({ getState, dispatch }) => {
 		const currentStartedState = getGameStarted(getState())
 		if (prevStartedState != currentStartedState) {
 			if (currentStartedState) {
-				dispatch(startGame())
+				// dispatch(startGame())
 				dispatch(startGameLoop())
 			}
 			else {
-				dispatch(stopGame())
+				// dispatch(stopGame())
 				dispatch(stopGameLoop())
 			}
 		}
