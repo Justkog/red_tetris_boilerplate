@@ -40,7 +40,7 @@ const Score = ({scores}) => {
 const mapStateToProps = (state) => {
 
   return {
-    scores: state.game.scores,
+    scores: state.game.scores || {},
   }
 }
 

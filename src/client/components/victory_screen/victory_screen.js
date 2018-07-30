@@ -29,7 +29,7 @@ const VictoryFrameComponent = ({history, victorious, onGameStop, onLeaveRoom}) =
                 <Row style={{justifyContent: 'center'}}>
                     <span id="victory-title-icon" className={'title-icon'} style={{}}><i className={"fas fa-crown"}/></span>
                 </Row>
-                <Row style={{justifyContent: 'center'}}>
+                <Row style={{justifyContent: 'center', textAlign: 'center'}}>
                     <span id="victory-title" className={'title'}>You Win!</span>
                 </Row>
                 <Row style={{justifyContent: 'space-evenly', marginTop: '15px'}}>

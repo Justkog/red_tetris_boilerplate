@@ -29,7 +29,7 @@ const LossFrameComponent = ({history, victorious, waitingEnd, onGameStop, onLeav
                 <Row style={{justifyContent: 'center'}}>
                     <span id="loss-title-icon" className={'title-icon'} style={{}}><i className={"fas fa-skull"}/></span>
                 </Row>
-                <Row style={{justifyContent: 'center'}}>
+                <Row style={{justifyContent: 'center', textAlign: 'center'}}>
                     <span id="loss-title" className={'title'}>You Lose!</span>
                 </Row>
                 <Row style={{justifyContent: 'space-evenly', marginTop: '15px'}}>

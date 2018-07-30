@@ -13,9 +13,9 @@ export const hashUrlRegex = RegExp(/^#([^#[\]]*)\[([^#[\]]*)\]$/);
 
 const InternalRouter = ({history, room, login, game}) => {
 	console.log('InternalRouter', history.location.hash)
-	if (game.started)
+	if (game.started || room.solo)
 		return <GameScreen/>
-    else if (!R.isEmpty(room) && (login || room.solo)) {
+    else if (!R.isEmpty(room) && login) {
         console.log('Lobby!')
         return <Lobby/>
     } else if (login && !hashUrlRegex.test(history.location.hash)) {
