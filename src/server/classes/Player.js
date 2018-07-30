@@ -49,6 +49,8 @@ export default class Player
   reset()
   {
     this.game_finished = false;
+    this.piece_index = 0;
+    this.score = 0;
     this.board = emptyBoardN(20, 10);
   }
 }

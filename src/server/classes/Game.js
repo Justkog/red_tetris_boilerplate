@@ -127,6 +127,8 @@ export default class Game
   reset()
   {
     this.is_running = false;
+    this.pieces = [];
+    this.addPieces(this.tetri_number);
     this.players.forEach((p) =>
     {
       p.reset();
