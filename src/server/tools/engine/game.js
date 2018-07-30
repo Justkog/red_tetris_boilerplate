@@ -80,7 +80,7 @@ export function game_join(socket, supervisor)
   });
 }
 
-game_start_errors(socket, game, player)
+function game_start_errors(socket, game, player)
 {
   if (!player.is_master)
   {
