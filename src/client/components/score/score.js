@@ -1,15 +1,25 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Row } from 'reactstrap'
+import { Row, Col, Container } from 'reactstrap'
 
 const Score = ({scores}) => {
     console.log('score: ', scores)
     function listColumns (name, score) {
       return (
-        <div style={{ display: 'flex', flexDirection: 'row', flex: 2, justifyContent: 'space-around' }} >
-          <div><h3>{name}</h3></div>
-          <div><h3>{score}</h3></div>
-        </div>
+        <Container>
+          <Row style={{marginLeft: '0px'}}>
+            <Col>
+              <h3>{name}</h3>
+            </Col>
+            <Col>
+              <h3>{score}</h3>
+            </Col>
+          </Row>
+        </Container>
+        // <div style={{ display: 'flex', flexDirection: 'row', flex: 2, justifyContent: 'space-around' }} >
+        //   <div><h3>{name}</h3></div>
+        //   <div><h3>{score}</h3></div>
+        // </div>
     )};
   
   function listRows (data) { 
