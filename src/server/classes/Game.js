@@ -145,6 +145,7 @@ export default class Game
     {
       p.reset();
     });
-    this.supervisor.send_data_to_room(this.room, constants.ROOM_UPDATE, { is_solo: this.is_solo, roomName: this.room, users: this.playersInfos() })
+    if (this.supervisor.io)
+      this.supervisor.send_data_to_room(this.room, constants.ROOM_UPDATE, { is_solo: this.is_solo, roomName: this.room, users: this.playersInfos() })
   }
 }

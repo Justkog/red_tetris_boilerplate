@@ -153,4 +153,22 @@ describe('Fake Game test', function () {
     game.remove_player(player);
     expect(player_two.is_master).to.be.true;
   });
+
+  it('should reset all players', function () {
+    expect(player.is_ready).to.be.false;
+    player.is_ready = true;
+    expect(player.is_ready).to.be.true;
+    game.reset();
+    expect(player.is_ready).to.be.false;
+  });
+
+  it('should know is the game is ready', function () {
+    expect(game.is_game_ready()).to.be.false;
+    player.is_ready = true;
+    let player_two = supervisor.add_player('new_player_two');
+    game.addPlayer(player_two);
+    expect(game.is_game_ready()).to.be.false;
+    player_two.is_ready = true;
+    expect(game.is_game_ready()).to.be.true;
+  });
 });
