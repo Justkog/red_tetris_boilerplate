@@ -1,6 +1,6 @@
 import * as R from 'ramda'
 import { moveDownTetrimino, attemptMoveDownTetrimino, sealTetrimino, addTetrimino } from './tetrimino';
-import { GAME_START, NEXT_TETRI_REQUEST, NEXT_TETRI, PLAYER_END } from '../../server/tools/constants';
+import { GAME_START, NEXT_TETRI_REQUEST, NEXT_TETRI, PLAYER_END, GAME_ERROR } from '../../server/tools/constants';
 import { getSocket } from './socket';
 import { listenToWindowEvent, keyDownDispatcher } from './key';
 import { resetBoard } from './board';
@@ -114,6 +114,12 @@ export const overGame = () => ({
 export const winGame = () => ({
 	type: GAME_WIN,
 })
+
+export const receiveGameError = ({message}) => ({
+	type: GAME_ERROR,
+	message: message
+})
+
 
 export const loopUpdate = () => {
 	return (dispatch, getState) => {
@@ -264,3 +270,12 @@ export const waitGameEndAsync = () => {
 	}
 }
 
+export const registerGameError = (socket, dispatch, getState) => {
+	console.log('registerRoomUpdate')
+	socket.off(GAME_ERROR)
+	socket.on(GAME_ERROR, (data) => {
+		console.log('Listening GAME_ERROR: ', data);
+		dispatch(receiveGameError(data))
+		console.dir(data)
+	})
+}
