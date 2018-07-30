@@ -21,6 +21,6 @@ html, body, #tetris, .board-container {
 
 .litle-board {
 	height: 20%;
-	width: 20%;
+	/* width: 20%; */
 	background-color: rgb(38, 13, 26);
 }

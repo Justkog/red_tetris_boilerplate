@@ -25,7 +25,7 @@ const Score = ({scores}) => {
 )} ;
 
   return (
-    <div style={{width: '80%'}}>
+    <div style={{flexBasis: '33.33%'}}>
       {listRows(scores)}
     </ div>
   )

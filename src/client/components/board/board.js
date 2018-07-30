@@ -84,11 +84,11 @@ const Board = ({activeTetrimino, board}) => {
 	)
 
 	return (
-		<Container className="board-container">
+		<div className="board-container">
 			<div className="board" style={{display: 'flex', flexDirection: 'column'}}>
 				{listRows}
 			</div>
-		</Container>
+		</div>
 	)
 }
 

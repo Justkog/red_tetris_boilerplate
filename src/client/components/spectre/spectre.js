@@ -38,7 +38,7 @@ const Spectre = ({ spectrum }) => {
 
   const test = (k) => {
         return (k.map( (name) => {
-          return (<div style={{ width: '20%', height: '20%', display: 'flex', flexDirection: 'column', justifyContent: 'space-around' }}>
+          return (<div style={{ height: '20%', display: 'flex', flexDirection: 'column', justifyContent: 'space-around' }}>
             {console.log('name: ', name)}
             <h1>{name}</h1>
             {LittleBoard(spectrum[name], name) }
@@ -48,13 +48,13 @@ const Spectre = ({ spectrum }) => {
 
   const all = keys.map((key) => {
     return (
-   <div style={{ width: '80%', display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
+   <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
       { test(key) }
     </ div>
   )} );
 
   return (
-    <div>
+    <div style={{ flexBasis: '33.33%' }}>
       { all }
     </div>
   )

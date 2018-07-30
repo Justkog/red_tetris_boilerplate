@@ -10,7 +10,7 @@ import { LossFrame } from '../loss_screen/loss_screen';
 export const GameScreen = () => {
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row', flex: 5, justifyContent: 'space-around', height: '100%' }} >
+    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', height: '100%' }} >
       <Score />
       <Board />
       <VictoryFrame/>
