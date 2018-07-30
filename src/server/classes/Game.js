@@ -118,7 +118,10 @@ export default class Game
           player.set_master(false);
         }
         if (this.supervisor.io)
+        {
           this.supervisor.send_data_to_room(this.room, constants.ROOM_UPDATE, { is_solo: this.is_solo, roomName: this.room, users: this.playersNames() })
+          this.supervisor.send_data_to_room(this.room, constants.PLAYER_END, { users: this.playersInfos(), game_finished: this.all_players_finished() })
+        }
         return ;
       }  
     });
