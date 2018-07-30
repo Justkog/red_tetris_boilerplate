@@ -1,5 +1,5 @@
 import { getSocket } from "./socket";
-import { GAME_JOIN, ROOM_UPDATE, ROOM_LEAVE } from "../../server/tools/constants";
+import { GAME_JOIN, ROOM_UPDATE, ROOM_LEAVE, PLAYER_READY } from "../../server/tools/constants";
 import { getUser } from "../reducers/user";
 
 export const ROOM_JOIN = 'ROOM_JOIN'
@@ -14,6 +14,12 @@ export const joinRoom = (name) => {
 export const leaveRoom = () => {
   return {
     type: ROOM_LEAVE,
+  }
+}
+
+export const readyPlayer = () => {
+  return {
+    type: PLAYER_READY,
   }
 }
 
@@ -37,6 +43,13 @@ export const leaveRoomAsync = (name) => {
 	return (dispatch, getState) => {
     getSocket(getState()).emit(ROOM_LEAVE, {})
 		dispatch(leaveRoom())
+	}
+}
+
+export const playerReadyAsync = (name) => {
+	return (dispatch, getState) => {
+    getSocket(getState()).emit(PLAYER_READY, {})
+		dispatch(readyPlayer())
 	}
 }
 

@@ -252,12 +252,11 @@ export const waitGameEndAsync = () => {
 		// wish I could put here a listener to game.finished and dispatch a stopGame once on true
 		// looks like i did but bugs may occur
 		const state$ = from(store);
-		const onGameFinished$ = state$.pipe(
+		state$.pipe(
 			map(state => state.game.finished),
 			filter(v => v),
 			first()
-		)
-		onGameFinished$.subscribe(() => {
+		).subscribe(() => {
 			console.log('stopGame from waitGameEndAsync store observer')
 			dispatch(stopGame())
 			console.log('stopGame end from waitGameEndAsync store observer')
