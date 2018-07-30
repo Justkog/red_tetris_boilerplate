@@ -10,7 +10,7 @@ export const topLogicLinesCount = 4
 const columnNumbers = R.range(0, 10)
 const rowNumbers = R.range(0, 20)
 
-const invertGrid = R.map(R.map(R.ifElse(R.gte(R.__, 1), () => 0, () => 1)))
+export const invertGrid = R.map(R.map(R.ifElse(R.gte(R.__, 1), () => 0, () => 1)))
 
 const removeExtraRows = R.compose(
 	R.drop(topLogicLinesCount),
@@ -19,7 +19,7 @@ const removeExtraRows = R.compose(
 
 export const visualBoard = (board) => printableBoard(board, invertGrid(bordersMask(board)))
 
-const printableBoard = (board, printableMask) => {
+export const printableBoard = (board, printableMask) => {
 	// console.log('printableMask')
 	// console.dir(printableMask)
 	const grid = R.addIndex(R.map)((row, rowIndex) => {
@@ -54,13 +54,13 @@ const DefaultCell = () => GenericCell(defaultCellStyle)
 
 const TetriCell = (color) => GenericCell(R.merge(defaultCellStyle, {borderColor: 'white', backgroundColor: color}))
 
-const Cell = ({value}) => {
+export const Cell = ({value}) => {
 	if (R.length(value) > 0)
 		return TetriCell(R.head(value).color)
 	return DefaultCell()
 }
 
-const Row = (props) => {
+export const Row = (props) => {
 	return (
 		<div style={{flex: 1, display: 'flex', flexDirection: 'row'}}>
 			{props.children}
