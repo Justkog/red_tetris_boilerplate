@@ -87,7 +87,7 @@ function game_start_errors(socket, game, player)
     socket.emit(constants.PLAYER_ERROR, { message: 'player is not master' });
     return true;
   }
-  if (!game.is_available() && !game.is_solo)
+  if (!game.is_available())
   {
     socket.emit(constants.GAME_ERROR, { message: 'game already started' });
     return true;
