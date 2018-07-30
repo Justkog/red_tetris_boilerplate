@@ -129,7 +129,7 @@ export default class Game
     this.is_running = false;
     this.players.forEach((p) =>
     {
-      p.game_finished = false;
+      p.reset();
     });
   }
 }
