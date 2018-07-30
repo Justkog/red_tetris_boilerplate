@@ -11,7 +11,7 @@ import { leaveRoomAsync } from '../../actions/room';
 const Lobby = ({history, roomName, users, login, onStartGame, onLeaveRoom}) => {
 
 	const admin = R.prop('is_master', users[R.head(R.filter((user) => user == login, R.keys(users)))])
-	const ready = R.any(R.__, R.keys(users)) ((user) => R.prop('ready', users[user]))
+	const ready = R.all(R.__, R.keys(users)) ((user) => R.prop('ready', users[user]))
 	
 	function startGame() {
 		console.log('starting')
