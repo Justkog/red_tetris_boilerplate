@@ -10,7 +10,8 @@ import { leaveRoomAsync } from '../../actions/room';
 
 const Lobby = ({history, roomName, users, login, onStartGame, onLeaveRoom}) => {
 
-	const admin = R.prop('is_master', R.head(R.filter((user) => user.name == login, users)))
+	const admin = R.prop('is_master', users[R.head(R.filter((user) => user == login, R.keys(users)))])
+	const ready = R.any(R.__, R.keys(users)) ((user) => R.prop('ready', users[user]))
 	
 	function startGame() {
 		console.log('starting')
@@ -41,22 +42,22 @@ const Lobby = ({history, roomName, users, login, onStartGame, onLeaveRoom}) => {
 					</Row>
 					<Row className="justify-content-center" style={{}}>
 						<ListGroup style={{ width: '50%', minWidth: '570px'}}>
-							{users.map((user) => 
+							{R.keys(users).map((user) => 
 								<Button 
-									key={user.name} 
+									key={user} 
 									className="list-group-item list-group-item-action room-entry" 
 									color="primary" 
 									size="lg" 
 									onClick={() => {  }}
 									// style={{color: 'white', backgroundColor: 'var(--primary)', }}
-								>{user.name}</Button>
+								>{user}</Button>
 							)}
 						</ListGroup>
 					</Row>
 					<hr/>
 					<Row className="justify-content-center">
 						<Col sm={3}>
-							<Button disabled={!admin} color="primary" size="lg" onClick={() => { startGame() }} block>Start</Button>
+							<Button disabled={!admin || !ready} color="primary" size="lg" onClick={() => { startGame() }} block>Start</Button>
 						</Col>
 					</Row>
 				</CardBody>
