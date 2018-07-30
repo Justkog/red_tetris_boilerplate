@@ -24,12 +24,12 @@ const VictoryFrameComponent = ({history, victorious, onGameStop, onLeaveRoom}) =
     }
 
     return (
-        <Row className={'end-frame-container'} style={{position: 'absolute', padding: '5vh 0', height: '100%'}}>
+        <Row className={'end-frame-container'} style={{position: 'fixed', padding: '5vh 0', height: '100%', left: '50%', top: '50%', transform: 'translate(-50%, -50%)'}}>
             <Col style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
                 <Row style={{justifyContent: 'center'}}>
                     <span id="victory-title-icon" className={'title-icon'} style={{}}><i className={"fas fa-crown"}/></span>
                 </Row>
-                <Row style={{}}>
+                <Row style={{justifyContent: 'center'}}>
                     <span id="victory-title" className={'title'}>You Win!</span>
                 </Row>
                 <Row style={{justifyContent: 'space-evenly', marginTop: '15px'}}>
