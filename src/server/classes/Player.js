@@ -45,4 +45,10 @@ export default class Player
   {
     this.piece_index += 1;
   }
+
+  reset()
+  {
+    this.game_finished = false;
+    this.board = emptyBoardN(20, 10);
+  }
 }
