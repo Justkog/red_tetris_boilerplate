@@ -202,8 +202,8 @@ export const registerGameStart = (socket, dispatch, getState) => {
 	socket.off(GAME_START)
 	socket.on(GAME_START, (data) => {
 		console.log('Listening GAME_START: ', data);
-		dispatch(sealTetrimino())
 		dispatch(resetBoard())
+		dispatch(sealTetrimino())
 		dispatch(initGame(data))
 		dispatch(pullAndAddTetri())
 		dispatch(startGame())
