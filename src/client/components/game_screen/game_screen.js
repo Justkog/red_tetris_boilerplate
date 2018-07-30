@@ -3,16 +3,18 @@ import React from 'react'
 import Board from '../board/board'
 import Score from '../score/score'
 import { Col } from 'reactstrap'
-import { GameEndModal } from '../game_end_modal/game_end_modal';
 import Spectre from '../spectre/spectre'
+import { VictoryFrame } from '../victory_screen/victory_screen';
+import { LossFrame } from '../loss_screen/loss_screen';
 
 export const GameScreen = () => {
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row', flex: 5, justifyContent: 'space-around', height: '100%', width: '90%' }} >
+    <div style={{ display: 'flex', flexDirection: 'row', flex: 5, justifyContent: 'space-around', height: '100%' }} >
       <Score />
       <Board />
-      <GameEndModal/>
+      <VictoryFrame/>
+      <LossFrame/>
       <Spectre />
     </ div>
   )

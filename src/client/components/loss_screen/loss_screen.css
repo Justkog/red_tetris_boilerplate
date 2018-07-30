@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css?family=Press+Start+2P');
+@import url('https://use.fontawesome.com/releases/v5.2.0/css/all.css');
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes pop {
+    0% {
+        transform: scale(1)
+    }
+    1% {
+        transform: scale(0)
+    }
+    100% {
+        transform: scale(1)
+    }
+}
+
+@keyframes beat {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes loss-blink {
+    0% {
+    }
+    50% {
+        color: #ffbfbf;
+    }
+    100% {
+    }
+}
+
+@keyframes loss-rotate {
+    0% {
+        transform: rotate(0deg)
+    }
+    50% {
+        transform: rotate(-30deg)
+    }
+    100% {
+        transform: rotate(0deg)
+    }
+}
+
+@keyframes loss-arrive {
+    0% {
+        transform: translateX(100%)
+    }
+    100% {
+        transform: translateX(0)
+    }
+}
+
+#loss-title {
+    color: #ff7a36;
+    font-size: 64px;
+    font-family: 'Press Start 2P', cursive;
+    text-shadow: -4px 0 black, 0 4px black, 4px 0 black, 0 -4px black;
+    animation: loss-arrive 0.5s ease, beat 1.1s linear 0.5s infinite, loss-blink 1.1s linear 0.5s infinite;
+}
+
+#loss-title-icon {
+    color: #dadada;
+    font-size: 128px;
+    text-shadow: -4px 0 black, 0 4px black, 4px 0 black, 0 -4px black;
+    animation: pop 0.5s ease,
+        beat 0.8s linear 0.5s infinite,
+        loss-blink 1.1s linear 0.5s infinite;
+}
+
+#loss-title-icon i {
+    animation: loss-rotate 1.2s linear 0s infinite;
+    
+}
+
+.end-frame-container {
+    animation: appear 0.2s;
+}
