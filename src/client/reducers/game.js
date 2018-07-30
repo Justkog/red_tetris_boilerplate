@@ -1,8 +1,15 @@
-import { LOOP_UPDATE, REGISTER_LOOP_INTERVAL_ID, GAME_INIT, KEY_DOWN_UNSUBSCRIBE_REGISTER, HEAD_TETRI_REMOVE, TETRIS_UPDATE, GAME_PAUSE, GAME_RESUME, GAME_STOP, GAME_OVER, GAME_WIN } from '../actions/game'
+import { LOOP_UPDATE, REGISTER_LOOP_INTERVAL_ID, GAME_INIT, KEY_DOWN_UNSUBSCRIBE_REGISTER, HEAD_TETRI_REMOVE, TETRIS_UPDATE, GAME_PAUSE, GAME_RESUME, GAME_STOP, GAME_OVER, GAME_WIN, WAIT_GAME_END, GAME_RESET } from '../actions/game'
 import { KEY_DOWN } from '../actions/key'
 import * as R from 'ramda'
 import { TETRIMINO_ADD } from '../actions/tetrimino';
-import { UPDATE_SCORE, SPECTRUM_UPDATE, GAME_START } from '../../server/tools/constants';
+import { UPDATE_SCORE, SPECTRUM_UPDATE, GAME_START, PLAYER_END } from '../../server/tools/constants';
+
+const defaultGame = () => ({
+	started: false, 
+	paused: false,
+	loopIntervalID: 0,
+	lastTetriID: 1
+})
 
 const handleKey = (state, key) => {
 	switch (key) {
@@ -15,7 +22,7 @@ const handleKey = (state, key) => {
 	}
 }
 
-export default (state = {started: false, paused: false, loopIntervalID: 0, lastTetriID: 1}, action) => {
+export default (state = defaultGame(), action) => {
 	switch (action.type) {
 		case GAME_START:
 			return R.evolve(R.__, state)({
@@ -24,15 +31,21 @@ export default (state = {started: false, paused: false, loopIntervalID: 0, lastT
 		case GAME_STOP:
 			return R.evolve(R.__, state)({
 				started: R.F
-      		})
-    case UPDATE_SCORE:
-        return Object.assign({}, state, { scores: action.scores })
-    case SPECTRUM_UPDATE:
-      let spectrum = {};
-      spectrum[action.user] = action.board;
-      spectrum = Object.assign({}, state.spectrum, spectrum )
-      return Object.assign({}, state, { spectrum } )
-    case GAME_PAUSE:
+			})
+		case GAME_RESET:
+			return Object.assign({}, defaultGame(), { keydownUnsubscribe: state.keydownUnsubscribe })
+		case PLAYER_END:
+			return Object.assign({}, state, { finished: action.game_finished })
+		case WAIT_GAME_END:
+			return Object.assign({}, state, { waitingEnd: true })
+		case UPDATE_SCORE:
+			return Object.assign({}, state, { scores: action.scores })
+		case SPECTRUM_UPDATE:
+			let spectrum = {};
+			spectrum[action.user] = action.board;
+			spectrum = Object.assign({}, state.spectrum, spectrum )
+			return Object.assign({}, state, { spectrum } )
+		case GAME_PAUSE:
 			return R.evolve(R.__, state)({
 				paused: R.T
 			})

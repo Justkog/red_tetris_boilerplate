@@ -3,10 +3,26 @@ import * as R from 'ramda'
 import './loss_screen.css'
 import { connect } from 'react-redux'
 import { Alert, Container, Form, FormGroup, Label, Col, Input, Jumbotron, Row, Button, ListGroup, ListGroupItem, Card, CardBody } from 'reactstrap'
+import { withRouter } from 'react-router-dom';
+import { stopGame, waitGameEndAsync } from '../../actions/game';
+import { leaveRoomAsync } from '../../actions/room';
 
-const LossFrameComponent = ({victorious}) => {
+const LossFrameComponent = ({history, victorious, waitingEnd, onGameStop, onLeaveRoom, onWaitGameEnd}) => {
     if (victorious != false)
         return null
+
+    const backToRooms = () => {
+        console.log('backToRooms')
+        history.push('rooms')
+        onGameStop()
+        onLeaveRoom()
+    }
+
+    const waitRoomReopen = () => {
+        console.log('waitRoomReopen')
+        onWaitGameEnd()        
+    }
+
     return (
         <Row className={'end-frame-container'} style={{position: 'absolute', padding: '5vh 0', height: '100%'}}>
             <Col style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
@@ -17,11 +33,11 @@ const LossFrameComponent = ({victorious}) => {
                     <span id="loss-title" className={'title'}>You Lose!</span>
                 </Row>
                 <Row style={{justifyContent: 'space-evenly', marginTop: '15px'}}>
-                    <Button size="lg">
+                    <Button size="lg" onClick={backToRooms}>
                         Back to Rooms
                     </Button>
-                    <Button size="lg">
-                        Lobby
+                    <Button size="lg" onClick={waitRoomReopen} disabled={waitingEnd} className={ waitingEnd ? 'waiting' : ''}>
+                        { waitingEnd ? 'Please wait..' : 'Wait for Revenge!'}
                     </Button>
                 </Row>
             </Col>
@@ -32,7 +48,22 @@ const LossFrameComponent = ({victorious}) => {
 const mapStateToProps = (state) => {
 	return {
 		victorious: state.game.victorious,
+		waitingEnd: state.game.waitingEnd,
 	}
 }
 
-export const LossFrame = connect(mapStateToProps, null)(LossFrameComponent)
+const mapDispatchToProps = dispatch => {
+	return {
+		onGameStop: () => {
+			dispatch(stopGame())
+        },
+        onLeaveRoom: () => {
+			dispatch(leaveRoomAsync())
+        },
+        onWaitGameEnd: () => {
+			dispatch(waitGameEndAsync())
+		}
+	}
+}
+
+export const LossFrame = withRouter(connect(mapStateToProps, mapDispatchToProps)(LossFrameComponent))

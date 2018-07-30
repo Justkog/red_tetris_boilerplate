@@ -90,3 +90,17 @@
 .end-frame-container {
     animation: appear 0.2s;
 }
+
+@keyframes waiting-blink {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0.9;
+        background-color: rgb(138, 175, 175);
+    }
+}
+
+.waiting {
+    animation: waiting-blink 1s linear 0s infinite alternate;
+}

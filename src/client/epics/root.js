@@ -3,7 +3,7 @@ import { LINES_DELETE, sendBoardUpdate } from '../actions/board'
 import { INDESTRUCTIBLE_LINES_ADD, PLAYER_END } from '../../server/tools/constants'
 import { TETRIMINO_REMOVE, TETRIMINO_SEAL } from '../actions/tetrimino'
 import { map } from 'rxjs/operators'
-import { GAME_OVER, permanentylPause, winGame, sendPlayerEnd, getGame } from '../actions/game';
+import { GAME_OVER, permanentylPause, winGame, sendPlayerEnd, getGame, GAME_STOP, resetGame } from '../actions/game';
 import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';
 import * as R from 'ramda'
@@ -31,6 +31,17 @@ const onGameOver = (action$, state$) => action$.pipe(
     })
 )
 
+const onGameStop = (action$, state$) => action$.pipe(
+    ofType(
+        GAME_STOP
+    ),
+    map(() => {
+        return (dispatch, getState) => {
+            dispatch(resetGame())
+        }
+    })
+)
+
 const onPlayerEnd = (action$, state$) => action$.pipe(
     ofType(
         PLAYER_END
@@ -49,4 +60,5 @@ export const rootEpic = combineEpics(
     sendBoardEpic,
     onGameOver,
     onPlayerEnd,
+    onGameStop
 )

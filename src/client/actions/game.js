@@ -7,11 +7,17 @@ import { resetBoard } from './board';
 import { getBoard, getActiveTetrimino } from '../middleware/boardManager';
 import { removeTetriInState } from '../reducers/board';
 import { visualBoard } from '../components/board/board';
+import { from } from 'rxjs/internal/observable/from';
+import { store } from '../index';
+import { map } from 'rxjs/internal/operators/map';
+import { filter } from 'rxjs/internal/operators/filter';
+import { first } from 'rxjs/internal/operators/first';
 
 export const GAME_PAUSE = 'GAME_PAUSE'
 export const GAME_RESUME = 'GAME_RESUME'
 export const GAME_INIT = 'GAME_INIT'
 export const GAME_STOP = 'GAME_STOP'
+export const GAME_RESET = 'GAME_RESET'
 export const GAME_OVER = 'GAME_OVER'
 export const GAME_WIN = 'GAME_WIN'
 export const LOOP_UPDATE = 'LOOP_UPDATE'
@@ -20,6 +26,7 @@ export const REGISTER_LOOP_INTERVAL_ID = 'REGISTER_LOOP_INTERVAL_ID'
 export const GAME_START_REQUEST = 'GAME_START_REQUEST'
 export const KEY_DOWN_UNSUBSCRIBE_REGISTER = 'KEY_DOWN_UNSUBSCRIBE_REGISTER'
 export const HEAD_TETRI_REMOVE = 'HEAD_TETRI_REMOVE'
+export const WAIT_GAME_END = 'WAIT_GAME_END'
 
 const getLoopIntervalID = R.path(['game', 'loopIntervalID'])
 const getKeydownUnsubscribe = R.path(['game', 'keydownUnsubscribe'])
@@ -86,6 +93,10 @@ export const startGame = () => ({
 
 export const stopGame = () => ({
 	type: GAME_STOP,
+})
+
+export const resetGame = () => ({
+	type: GAME_RESET,
 })
 
 export const pauseGame = () => ({
@@ -213,6 +224,8 @@ export const registerPlayerEnd = (socket, dispatch, getState) => {
 	socket.on(PLAYER_END, (data) => {
 		console.log('Listening PLAYER_END: ', data);
 		dispatch(playerEnd(data))
+		// if (getGame(getState()).waitingEnd && data.game_finished)
+		// 	dispatch(stopGame())
 	})
 }
 
@@ -227,3 +240,26 @@ export const sendPlayerEnd = () => {
 		console.log('player end sent')
 	}
 }
+
+export const waitGameEnd = () => ({
+	type: WAIT_GAME_END,
+})
+
+export const waitGameEndAsync = () => {
+	return (dispatch, getState) => {
+		console.log('waitGameEndAsync')
+		dispatch(waitGameEnd())
+		// wish I could put here a listener to game.finished and dispatch a stopGame once on true
+		// looks like i did but bugs may occur
+		const state$ = from(store);
+		const onGameFinished$ = state$.pipe(
+			map(state => state.game.finished),
+			filter(v => v),
+			first()
+		)
+		onGameFinished$.subscribe(() => {
+			dispatch(stopGame())
+		})
+	}
+}
+

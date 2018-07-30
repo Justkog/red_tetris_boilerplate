@@ -49,7 +49,7 @@ window.onhashchange = () => {
 
 const epicMiddleware = createEpicMiddleware();
 
-const store = createStore(
+export const store = createStore(
 	reducer,
 	initialState,
 	applyMiddleware(thunk, epicMiddleware, createLogger(), gameLoopManager, boardManager)
