@@ -86,7 +86,6 @@ store.dispatch(alert('Soon, will be here a fantastic Tetris ... 2'))
 // test
 // store.dispatch(keyDown({key: 'ArrowRight'}))
 // store.dispatch(addTetrimino())
-// test_socket_io();
 
 // subscribe to event
 // let unlistenkeyDown = store.dispatch(listenToWindowEvent('keydown', keyDownDispatcher))

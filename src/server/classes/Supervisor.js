@@ -1,3 +1,4 @@
+import * as constants from '../tools/constants';
 import Player from './Player';
 import Game from './Game';
 
@@ -102,6 +103,8 @@ export default class Supervisor
       }
     }
     );
+    if (this.io)
+      this.io.emit(constants.ROOMS_LIST_SHOW, { rooms: this.list_availables_rooms() });
   }
 
   list_availables_rooms()
