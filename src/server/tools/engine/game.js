@@ -32,7 +32,7 @@ export function game_creation_solo(socket, supervisor)
   });
 }
 
-function remove_player_from_old_game(player)
+function remove_player_from_old_game(player, supervisor)
 {
   let old_game = player.game;
   old_game.remove_player(player);
@@ -63,7 +63,7 @@ export function game_join(socket, supervisor)
         return;
       }
       if (player.game)
-        remove_player_from_old_game(player);
+        remove_player_from_old_game(player, supervisor);
       game = supervisor.add_game(data.roomName, player, data.tetriNumber, false);
       supervisor.io.emit(constants.ROOMS_LIST_SHOW, { rooms: supervisor.list_availables_rooms() });
     }
@@ -71,7 +71,7 @@ export function game_join(socket, supervisor)
       game.addPlayer(player);
     else if (player.game.room != game.room)
     {
-      remove_player_from_old_game(player);
+      remove_player_from_old_game(player, supervisor);
       game.addPlayer(player);
     }
 
