@@ -17,7 +17,7 @@ export default class Game
 
   is_available()
   {
-    return this.is_solo || !this.is_running;
+    return !this.is_running && !this.is_solo;
   }
 
   all_players_finished()
