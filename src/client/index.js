@@ -9,7 +9,7 @@ import { gameLoopManager } from './middleware/gameLoopManager'
 import reducer from './reducers'
 import App from './containers/app'
 import { alert } from './actions/alert'
-import { startGameLoop, registerGameStart, registerNextTetri, registerPlayerEnd, registerGameError } from './actions/game'
+import { startGameLoop, registerGameStart, registerNextTetri, registerPlayerEnd, registerGameError, overGame, stopGame, getGame } from './actions/game'
 import { keyDown, listenToWindowEvent, keyDownDispatcher } from './actions/key'
 import * as R from 'ramda'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
@@ -36,6 +36,10 @@ const hashSetup = (store) => {
 		const urlLogin = window.location.hash.match(hashUrlRegex)[2]
 		const urlRoom = window.location.hash.match(hashUrlRegex)[1]
 		store.dispatch(setLogin(urlLogin))
+		if (R.propEq('started', true)(getGame(store.getState()))) {
+			store.dispatch(overGame())
+			store.dispatch(stopGame())
+		}
 		store.dispatch(joinRoomAsync(urlRoom))
 	}
 }

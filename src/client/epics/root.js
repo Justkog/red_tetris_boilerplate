@@ -53,6 +53,8 @@ const onPlayerEnd = (action$, state$) => action$.pipe(
             if (getState().game.started && action.game_finished && !R.has('victorious', getGame(getState()))) {
                 dispatch(permanentylPause())
                 dispatch(winGame())
+            } else if (!getState().game.started) {
+                dispatch(readyPlayerAsync())
             }
         }
     })
