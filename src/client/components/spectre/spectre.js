@@ -7,10 +7,26 @@ import { printableBoard, invertGrid, Cell, Row } from '../board/board'
 import { bordersMask } from '../../reducers/board'
 import '../board/board.css'
 
+const boardToSpectre = (board) => {
+  let previousRow = []
+  board = R.map((row) => {
+    if (R.isEmpty(previousRow))
+      previousRow = row
+    row = R.addIndex(R.map)((cell, index) => {
+      if (!R.isEmpty(cell))
+        return cell
+      else
+        return previousRow[index]
+    })(row)
+    previousRow = row
+    return row
+  })(board)
+  return board
+}
 
 const LittleBoard = (board, name) => {
 
-  const boardToDraw = printableBoard(board, invertGrid(bordersMask(board)))
+  const boardToDraw = boardToSpectre(board)
 
   const listColumns = (row) => R.addIndex(R.map)((cell, index) =>
     <Cell key={index.toString() + name} value={cell}>
