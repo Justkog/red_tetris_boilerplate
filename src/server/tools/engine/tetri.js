@@ -10,8 +10,10 @@ export function next_tetri(socket, supervisor)
 
     if (!game)
     {
+      socket.emit(constants.GAME_ERROR, { message: 'no game found' });
       return ;
     }
+
     player.update_piece_index();
     const index = player.piece_index * game.tetri_number;
 

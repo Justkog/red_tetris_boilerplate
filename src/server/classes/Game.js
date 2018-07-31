@@ -130,6 +130,8 @@ export default class Game
         {
           this.supervisor.send_data_to_room(this.room, constants.ROOM_UPDATE, { is_solo: this.is_solo, roomName: this.room, users: this.playersInfos() })
           this.supervisor.send_data_to_room(this.room, constants.PLAYER_END, { users: this.playersInfos(), game_finished: this.all_players_finished() })
+          if (this.all_players_finished())
+            this.reset();
         }
         return ;
       }  
