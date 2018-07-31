@@ -8,11 +8,13 @@ const Score = ({scores}) => {
       return (
         <Container>
           <Row style={{marginLeft: '0px'}}>
-            <Col>
+            <Col style={{textAlign: 'right'}}>
               <h3>{name}</h3>
             </Col>
-            <Col>
+            <Col style={{textAlign: 'right'}}>
               <h3>{score}</h3>
+            </Col>
+            <Col sm="2">
             </Col>
           </Row>
         </Container>
@@ -31,7 +33,7 @@ const Score = ({scores}) => {
 )} ;
 
   return (
-    <div style={{flexBasis: '33.33%'}}>
+    <div style={{flexBasis: '33.33%', display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
       {listRows(scores)}
     </ div>
   )

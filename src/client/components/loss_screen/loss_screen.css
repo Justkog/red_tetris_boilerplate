@@ -87,8 +87,9 @@
     
 }
 
-.end-frame-container {
+div .end-frame-container {
     animation: appear 0.2s;
+    margin-left: 0px;
 }
 
 @keyframes waiting-blink {
