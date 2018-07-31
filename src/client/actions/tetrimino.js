@@ -4,7 +4,8 @@ import { getActiveTetrimino, getBoard } from "../middleware/boardManager"
 import { verticallyMove, horizontallyMove, rotate, tetriShadow } from "../reducers/tetrimino"
 import { updateBoardState, isValidBoard, bordersMask } from "../reducers/board"
 import { checkLines } from './board';
-import { getGameTetris, pullHeadTetri, pullAndAddTetri } from './game';
+import { getGameTetris, pullHeadTetri, pullAndAddTetri, overGame } from './game';
+import { topLogicLinesCount } from '../components/board/board';
 
 export const TETRIMINO_ADD = 'TETRIMINO_ADD'
 export const TETRIMINO_SEAL = 'TETRIMINO_SEAL'
@@ -119,10 +120,15 @@ export const rotateTetrimino = () => {
 	}
 }
 
+const isTetriOverlappingTop = R.pipe(R.take(topLogicLinesCount), R.any(R.any(R.compose(R.gt(R.__, 0), R.length))))
+
 export const sealAndRenew = () => {
 	return (dispatch, getState) => {
 		dispatch(sealTetrimino())
 		dispatch(checkLines())
-		dispatch(pullAndAddTetri())
+		if (isTetriOverlappingTop(getBoard(getState())))
+			dispatch(overGame())
+		else
+			dispatch(pullAndAddTetri())
 	}
 }

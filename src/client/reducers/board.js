@@ -2,6 +2,7 @@ import { BOARD_UPDATE, LINES_DELETE, BOARD_RESET, addIndestructibleLines } from 
 import * as R from 'ramda'
 import { tetriTypeToFormFactory, tetriTypeToColorFactory } from "../components/tetrimino/tetrimino"
 import { INDESTRUCTIBLE_LINES_ADD } from "../../server/tools/constants";
+import { topLogicLinesCount } from "../components/board/board";
 
 // const emptyRow = () => R.map((n) => 0, R.unfold((n) => n > 9 ? false : [n, n+1], 0))
 // const emptyBoard = () => R.map((n) => emptyRow(), R.unfold((n) => n > 19 ? false : [n, n+1], 0))
@@ -26,6 +27,9 @@ const isTetriOverlappingBorders = (board, invalidMask) => {
 
 const isTetriOverlappingTetri = R.any(R.any(R.compose(R.gt(R.__, 1), R.length)))
 
+// strangest bug ever, this function does not work when exported
+// export const isTetriOverlappingTop = R.pipe(R.take(topLogicLinesCount), R.any(R.any(R.compose(R.gt(R.__, 0), R.length))));
+
 // check that there is nothing in left, right columns and bottom row
 // check that there is no tetri overlap
 export const isValidBoard = (board, invalidMask) => {
@@ -35,6 +39,7 @@ export const isValidBoard = (board, invalidMask) => {
 		return false
 	return true
 }
+
 
 const populateMaskSideBorders = R.map((row) =>
 	R.compose(R.adjust((v) => 1, 0), R.adjust((v) => 1, row.length - 1))(row)
