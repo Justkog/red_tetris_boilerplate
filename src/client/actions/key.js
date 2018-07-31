@@ -2,6 +2,8 @@ import * as R from 'ramda'
 import { moveLeftTetrimino, moveRightTetrimino, moveDownTetrimino, rotateTetrimino, attemptMoveDownTetrimino, attemptMoveRightTetrimino, attemptMoveLeftTetrimino, attemptRotateTetrimino, attemptMoveFallTetrimino } from './tetrimino';
 import { addIndestructibleLines } from './board';
 import { togglePause } from './game';
+import { fromEvent, interval, merge } from 'rxjs';
+import { throttle, filter } from 'rxjs/operators';
 
 export const KEY_DOWN = 'KEY_DOWN';
 
@@ -21,19 +23,30 @@ const allowedKeys = [
 	' ',
 ]
 
+const throttledKeys = [
+	'p',
+	' ',
+	's',
+]
+
 // thunk action creator, needs redux-thunk
-export const listenToWindowEvent = (name, mapEventToAction, filter = (e) => R.contains(e.key, allowedKeys)) => {
+export const listenToWindowEvent = (name, mapEventToAction, keysFilter = (e) => R.contains(e.key, allowedKeys)) => {
 	return function (dispatch) {
 		function handleEvent(e) {
-			if (filter(e)) {
+			if (keysFilter(e)) {
 				dispatch(mapEventToAction(e))
 			}
 		}
 	
-		window.addEventListener(name, handleEvent)
-	
+		const source$ = fromEvent(window, name).pipe(filter((e) => !R.contains(e.key, throttledKeys)))
+		const throttledSource$ = fromEvent(window, name).pipe(
+			filter((e) => R.contains(e.key, throttledKeys)),
+			throttle(val => interval(200)),
+		)
+		const subscription = merge(source$, throttledSource$).subscribe(handleEvent)
+
 		// note: returns a function to unsubscribe
-		return () => window.removeEventListener(name, handleEvent)
+		return () => subscription.unsubscribe()
 	}
 }
 
