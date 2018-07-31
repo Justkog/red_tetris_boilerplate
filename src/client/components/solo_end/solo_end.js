@@ -1,43 +1,43 @@
 import React from 'react'
 import * as R from 'ramda'
-import './loss_screen.css'
+import './solo_end.css'
 import { connect } from 'react-redux'
 import { Alert, Container, Form, FormGroup, Label, Col, Input, Jumbotron, Row, Button, ListGroup, ListGroupItem, Card, CardBody } from 'reactstrap'
 import { withRouter } from 'react-router-dom';
-import { stopGame, waitGameEndAsync } from '../../actions/game';
+import { stopGame, requestGameStartAsync } from '../../actions/game';
 import { leaveRoomAsync } from '../../actions/room';
 
-const LossFrameComponent = ({history, victorious, solo, waitingEnd, onGameStop, onLeaveRoom, onWaitGameEnd}) => {
-    if (victorious != false || solo)
+const SoloEndFrameComponent = ({history, victorious, solo, onGameStop, onLeaveRoom, onStartGame}) => {
+    if (victorious != false || !solo)
         return null
 
-    const backToRooms = () => {
+    const restart = () => {
         console.log('backToRooms')
-        history.push('rooms')
         onGameStop()
-        onLeaveRoom()
+        onStartGame()
     }
 
-    const waitRoomReopen = () => {
-        console.log('waitRoomReopen')
-        onWaitGameEnd()        
+    const goMultiplayer = () => {
+        onGameStop()
+        onLeaveRoom()
+        history.push('rooms')
     }
 
     return (
         <Row className={'end-frame-container'} style={{position: 'fixed', padding: '5vh 0', height: '100%', left: '50%', top: '50%', transform: 'translate(-50%, -50%)'}}>
             <Col style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
                 <Row style={{justifyContent: 'center'}}>
-                    <span id="loss-title-icon" className={'title-icon'} style={{}}><i className={"fas fa-skull"}/></span>
+                    <span id="solo-title-icon" className={'title-icon'} style={{}}><i className={"fab fa-fort-awesome"}/></span>
                 </Row>
                 <Row style={{justifyContent: 'center', textAlign: 'center'}}>
-                    <span id="loss-title" className={'title'}>You Lose!</span>
+                    <span id="solo-title" className={'title'}>Game over</span>
                 </Row>
                 <Row style={{justifyContent: 'space-evenly', marginTop: '15px'}}>
-                    <Button size="lg" onClick={backToRooms}>
-                        Back to Rooms
+                    <Button size="lg" onClick={restart}>
+                        Retry!
                     </Button>
-                    <Button size="lg" onClick={waitRoomReopen} disabled={waitingEnd} className={ waitingEnd ? 'waiting' : ''}>
-                        { waitingEnd ? 'Please wait..' : 'Wait for Revenge!'}
+                    <Button size="lg" onClick={goMultiplayer}>
+                        Multiplayer!
                     </Button>
                 </Row>
             </Col>
@@ -47,9 +47,8 @@ const LossFrameComponent = ({history, victorious, solo, waitingEnd, onGameStop, 
 
 const mapStateToProps = (state) => {
 	return {
-		victorious: state.game.victorious,
+        victorious: state.game.victorious,
 		solo: state.room.solo,
-		waitingEnd: state.game.waitingEnd,
 	}
 }
 
@@ -61,10 +60,10 @@ const mapDispatchToProps = dispatch => {
         onLeaveRoom: () => {
 			dispatch(leaveRoomAsync())
         },
-        onWaitGameEnd: () => {
-			dispatch(waitGameEndAsync())
-		}
+        onStartGame: () => {
+			dispatch(requestGameStartAsync())
+		},
 	}
 }
 
-export const LossFrame = withRouter(connect(mapStateToProps, mapDispatchToProps)(LossFrameComponent))
+export const SoloEndFrame = withRouter(connect(mapStateToProps, mapDispatchToProps)(SoloEndFrameComponent))

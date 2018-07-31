@@ -1,7 +1,7 @@
 /* @import url('https://fonts.googleapis.com/css?family=Press+Start+2P');
 @import url('https://use.fontawesome.com/releases/v5.2.0/css/all.css'); */
-
-/* @keyframes appear {
+/* 
+@keyframes appear {
     0% {
         opacity: 0;
     }
@@ -20,9 +20,9 @@
     100% {
         transform: scale(1)
     }
-} */
+}
 
-/* @keyframes beat {
+@keyframes beat {
     0% {
         transform: scale(1);
     }
@@ -34,60 +34,82 @@
     }
 } */
 
-@keyframes victory-blink {
+@keyframes solo-blink {
     0% {
-
     }
     50% {
-        color: #ffc506;
+        color: #c7e2ff;
     }
     100% {
-
     }
 }
 
-@keyframes victory-rotate {
+@keyframes color-rainbow {
     0% {
-        transform: rotate(0deg)
+        color: #ff5f5f;
     }
-    50% {
-        transform: rotate(30deg)
+    20% {
+        color: #ca5fff;
+    }
+    40% {
+        color: #5f9eff;
+    }
+    60% {
+        color: #5fff83;
+    }
+    80% {
+        color: #fffb5f
     }
     100% {
-        transform: rotate(0deg)
+        color: #ff5f5f;
     }
 }
 
-@keyframes victory-arrive {
+
+@keyframes solo-rotate {
     0% {
-        transform: translateX(-100%)
+        transform: rotate(15deg)
+    }
+    50% {
+        transform: rotate(-15deg)
+    }
+    100% {
+        transform: rotate(15deg)
+    }
+}
+
+@keyframes solo-arrive {
+    0% {
+        transform: translateX(100%)
     }
     100% {
         transform: translateX(0)
     }
 }
 
-#victory-title {
-    color: #ffe036;
+#solo-title {
+    color: #01336a;
     font-size: 64px;
     font-family: 'Press Start 2P', cursive;
     text-shadow: -4px 0 black, 0 4px black, 4px 0 black, 0 -4px black;
-    animation: victory-arrive 0.5s ease, beat 1.1s linear 0.5s infinite, victory-blink 1.1s linear 0.5s infinite;
+    animation: solo-arrive 0.5s ease, beat 1.1s linear 0.5s infinite, solo-blink 1.1s linear 0.5s infinite;
 }
 
-#victory-title-icon {
-    color: #ffe036;
+#solo-title-icon {
+    color: #dadada;
     font-size: 128px;
     text-shadow: -4px 0 black, 0 4px black, 4px 0 black, 0 -4px black;
     animation: pop 0.5s ease,
-        beat 0.8s linear 0.5s infinite, victory-blink 1.1s linear 0.5s infinite;
+        beat 1.2s linear 0.5s infinite,
+        solo-blink 1.1s linear 0.5s infinite,
+        color-rainbow 1.5s linear 0s infinite;
 }
 
-#victory-title-icon i {
-    animation: victory-rotate 1.2s linear 0.5s infinite;
+#solo-title-icon i {
+    animation: solo-rotate 1.2s linear 0s infinite;
     
 }
-/* 
+
 .end-frame-container {
     animation: appear 0.2s;
-} */
+}

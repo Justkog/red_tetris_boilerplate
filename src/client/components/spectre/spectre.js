@@ -53,21 +53,24 @@ const Spectre = ({ spectrum }) => {
   const keys = (!spectrum) ? [] : R.splitEvery(3, Object.keys(spectrum));
 
   const test = (k) => {
-        return (k.map( (name) => {
-          return (<div style={{ height: '20%', display: 'flex', flexDirection: 'column', justifyContent: 'space-around' }}>
+      return (R.addIndex(R.map)((name, index) => {
+        return (
+          <div key={index.toString()} style={{ height: '20%', display: 'flex', flexDirection: 'column', justifyContent: 'space-around' }}>
             {console.log('name: ', name)}
             <h1>{name}</h1>
             {LittleBoard(spectrum[name], name) }
-          </div>)
-        }
-  ))};
+          </div>
+        )
+      })(k))
+  };
 
-  const all = keys.map((key) => {
+  const all = R.addIndex(R.map)((key, index) => {
     return (
-   <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
-      { test(key) }
-    </ div>
-  )} );
+      <div key={index.toString()} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
+        { test(key) }
+      </ div>
+    )} 
+  )(keys);
 
   return (
     <div style={{ flexBasis: '33.33%' }}>

@@ -6,6 +6,7 @@ import { Col } from 'reactstrap'
 import Spectre from '../spectre/spectre'
 import { VictoryFrame } from '../victory_screen/victory_screen';
 import { LossFrame } from '../loss_screen/loss_screen';
+import { SoloEndFrame } from '../solo_end/solo_end';
 
 export const GameScreen = () => {
 
@@ -15,6 +16,7 @@ export const GameScreen = () => {
       <Board />
       <VictoryFrame/>
       <LossFrame/>
+      <SoloEndFrame/>
       <Spectre />
     </ div>
   )

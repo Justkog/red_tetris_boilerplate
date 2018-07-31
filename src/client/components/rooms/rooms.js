@@ -16,7 +16,7 @@ const Rooms = ({history, rooms, roomName, userName, onSetLogin, onJoinRoom}) => 
 	{
 		console.log('forward to login')
 		setTimeout(() => {
-			history.push(`/`)
+			history.push(`/login`)
 		}, 0);
 		return null
 	}
