@@ -1,7 +1,6 @@
 import * as R from 'ramda'
 import io from 'socket.io-client'
 import { Observable, Subject, ReplaySubject, from} from 'rxjs'
-import { test_socket_io } from '../components/test_socket_io';
 
 export const SOCKET_CONNECT = 'SOCKET_CONNECT';
 export const SOCKET_CONNECTED = 'SOCKET_CONNECTED';

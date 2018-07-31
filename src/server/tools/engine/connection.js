@@ -16,7 +16,8 @@ export function logout(socket, supervisor)
     let player = supervisor.find_player(socket.id);
     let game = player.game;
 
-    if (game) {
+    if (game)
+    {
       game.remove_player(player);
       loginfo('Player remove from game');
       if (game.players.length == 0)

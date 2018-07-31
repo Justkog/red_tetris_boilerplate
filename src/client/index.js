@@ -19,7 +19,6 @@ import { addTetrimino } from './actions/tetrimino';
 import { listenBoardUpdate } from './actions/gameEvents';
 import { connectSocket, startSocket, registerTests, registerSocketEvent } from './actions/socket';
 import { registerRoomsListShow } from './actions/rooms';
-import { test_socket_io } from './components/test_socket_io';
 import { setLogin } from './actions/user';
 import { joinRoom, joinRoomAsync, registerRoomUpdate } from './actions/room';
 import { hashUrlRegex } from './containers/internalRouter';

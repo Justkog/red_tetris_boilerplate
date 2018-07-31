@@ -26,7 +26,6 @@ export function game_creation_solo(socket, supervisor)
 
     let game = supervisor.add_game(room, player, data.tetriNumber, true);
 
-
     socket.join(room);
     socket.emit(constants.ROOM_UPDATE, { is_solo: game.is_solo, roomName: game.room, users: game.playersInfos() });
   });
@@ -57,11 +56,6 @@ export function game_join(socket, supervisor)
   
     if (!game)
     {
-      if (!supervisor.game_name_available(data.roomName))
-      {
-        socket.emit(constants.GAME_ERROR, { message: 'name already taken' });
-        return;
-      }
       if (player.game)
         remove_player_from_old_game(player, supervisor);
       game = supervisor.add_game(data.roomName, player, data.tetriNumber, false);
@@ -88,11 +82,6 @@ export function game_join(socket, supervisor)
 
 function game_start_errors(socket, game, player)
 {
-  if (!player.is_master)
-  {
-    socket.emit(constants.PLAYER_ERROR, { message: 'player is not master' });
-    return true;
-  }
   if (!game.is_solo && !game.is_available())
   {
     socket.emit(constants.GAME_ERROR, { message: 'game already started' });
@@ -101,6 +90,11 @@ function game_start_errors(socket, game, player)
   if (!game.is_game_ready())
   {
     socket.emit(constants.GAME_ERROR, { message: 'waiting for players' });
+    return true;
+  }
+  if (!player.is_master)
+  {
+    socket.emit(constants.PLAYER_ERROR, { message: 'player is not master' });
     return true;
   }
   return false;
@@ -137,5 +131,7 @@ export function game_leave(socket, supervisor)
       supervisor.remove_game(game);
       supervisor.io.emit(constants.ROOMS_LIST_SHOW, { rooms: supervisor.list_availables_rooms() });
     }
+    else
+      supervisor.send_data_to_room(game.room, constants.ROOM_UPDATE, { is_solo: game.is_solo, roomName: game.room, users: game.playersInfos() })
   });
 }

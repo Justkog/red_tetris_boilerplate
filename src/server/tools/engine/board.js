@@ -10,7 +10,8 @@ export function board_update(socket, supervisor)
 
     if (!game)
     {
-      return ;
+      socket.emit(constants.GAME_ERROR, { message: 'game not found' });
+      return;
     }
 
     player.board = data.board;
