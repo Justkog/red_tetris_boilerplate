@@ -28,6 +28,12 @@ export function player_ready(socket, supervisor)
     let player = supervisor.find_player(socket.id);
     let game = player.game;
 
+    if (!game)
+    {
+      socket.emit(constants.GAME_ERROR, { message: 'game not found' });
+      return ;
+    }
+
     player.is_ready = true;
 
     const game_data = { is_solo: game.is_solo, roomName: game.room, users: game.playersInfos() };
