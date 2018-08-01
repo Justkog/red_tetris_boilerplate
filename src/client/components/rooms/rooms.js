@@ -9,6 +9,7 @@ import { setLogin } from '../../actions/user';
 import { joinRoom, joinRoomAsync } from '../../actions/room';
 import { showRoot } from '../../actions/rooms';
 import { restartSocket } from '../../actions/socket';
+import { Loader } from '../loader/loader';
 
 const Rooms = ({history, rooms, roomName, userName, onSetLogin, onJoinRoom}) => {
 	
@@ -69,6 +70,7 @@ const Rooms = ({history, rooms, roomName, userName, onSetLogin, onJoinRoom}) => 
 					</Row>
 				</CardBody>
 			</Card>
+			<Loader/>
 		</Container>
 	)
 }

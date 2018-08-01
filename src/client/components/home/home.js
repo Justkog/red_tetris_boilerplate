@@ -1,19 +1,22 @@
 import React from 'react'
 import { connect } from 'react-redux'
-// import './login.css'
+import './home.css'
 import { Alert, Container, Form, FormGroup, Label, Col, Input, Jumbotron, Row, Button } from 'reactstrap'
 import * as R from 'ramda'
 import { withRouter } from 'react-router-dom';
 import { joinSoloRoomAsync } from '../../actions/room';
+import { Loader } from '../loader/loader';
 
-const HomeComponent = ({history, onJoinSolo}) => {
+const HomeComponent = ({history, onJoinSolo, socketStatus}) => {
 	const solo = () => {
 		onJoinSolo()
     }
     
     const multiplayer = () => {
 		history.push('login')
-    }
+	}
+	
+	const canPlay = socketStatus === 'connected'
 
 	return (
 		<Container>
@@ -22,21 +25,22 @@ const HomeComponent = ({history, onJoinSolo}) => {
 			</Row>
 			<Row className="justify-content-center" style={{marginTop: '10%', marginBottom: '10%'}}>
                 <Col xs={{ size: 3, offset: 3 }} style={{textAlign: 'center'}}>
-    				<Button color="primary" size="lg" onClick={() => solo()}>Play solo!</Button>{' '}
+    				<Button color="primary" size="lg" onClick={() => solo()} disabled={!canPlay}>Play solo!</Button>{' '}
                 </Col>
                 <Col xs={{ size: 3 }} style={{textAlign: 'center'}}>
-    				<Button color="primary" size="lg" onClick={() => multiplayer()}>Multiplayer!</Button>{' '}
+    				<Button color="primary" size="lg" onClick={() => multiplayer()} disabled={!canPlay}>Multiplayer!</Button>{' '}
                 </Col>
                 <Col xs={{ size: 3 }}>
                 </Col>
 			</Row>
+			<Loader/>
 		</Container>
 	)
 }
 
 const mapStateToProps = (state) => {
 	return {
-
+		socketStatus: state.connection.status
 	}
 }
 

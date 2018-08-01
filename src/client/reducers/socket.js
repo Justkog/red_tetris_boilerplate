@@ -1,4 +1,4 @@
-import { SOCKET_CONNECT } from "../actions/socket";
+import { SOCKET_CONNECT, SOCKET_DISCONNECTED } from "../actions/socket";
 import * as R from 'ramda'
 
 export default (state = {}, action) => {

@@ -10,6 +10,7 @@ import socket from './socket'
 import rooms from './rooms'
 import user from './user'
 import room from './room'
+import connection from './connection'
 
 export default (state = {}, action) => {
 	return R.compose(
@@ -25,6 +26,7 @@ export default (state = {}, action) => {
 			board,
 			activeTetrimino: (state = {}) => state,	// to silence the combineReducer warning, see https://stackoverflow.com/questions/33677833/react-redux-combining-reducers-unexpected-keys
 			socket,
+			connection,
 		})
 	)(state, action)
 }

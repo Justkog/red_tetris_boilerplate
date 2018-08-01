@@ -5,7 +5,7 @@ import { ROOM_UPDATE, ROOM_LEAVE } from '../../server/tools/constants';
 export default (state = {}, action) => {
 	switch (action.type) {
         case ROOM_JOIN:
-            return Object.assign({}, state, { name: action.name })
+            return Object.assign({}, state, { name: action.name, solo: false })
         case SOLO_ROOM_JOIN:
             console.log('solo')
             return Object.assign({}, state, { solo: true })

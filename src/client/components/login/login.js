@@ -5,6 +5,7 @@ import { Alert, Container, Form, FormGroup, Label, Col, Input, Jumbotron, Row, B
 import * as R from 'ramda'
 import { withRouter } from 'react-router-dom';
 import { setLogin } from '../../actions/user';
+import { Loader } from '../loader/loader';
 
 const LoginComponent = ({history, login, onSetLogin}) => {
 	function play(userName) {
@@ -35,6 +36,7 @@ const LoginComponent = ({history, login, onSetLogin}) => {
 			<Row className="justify-content-center" style={{marginTop: '10%', marginBottom: '10%'}}>
 				<Button color="primary" size="lg" onClick={() => play(login)}>Play!</Button>{' '}
 			</Row>
+			<Loader/>
 		</Container>
 	)
 }

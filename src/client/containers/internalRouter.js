@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { GameScreen } from '../components/game_screen/game_screen'
 import Login from '../components/login/login';
 import Lobby from '../components/lobby/lobby';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import { setLogin } from '../actions/user';
 import { joinRoom, joinRoomAsync } from '../actions/room';
 import * as R from 'ramda'
@@ -20,7 +20,8 @@ const InternalRouter = ({history, room, login, game}) => {
         return <Lobby/>
     } else if (login && !hashUrlRegex.test(history.location.hash)) {
         console.log('rooms!')
-        history.push('rooms')
+        return <Redirect to="/rooms"/>
+        // history.push('rooms')
     } else {
         console.log('Home!')
         return <Home/>

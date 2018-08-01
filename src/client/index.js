@@ -19,7 +19,7 @@ import { addTetrimino } from './actions/tetrimino';
 import { listenBoardUpdate } from './actions/gameEvents';
 import { connectSocket, startSocket, registerTests, registerSocketEvent } from './actions/socket';
 import { registerRoomsListShow } from './actions/rooms';
-import { setLogin } from './actions/user';
+import { setLogin, resetLogin } from './actions/user';
 import { joinRoom, joinRoomAsync, registerRoomUpdate } from './actions/room';
 import { hashUrlRegex } from './containers/internalRouter';
 import { createEpicMiddleware } from 'redux-observable';
@@ -32,6 +32,7 @@ const initialState = {}
 
 const hashSetup = (store) => {
 	console.log('hash setup', window.location.hash)
+	console.log(hashUrlRegex.test(window.location.hash))	
 	if (hashUrlRegex.test(window.location.hash)) {
 		const urlLogin = window.location.hash.match(hashUrlRegex)[2]
 		const urlRoom = window.location.hash.match(hashUrlRegex)[1]
@@ -41,6 +42,10 @@ const hashSetup = (store) => {
 			store.dispatch(stopGame())
 		}
 		store.dispatch(joinRoomAsync(urlRoom))
+	} else {
+		console.log('reset login')
+		// window.location.hash = ''
+		store.dispatch(resetLogin())
 	}
 }
 

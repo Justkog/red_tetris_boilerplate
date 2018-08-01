@@ -7,6 +7,7 @@ import { withRouter } from 'react-router-dom';
 import { requestGameStartAsync } from '../../actions/game';
 import { restartSocket } from '../../actions/socket';
 import { leaveRoomAsync } from '../../actions/room';
+import { Loader } from '../loader/loader';
 
 const Lobby = ({history, roomName, users, login, onStartGame, onLeaveRoom}) => {
 
@@ -62,6 +63,7 @@ const Lobby = ({history, roomName, users, login, onStartGame, onLeaveRoom}) => {
 					</Row>
 				</CardBody>
 			</Card>
+			<Loader/>
 		</Container>
 	)
 }
