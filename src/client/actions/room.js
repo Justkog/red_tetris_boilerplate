@@ -1,7 +1,7 @@
 import { getSocket } from "./socket";
 import { GAME_JOIN, ROOM_UPDATE, ROOM_LEAVE, PLAYER_READY, GAME_CREATION_SOLO } from "../../server/tools/constants";
 import { getUser } from "../reducers/user";
-import { requestGameStartAsync, getGame } from "./game";
+import { requestGameStartAsync } from "./game";
 import * as R from 'ramda'
 
 export const ROOM_JOIN = 'ROOM_JOIN'

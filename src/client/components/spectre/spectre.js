@@ -4,7 +4,6 @@ import * as R from 'ramda'
 import { Container } from 'reactstrap'
 
 import { printableBoard, invertGrid, Cell, Row } from '../board/board'
-import { bordersMask } from '../../reducers/board'
 import '../board/board.css'
 
 const boardToSpectre = (board) => {

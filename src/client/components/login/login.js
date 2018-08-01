@@ -1,14 +1,11 @@
 import React from 'react'
-import { connect } from 'react-redux'
 // import './login.css'
-import { Alert, Container, Form, FormGroup, Label, Col, Input, Jumbotron, Row, Button } from 'reactstrap'
+import { Container, Form, FormGroup, Label, Col, Input, Row, Button } from 'reactstrap'
 import * as R from 'ramda'
-import { withRouter } from 'react-router-dom';
-import { setLogin } from '../../actions/user';
 import { Loader } from '../loader/loader';
 import { AlertNotifier } from '../alert/alert';
 
-const LoginComponent = ({history, login, onSetLogin}) => {
+export const LoginComponent = ({history, login, onSetLogin}) => {
 	function play(userName) {
 		onSetLogin(userName)
 		history.push('rooms')
@@ -42,19 +39,3 @@ const LoginComponent = ({history, login, onSetLogin}) => {
 		</Container>
 	)
 }
-
-const mapStateToProps = (state) => {
-	return {
-		login: undefined
-	}
-}
-
-const mapDispatchToProps = dispatch => {
-	return {
-		onSetLogin: login => {
-			dispatch(setLogin(login))
-		}
-	}
-}
-
-export const Login = withRouter(connect(mapStateToProps, mapDispatchToProps)(LoginComponent))

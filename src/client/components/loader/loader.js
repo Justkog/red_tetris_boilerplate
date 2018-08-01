@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import './loader.css'
-import { Alert, Container, Form, FormGroup, Label, Col, Input, Jumbotron, Row, Button } from 'reactstrap'
+import { Container, Col, Row } from 'reactstrap'
 import * as R from 'ramda'
 import { withRouter } from 'react-router-dom';
 import { joinSoloRoomAsync } from '../../actions/room';

@@ -2,13 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import './rooms.css'
 
-import { Alert, Container, Form, FormGroup, Label, Col, Input, Jumbotron, Row, Button, ListGroup, ListGroupItem, Card, CardBody } from 'reactstrap'
+import { Container, Form, FormGroup, Label, Col, Input, Row, Button, ListGroup, ListGroupItem, Card, CardBody } from 'reactstrap'
 import * as R from 'ramda'
 import { withRouter } from 'react-router-dom';
 import { setLogin } from '../../actions/user';
-import { joinRoom, joinRoomAsync } from '../../actions/room';
-import { showRoot } from '../../actions/rooms';
-import { restartSocket } from '../../actions/socket';
+import { joinRoomAsync } from '../../actions/room';
 import { Loader } from '../loader/loader';
 import { AlertNotifier } from '../alert/alert';
 

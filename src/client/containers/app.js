@@ -1,15 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import Board from '../components/board/board'
 
 import  { Route, Switch, BrowserRouter, HashRouter, withRouter } from 'react-router-dom'
 import { Router } from 'react-router'
 import createBrowserHistory from 'history/createBrowserHistory'
 
-import { Login } from '../components/login/login';
 import Rooms from '../components/rooms/rooms';
-import Lobby from '../components/lobby/lobby';
 import InternalRouter from './internalRouter';
+import { Login } from './login';
 
 export const history = createBrowserHistory()
 

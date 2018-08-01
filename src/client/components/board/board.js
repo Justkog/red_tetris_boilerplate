@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import './board.css'
-import { Alert, Container } from 'reactstrap'
+import { Container } from 'reactstrap'
 import * as R from 'ramda'
 import { bordersMask } from '../../reducers/board'
 

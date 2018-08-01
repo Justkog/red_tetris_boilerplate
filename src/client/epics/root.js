@@ -3,7 +3,7 @@ import { LINES_DELETE, sendBoardUpdate } from '../actions/board'
 import { INDESTRUCTIBLE_LINES_ADD, PLAYER_END, GAME_ERROR } from '../../server/tools/constants'
 import { TETRIMINO_REMOVE, TETRIMINO_SEAL } from '../actions/tetrimino'
 import { map, filter, first, delay } from 'rxjs/operators'
-import { GAME_OVER, permanentylPause, winGame, sendPlayerEnd, getGame, GAME_STOP, resetGame, stopGame } from '../actions/game';
+import { GAME_OVER, permanentylPause, winGame, sendPlayerEnd, getGame, GAME_STOP, resetGame, stopGame, WAIT_GAME_END } from '../actions/game';
 import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';
 import * as R from 'ramda'
@@ -117,6 +117,25 @@ const onGameError = (action$, state$) => action$.pipe(
     })
 )
 
+const onWaitGameEnd = (action$, state$) => action$.pipe(
+    ofType(
+        WAIT_GAME_END
+    ),
+    map((action) => {
+        return (dispatch, getState) => {
+            state$.pipe(
+                map(state => state.game.finished),
+                filter(v => v),
+                first()
+            ).subscribe(() => {
+                console.log('stopGame from waitGameEndAsync store observer')
+                dispatch(stopGame())
+                console.log('stopGame end from waitGameEndAsync store observer')
+            })
+        }
+    })
+)
+
 export const rootEpic = combineEpics(
     sendBoardEpic,
     onGameOver,
@@ -124,5 +143,6 @@ export const rootEpic = combineEpics(
     onGameStop,
     onRoomJoin,
     onDisconnected,
-    onGameError
+    onGameError,
+    onWaitGameEnd
 )

@@ -2,7 +2,7 @@ import React from 'react'
 import * as R from 'ramda'
 import './solo_end.css'
 import { connect } from 'react-redux'
-import { Alert, Container, Form, FormGroup, Label, Col, Input, Jumbotron, Row, Button, ListGroup, ListGroupItem, Card, CardBody } from 'reactstrap'
+import { Col, Row, Button } from 'reactstrap'
 import { withRouter } from 'react-router-dom';
 import { stopGame, requestGameStartAsync } from '../../actions/game';
 import { leaveRoomAsync } from '../../actions/room';

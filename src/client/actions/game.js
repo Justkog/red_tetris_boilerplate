@@ -8,7 +8,7 @@ import { getBoard, getActiveTetrimino } from '../middleware/boardManager';
 import { removeTetriInState } from '../reducers/board';
 import { visualBoard } from '../components/board/board';
 import { from } from 'rxjs/internal/observable/from';
-import { store } from '../index';
+// import { store } from '../index';
 import { map } from 'rxjs/internal/operators/map';
 import { filter } from 'rxjs/internal/operators/filter';
 import { first } from 'rxjs/internal/operators/first';
@@ -257,16 +257,16 @@ export const waitGameEndAsync = () => {
 		dispatch(waitGameEnd())
 		// wish I could put here a listener to game.finished and dispatch a stopGame once on true
 		// looks like i did but bugs may occur
-		const state$ = from(store);
-		state$.pipe(
-			map(state => state.game.finished),
-			filter(v => v),
-			first()
-		).subscribe(() => {
-			console.log('stopGame from waitGameEndAsync store observer')
-			dispatch(stopGame())
-			console.log('stopGame end from waitGameEndAsync store observer')
-		})
+		// const state$ = from(store);
+		// state$.pipe(
+		// 	map(state => state.game.finished),
+		// 	filter(v => v),
+		// 	first()
+		// ).subscribe(() => {
+		// 	console.log('stopGame from waitGameEndAsync store observer')
+		// 	dispatch(stopGame())
+		// 	console.log('stopGame end from waitGameEndAsync store observer')
+		// })
 	}
 }
 
