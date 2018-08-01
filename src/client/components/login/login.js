@@ -6,6 +6,7 @@ import * as R from 'ramda'
 import { withRouter } from 'react-router-dom';
 import { setLogin } from '../../actions/user';
 import { Loader } from '../loader/loader';
+import { AlertNotifier } from '../alert/alert';
 
 const LoginComponent = ({history, login, onSetLogin}) => {
 	function play(userName) {
@@ -37,6 +38,7 @@ const LoginComponent = ({history, login, onSetLogin}) => {
 				<Button color="primary" size="lg" onClick={() => play(login)}>Play!</Button>{' '}
 			</Row>
 			<Loader/>
+			<AlertNotifier/>
 		</Container>
 	)
 }

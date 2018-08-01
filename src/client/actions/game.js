@@ -271,7 +271,7 @@ export const waitGameEndAsync = () => {
 }
 
 export const registerGameError = (socket, dispatch, getState) => {
-	console.log('registerRoomUpdate')
+	console.log('registerGameError')
 	socket.off(GAME_ERROR)
 	socket.on(GAME_ERROR, (data) => {
 		console.log('Listening GAME_ERROR: ', data);

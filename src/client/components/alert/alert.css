@@ -1,0 +1,14 @@
+@keyframes alert-disappear {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.alert-container {
+    position: fixed;
+    top: 0;
+    animation: alert-disappear 1s forwards linear 5s;
+}

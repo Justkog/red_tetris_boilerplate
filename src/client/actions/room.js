@@ -1,7 +1,8 @@
 import { getSocket } from "./socket";
 import { GAME_JOIN, ROOM_UPDATE, ROOM_LEAVE, PLAYER_READY, GAME_CREATION_SOLO } from "../../server/tools/constants";
 import { getUser } from "../reducers/user";
-import { requestGameStartAsync } from "./game";
+import { requestGameStartAsync, getGame } from "./game";
+import * as R from 'ramda'
 
 export const ROOM_JOIN = 'ROOM_JOIN'
 export const SOLO_ROOM_JOIN = 'SOLO_ROOM_JOIN'
@@ -76,8 +77,9 @@ export const registerRoomUpdate = (socket, dispatch, getState) => {
 	console.log('registerRoomUpdate')
 	socket.off(ROOM_UPDATE)
 	socket.on(ROOM_UPDATE, (data) => {
-		console.log('Listening ROOM_UPDATE: ', data);
-		dispatch(updateRoom(data))
+    console.log('Listening ROOM_UPDATE: ', data);
+    if (getState().room.solo || R.contains(getState().user.login, R.keys(data.users)))
+		  dispatch(updateRoom(data))
 		console.dir(data)
 	})
 }

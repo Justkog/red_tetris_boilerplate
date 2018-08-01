@@ -1,8 +1,8 @@
 import { combineEpics, ofType } from 'redux-observable'
 import { LINES_DELETE, sendBoardUpdate } from '../actions/board'
-import { INDESTRUCTIBLE_LINES_ADD, PLAYER_END } from '../../server/tools/constants'
+import { INDESTRUCTIBLE_LINES_ADD, PLAYER_END, GAME_ERROR } from '../../server/tools/constants'
 import { TETRIMINO_REMOVE, TETRIMINO_SEAL } from '../actions/tetrimino'
-import { map, filter, first } from 'rxjs/operators'
+import { map, filter, first, delay } from 'rxjs/operators'
 import { GAME_OVER, permanentylPause, winGame, sendPlayerEnd, getGame, GAME_STOP, resetGame, stopGame } from '../actions/game';
 import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';
@@ -10,6 +10,8 @@ import * as R from 'ramda'
 import { ROOM_JOIN, readyPlayerAsync, joinRoomAsync, leaveRoom } from '../actions/room';
 import { SOCKET_DISCONNECTED, SOCKET_CONNECTED } from '../actions/socket';
 import { history } from '../containers/app';
+import { popAlert, depopAlert } from '../actions/alert';
+import { pipe } from 'rxjs';
 
 const sendBoardEpic = (action$, state$) => action$.pipe(
     ofType(
@@ -97,11 +99,27 @@ const onDisconnected = (action$, state$) => action$.pipe(
     })
 )
 
+const onGameError = (action$, state$) => action$.pipe(
+    ofType(
+        GAME_ERROR
+    ),
+    map((action) => {
+        return (dispatch, getState) => {
+            console.log('action:', action)
+            dispatch(popAlert(action))
+            of(null).pipe(delay(5000)).subscribe(() => dispatch(depopAlert()))
+            if (R.propEq('message', 'game already started')(action))
+                history.push('/rooms')
+        }
+    })
+)
+
 export const rootEpic = combineEpics(
     sendBoardEpic,
     onGameOver,
     onPlayerEnd,
     onGameStop,
     onRoomJoin,
-    onDisconnected
+    onDisconnected,
+    onGameError
 )

@@ -8,6 +8,7 @@ import { requestGameStartAsync } from '../../actions/game';
 import { restartSocket } from '../../actions/socket';
 import { leaveRoomAsync } from '../../actions/room';
 import { Loader } from '../loader/loader';
+import { AlertNotifier } from '../alert/alert';
 
 const Lobby = ({history, roomName, users, login, onStartGame, onLeaveRoom}) => {
 
@@ -64,6 +65,7 @@ const Lobby = ({history, roomName, users, login, onStartGame, onLeaveRoom}) => {
 				</CardBody>
 			</Card>
 			<Loader/>
+			<AlertNotifier/>
 		</Container>
 	)
 }
