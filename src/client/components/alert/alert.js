@@ -1,13 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import './alert.css'
-import { Alert, Container, Form, FormGroup, Label, Col, Input, Jumbotron, Row, Button } from 'reactstrap'
+import { Alert, Container } from 'reactstrap'
 import * as R from 'ramda'
-import { withRouter } from 'react-router-dom';
-import { setLogin } from '../../actions/user';
-import { Loader } from '../loader/loader';
 
-const AlertComponent = ({alert}) => {
+export const AlertComponent = ({alert}) => {
 
     if (!alert.message)
         return null
@@ -31,4 +28,4 @@ const mapDispatchToProps = dispatch => {
 	}
 }
 
-export const AlertNotifier = withRouter(connect(mapStateToProps, mapDispatchToProps)(AlertComponent))
+export const AlertNotifier = connect(mapStateToProps, mapDispatchToProps)(AlertComponent)
