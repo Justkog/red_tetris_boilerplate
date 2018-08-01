@@ -2,16 +2,16 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Row, Col, Container } from 'reactstrap'
 
-const Score = ({scores}) => {
+const Score = ({scores, solo}) => {
     console.log('score: ', scores)
     function listColumns (name, score) {
       return (
         <Container>
           <Row style={{marginLeft: '0px'}}>
-            <Col style={{textAlign: 'right'}}>
-              <h3>{name}</h3>
+            <Col sm="8" style={{textAlign: 'right'}}>
+              <h3>{solo ? 'Your score :' : name}</h3>
             </Col>
-            <Col style={{textAlign: 'right'}}>
+            <Col sm="2" style={{textAlign: 'right'}}>
               <h3>{score}</h3>
             </Col>
             <Col sm="2">
@@ -25,9 +25,9 @@ const Score = ({scores}) => {
       Object.keys(data).map( (key) =>  {
         let value = data[key];
         return (
-                <Row key={key}>
-                  {listColumns(key, value)}
-                </Row>
+          <Row key={key}>
+            {listColumns(key, value)}
+          </Row>
         )
     })
 )} ;
@@ -43,6 +43,7 @@ const mapStateToProps = (state) => {
 
   return {
     scores: state.game.scores || {},
+    solo: state.room.solo
   }
 }
 
