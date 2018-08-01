@@ -85,8 +85,8 @@ store.dispatch(registerSocketEvent(registerSpectrumUpdate))
 store.dispatch(registerSocketEvent(registerGameError))
 store.dispatch(registerSocketEvent(registerPlayerError))
 store.dispatch(listenBoardUpdate(store))
-store.dispatch(popAlert('Soon, will be here a fantastic Tetris ...'))
-store.dispatch(popAlert('Soon, will be here a fantastic Tetris ... 2'))
+// store.dispatch(popAlert('Soon, will be here a fantastic Tetris ...'))
+// store.dispatch(popAlert('Soon, will be here a fantastic Tetris ... 2'))
 // store.dispatch(startGameLoop())
 
 // test
