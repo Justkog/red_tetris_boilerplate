@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 import { storeStateMiddleWare } from './middleware/storeStateMiddleWare'
 import { gameLoopManager } from './middleware/gameLoopManager'
 import reducer from './reducers'
-import App from './containers/app'
+import App, { history } from './containers/app'
 import { popAlert, registerPlayerError } from './actions/alert'
 import { startGameLoop, registerGameStart, registerNextTetri, registerPlayerEnd, registerGameError, overGame, stopGame, getGame } from './actions/game'
 import { keyDown, listenToWindowEvent, keyDownDispatcher } from './actions/key'
@@ -20,7 +20,7 @@ import { listenBoardUpdate } from './actions/gameEvents';
 import { connectSocket, startSocket, registerTests, registerSocketEvent } from './actions/socket';
 import { registerRoomsListShow } from './actions/rooms';
 import { setLogin, resetLogin } from './actions/user';
-import { joinRoom, joinRoomAsync, registerRoomUpdate } from './actions/room';
+import { joinRoom, joinRoomAsync, registerRoomUpdate, leaveRoomAsync } from './actions/room';
 import { hashUrlRegex } from './containers/internalRouter';
 import { createEpicMiddleware } from 'redux-observable';
 import { rootEpic } from './epics/root';
@@ -63,7 +63,21 @@ export const store = createStore(
 	applyMiddleware(thunk, epicMiddleware, createLogger(), gameLoopManager, boardManager)
 )
 
+
 epicMiddleware.run(rootEpic);
+
+// Listen for changes to the current location.
+const unlisten = history.listen((location, action) => {
+	console.log(action, location.pathname, location.state)
+	// location is an object like window.location
+	if (action === 'POP' && location.pathname === '/rooms') {
+		store.dispatch(leaveRoomAsync())
+		if (R.propEq('started', true)(getGame(store.getState()))) {
+			store.dispatch(overGame())
+			store.dispatch(stopGame())
+		}
+	}
+})
 
 store.dispatch(startSocket())
 hashSetup(store)

@@ -30,8 +30,10 @@ const onGameOver = (action$, state$) => action$.pipe(
     map(() => {
         return (dispatch, getState) => {
             dispatch(permanentylPause())
-            dispatch(sendBoardUpdate())
-            dispatch(sendPlayerEnd())
+            if (!R.isEmpty(getState().room)) {
+                dispatch(sendBoardUpdate())
+                dispatch(sendPlayerEnd())
+            }
         }
     })
 )
@@ -43,7 +45,8 @@ const onGameStop = (action$, state$) => action$.pipe(
     map(() => {
         return (dispatch, getState) => {
             dispatch(resetGame())
-            dispatch(readyPlayerAsync())
+            if (!R.isEmpty(getState().room))
+                dispatch(readyPlayerAsync())
         }
     })
 )
@@ -57,7 +60,7 @@ const onPlayerEnd = (action$, state$) => action$.pipe(
             if (getState().game.started && action.game_finished && !R.has('victorious', getGame(getState()))) {
                 dispatch(permanentylPause())
                 dispatch(winGame())
-            } else if (!getState().game.started) {
+            } else if (!getState().game.started && !R.isEmpty(getState().room)) {
                 dispatch(readyPlayerAsync())
             }
         }
