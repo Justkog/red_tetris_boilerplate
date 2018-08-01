@@ -9,6 +9,7 @@ import { restartSocket } from '../../actions/socket';
 import { leaveRoomAsync } from '../../actions/room';
 import { Loader } from '../loader/loader';
 import { AlertNotifier } from '../alert/alert';
+import Chat from '../../components/chat/chat';
 
 const Lobby = ({history, roomName, users, login, onStartGame, onLeaveRoom}) => {
 
@@ -64,6 +65,7 @@ const Lobby = ({history, roomName, users, login, onStartGame, onLeaveRoom}) => {
 					</Row>
 				</CardBody>
 			</Card>
+      <Chat />
 			<Loader/>
 			<AlertNotifier/>
 		</Container>

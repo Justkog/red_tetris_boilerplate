@@ -26,6 +26,7 @@ export const UPDATE_SCORE = 'UPDATE_SCORE';
 
 export const PLAYER_END = 'PLAYER_END';
 export const PLAYER_READY = 'PLAYER_READY';
+export const PLAYERS_MESSAGE = 'PLAYERS_MESSAGE';
 
 export const GAME_ERROR = 'GAME_ERROR';
 export const PLAYER_ERROR = 'PLAYER_ERROR';

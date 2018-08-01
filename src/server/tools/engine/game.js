@@ -53,7 +53,13 @@ export function game_join(socket, supervisor)
     player.set_name(data.userName);
   
     let game = supervisor.find_game(data.roomName);
-  
+
+    if (game && !game.is_available())
+    {
+      socket.emit(constants.GAME_ERROR, { message: 'game already started' });
+      return;
+    }
+
     if (!game)
     {
       if (player.game)
@@ -69,12 +75,6 @@ export function game_join(socket, supervisor)
       game.addPlayer(player);
     }
 
-    if (!game.is_available())
-    {
-      socket.emit(constants.GAME_ERROR, { message: 'game already started' });
-      return;
-    }
-  
     socket.join(data.roomName);
     supervisor.send_data_to_room(game.room, constants.ROOM_UPDATE, { is_solo: game.is_solo, roomName: game.room, users: game.playersInfos() })
   });
@@ -125,6 +125,7 @@ export function game_leave(socket, supervisor)
     let game = player.game;
 
     game.remove_player(player);
+    socket.leave(game.room);
 
     if (game.players.length == 0)
     {

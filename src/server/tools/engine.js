@@ -1,5 +1,5 @@
 import { game_join, game_start, game_creation_solo, game_leave } from './engine/game';
-import { player_end, player_ready } from './engine/player';
+import { player_end, player_ready, players_message } from './engine/player';
 import { next_tetri } from './engine/tetri';
 import { board_update, user_line_delete } from './engine/board';
 import { login, logout } from './engine/connection';
@@ -21,5 +21,6 @@ export const initEngine = (io, supervisor) => {
 
     player_end(socket, supervisor);
     player_ready(socket, supervisor);
+    players_message(socket, supervisor);
   })
 }
