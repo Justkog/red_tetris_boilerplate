@@ -1,5 +1,5 @@
-import * as R from 'ramda'
-import { moveDownTetrimino, attemptMoveDownTetrimino, sealTetrimino, addTetrimino } from './tetrimino';
+import * as R from 'ramda';
+import { attemptMoveDownTetrimino, sealTetrimino, addTetrimino } from './tetrimino';
 import { GAME_START, NEXT_TETRI_REQUEST, NEXT_TETRI, PLAYER_END, GAME_ERROR } from '../../server/tools/constants';
 import { getSocket } from './socket';
 import { listenToWindowEvent, keyDownDispatcher } from './key';
@@ -30,7 +30,6 @@ export const WAIT_GAME_END = 'WAIT_GAME_END'
 
 const getLoopIntervalID = R.path(['game', 'loopIntervalID'])
 const getKeydownUnsubscribe = R.path(['game', 'keydownUnsubscribe'])
-const getGameStarted = R.path(['game', 'started'])
 const getGamePaused = R.path(['game', 'paused'])
 export const getGameTetris = R.path(['game', 'tetris'])
 export const getGame = R.path(['game'])
