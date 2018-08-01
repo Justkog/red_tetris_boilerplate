@@ -312,4 +312,21 @@ describe('Fake Engine test', function(){
     })
   });
 
+  it('PLAYERS_MESSAGE', function (done) {
+    init_two_players(player_one, player_two, false)
+    player_one.emit(constant.PLAYERS_MESSAGE, { message: 'test' });
+    player_two.on(constant.PLAYERS_MESSAGE, (data) => {
+      expect(data.message).to.be.eq('[name] test');
+      done()
+    })
+  });
+
+  it('PLAYERS_MESSAGE - without game', function (done) {
+    player_one.connect()
+    player_one.emit(constant.PLAYERS_MESSAGE, { message: 'test' });
+    player_one.on(constant.GAME_ERROR, (data) => {
+      expect(data.message).to.be.eq('game not found');
+      done()
+    })
+  });
 });

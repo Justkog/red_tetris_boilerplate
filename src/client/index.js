@@ -9,6 +9,7 @@ import { gameLoopManager } from './middleware/gameLoopManager'
 import reducer from './reducers'
 import App, { history } from './containers/app'
 import { popAlert, registerPlayerError } from './actions/alert'
+import { registerChatUpdate } from './actions/chat'
 import { startGameLoop, registerGameStart, registerNextTetri, registerPlayerEnd, registerGameError, overGame, stopGame, getGame } from './actions/game'
 import { keyDown, listenToWindowEvent, keyDownDispatcher } from './actions/key'
 import * as R from 'ramda'
@@ -98,6 +99,7 @@ store.dispatch(registerSocketEvent(registerPlayerEnd))
 store.dispatch(registerSocketEvent(registerSpectrumUpdate))
 store.dispatch(registerSocketEvent(registerGameError))
 store.dispatch(registerSocketEvent(registerPlayerError))
+store.dispatch(registerSocketEvent(registerChatUpdate))
 store.dispatch(listenBoardUpdate(store))
 // store.dispatch(popAlert('Soon, will be here a fantastic Tetris ...'))
 // store.dispatch(popAlert('Soon, will be here a fantastic Tetris ... 2'))

@@ -41,3 +41,20 @@ export function player_ready(socket, supervisor)
     supervisor.send_data_to_room(game.room, constants.ROOM_UPDATE, game_data)
   });
 }
+
+export function players_message(socket, supervisor)
+{
+  socket.on(constants.PLAYERS_MESSAGE, function (data) {
+    loginfo(`Listening to ${constants.PLAYERS_MESSAGE}: `);
+    let player = supervisor.find_player(socket.id);
+    let game = player.game;
+
+    if (!game)
+    {
+      socket.emit(constants.GAME_ERROR, { message: 'game not found' });
+      return ;
+    }
+
+    supervisor.send_data_to_room(game.room, constants.PLAYERS_MESSAGE, { message: `[${player.name}] ` + data.message })
+  });
+}

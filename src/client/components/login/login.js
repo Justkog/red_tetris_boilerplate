@@ -15,7 +15,6 @@ const LoginComponent = ({history, login, onSetLogin}) => {
 	}
 
 	function handleChange(e) {
-		// onSetLogin(e.target.value)
 		login = e.target.value
 	}
 
