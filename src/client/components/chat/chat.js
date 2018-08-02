@@ -4,7 +4,7 @@ import { sendMessage } from '../../actions/chat'
 import { Container, Form, FormGroup, Col, Input, Row, Button, InputGroup, InputGroupAddon } from 'reactstrap'
 import { getSocket } from '../../actions/socket';
 
-const Chat = ({ messages, message, socket }) => {
+export const ChatComponent = ({ messages, message, socket }) => {
   function listMessages(data) {
     return (
       messages.map((m, index) => {
@@ -56,7 +56,6 @@ const Chat = ({ messages, message, socket }) => {
 }
 
 const mapStateToProps = (state) => {
-  console.log('state: ', state);
   return {
     messages: state.room.messages || [],
     message: undefined,
@@ -64,4 +63,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, null)(Chat)
+export default connect(mapStateToProps, null)(ChatComponent)
