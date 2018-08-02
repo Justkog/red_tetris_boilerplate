@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 import { stopGame } from '../../actions/game';
 import { leaveRoomAsync } from '../../actions/room';
 
-const VictoryFrameComponent = ({history, victorious, onGameStop, onLeaveRoom}) => {
+export const VictoryFrameComponent = ({history, victorious, onGameStop, onLeaveRoom}) => {
     if (victorious != true)
         return null
 

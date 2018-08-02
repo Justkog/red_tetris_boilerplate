@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 import { stopGame, waitGameEndAsync } from '../../actions/game';
 import { leaveRoomAsync } from '../../actions/room';
 
-const LossFrameComponent = ({history, victorious, solo, waitingEnd, onGameStop, onLeaveRoom, onWaitGameEnd}) => {
+export const LossFrameComponent = ({history, victorious, solo, waitingEnd, onGameStop, onLeaveRoom, onWaitGameEnd}) => {
     if (victorious != false || solo)
         return null
 
@@ -20,7 +20,7 @@ const LossFrameComponent = ({history, victorious, solo, waitingEnd, onGameStop, 
 
     const waitRoomReopen = () => {
         console.log('waitRoomReopen')
-        onWaitGameEnd()        
+        onWaitGameEnd()
     }
 
     return (
