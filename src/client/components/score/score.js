@@ -2,23 +2,23 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Row, Col, Container } from 'reactstrap'
 
-const Score = ({scores, solo}) => {
-    console.log('score: ', scores)
-    function listColumns (name, score) {
-      return (
-        <Container>
-          <Row style={{marginLeft: '0px'}}>
-            <Col sm="8" style={{textAlign: 'right'}}>
-              <h3>{solo ? 'Your score :' : name}</h3>
-            </Col>
-            <Col sm="2" style={{textAlign: 'right'}}>
-              <h3>{score}</h3>
-            </Col>
-            <Col sm="2">
-            </Col>
-          </Row>
-        </Container>
-    )};
+export const ScoreComponent = ({scores, solo}) => {
+  // console.log('score: ', scores)
+  function listColumns (name, score) {
+    return (
+      <Container>
+        <Row style={{marginLeft: '0px'}}>
+          <Col sm="8" style={{textAlign: 'right'}}>
+            <h3>{solo ? 'Your score :' : name}</h3>
+          </Col>
+          <Col sm="2" style={{textAlign: 'right'}}>
+            <h3>{score}</h3>
+          </Col>
+          <Col sm="2">
+          </Col>
+        </Row>
+      </Container>
+  )}
   
   function listRows (data) { 
     return (
@@ -30,7 +30,7 @@ const Score = ({scores, solo}) => {
           </Row>
         )
     })
-)} ;
+  )}
 
   return (
     <div style={{flexBasis: '33.33%', display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
@@ -47,4 +47,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, null)(Score)
+export default connect(mapStateToProps, null)(ScoreComponent)
