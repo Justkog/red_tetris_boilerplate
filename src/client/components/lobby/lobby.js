@@ -33,7 +33,7 @@ const Lobby = ({history, roomName, users, login, onStartGame, onLeaveRoom}) => {
 	return (
 		<Container>
 			<Button color="primary" size="lg" onClick={() => { backToRooms() }}>{'< Back to Rooms'}</Button>
-			<Card style={{marginTop: '10%', marginBottom: '10%'}}>
+			<Card style={{marginTop: '10%', marginBottom: '4%'}}>
 				<CardHeader>
 					<Row className="justify-content-center">
 						<h1 style={{ color: 'var(--gray-dark)' }}>{roomName || 'Room'}</h1>

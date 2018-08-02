@@ -32,6 +32,14 @@ const Rooms = ({history, rooms, roomName, userName, onSetLogin, onJoinRoom}) => 
 		history.push(`/#${name}[${userName}]`)
 	}
 
+	const onKeyPress = (event) => {
+		if (event.which === 13 /* Enter */) {
+			event.preventDefault();
+			if (roomName != undefined)
+				joinRoom(roomName)
+		}
+	}
+
 	return (
 		<Container>
 			<Row className="justify-content-center" style={{marginTop: '10%', marginBottom: '10%'}}>
@@ -55,7 +63,7 @@ const Rooms = ({history, rooms, roomName, userName, onSetLogin, onJoinRoom}) => 
 			<Card>
 				<CardBody>
 					<Row className="justify-content-center">
-						<Form>
+						<Form onKeyPress={onKeyPress}>
 							<FormGroup row style={{marginBottom: 0}}>
 								<Label for="usernameInput" sm={4} size="lg">Room name</Label>
 								<Col>

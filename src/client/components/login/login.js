@@ -15,13 +15,21 @@ export const LoginComponent = ({history, login, onSetLogin}) => {
 		login = e.target.value
 	}
 
+	const onKeyPress = (event) => {
+		if (event.which === 13 /* Enter */) {
+			event.preventDefault();
+			if (login != undefined)
+				play(login)
+		}
+	}
+
 	return (
 		<Container>
 			<Row className="justify-content-center" style={{marginTop: '10%', marginBottom: '10%'}}>
 				<h1>Red Tetris</h1>
 			</Row>
 			<Row className="justify-content-center">
-				<Form>
+				<Form onKeyPress={onKeyPress}>
 					<FormGroup row>
 						<Label for="usernameInput" sm={4} size="lg">Your name</Label>
 						<Col sm={8}>
