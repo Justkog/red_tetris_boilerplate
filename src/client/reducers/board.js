@@ -141,7 +141,7 @@ const addTetriInState = R.curry(updateState)(addTetriInRow)
 export const removeTetriInState = R.curry(updateState)(removeTetriInRow)
 
 export const updateBoardState = (state, { prevActiveTetrimino, currentActiveTetrimino }) => {
-	if (prevActiveTetrimino.id && prevActiveTetrimino.id == currentActiveTetrimino.id) {
+	if (prevActiveTetrimino && prevActiveTetrimino.id && prevActiveTetrimino.id == currentActiveTetrimino.id) {
 		state = removeTetriInState(state, prevActiveTetrimino)
 	}
 	if (currentActiveTetrimino && !R.isEmpty(currentActiveTetrimino)) {

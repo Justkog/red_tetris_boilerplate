@@ -7,8 +7,8 @@ import { bordersMask } from '../../reducers/board'
 
 export const topLogicLinesCount = 4
 
-const columnNumbers = R.range(0, 10)
-const rowNumbers = R.range(0, 20)
+// const columnNumbers = R.range(0, 10)
+// const rowNumbers = R.range(0, 20)
 
 export const invertGrid = R.map(R.map(R.ifElse(R.gte(R.__, 1), () => 0, () => 1)))
 
@@ -20,8 +20,6 @@ const removeExtraRows = R.compose(
 export const visualBoard = (board) => printableBoard(board, invertGrid(bordersMask(board)))
 
 export const printableBoard = (board, printableMask) => {
-	// console.log('printableMask')
-	// console.dir(printableMask)
 	const grid = R.addIndex(R.map)((row, rowIndex) => {
 		return R.addIndex(R.filter)((cell, cellIndex) => {
 			if (printableMask[rowIndex][cellIndex] > 0)
@@ -68,7 +66,7 @@ export const Row = (props) => {
 	)
 }
 
-const Board = ({activeTetrimino, board}) => {
+export const BoardComponent = ({board}) => {
 
 	const boardToDraw = printableBoard(board, invertGrid(bordersMask(board)))
 
@@ -93,11 +91,9 @@ const Board = ({activeTetrimino, board}) => {
 }
 
 const mapStateToProps = (state) => {
-	// console.dir('mapStateToProps')
 	return {
-		// activeTetrimino: state.activeTetrimino,
 		board: state.board,
 	}
 }
 
-export default connect(mapStateToProps, null)(Board)
+export default connect(mapStateToProps, null)(BoardComponent)

@@ -32,7 +32,7 @@ describe('Score react test', function(){
     it('should mapStateToProps and display Score', function(){
         configure({ adapter: new Adapter() })
         const initialState = {game: {scores: {jc: 9001}}, room: {solo: true}}
-        const store =  configureStore(rootReducer, null, initialState, {
+        const store = configureStore(rootReducer, null, initialState, {
 
         })
         const wrapper = mount(
