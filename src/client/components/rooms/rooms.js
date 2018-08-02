@@ -10,11 +10,11 @@ import { joinRoomAsync } from '../../actions/room';
 import { Loader } from '../loader/loader';
 import { AlertNotifier } from '../alert/alert';
 
-const Rooms = ({history, rooms, roomName, userName, onSetLogin, onJoinRoom}) => {
+export const RoomsComponent = ({history, rooms, roomName, userName, onJoinRoom}) => {
 	
 	if (!userName)
 	{
-		console.log('forward to login')
+		// console.log('forward to login')
 		setTimeout(() => {
 			history.push(`/login`)
 		}, 0);
@@ -26,8 +26,8 @@ const Rooms = ({history, rooms, roomName, userName, onSetLogin, onJoinRoom}) => 
 	}
 
 	function joinRoom(name) {
-		console.log(name)
-		console.log(`pushing /#${name}[${userName}]`)
+		// console.log(name)
+		// console.log(`pushing /#${name}[${userName}]`)
 		onJoinRoom(name)
 		history.push(`/#${name}[${userName}]`)
 	}
@@ -35,7 +35,7 @@ const Rooms = ({history, rooms, roomName, userName, onSetLogin, onJoinRoom}) => 
 	const onKeyPress = (event) => {
 		if (event.which === 13 /* Enter */) {
 			event.preventDefault();
-			if (roomName != undefined)
+			if (roomName != undefined && roomName != '')
 				joinRoom(roomName)
 		}
 	}
@@ -93,13 +93,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch, state) => {
 	return {
-		onSetLogin: login => {
-			dispatch(setLogin(login))
-        },
         onJoinRoom: name => {
 			dispatch(joinRoomAsync(name))
 		}
 	}
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Rooms))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(RoomsComponent))
