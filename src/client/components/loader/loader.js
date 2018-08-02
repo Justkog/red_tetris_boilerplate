@@ -6,7 +6,7 @@ import * as R from 'ramda'
 import { withRouter } from 'react-router-dom';
 import { joinSoloRoomAsync } from '../../actions/room';
 
-const LoaderComponent = ({history, onJoinSolo, socketStatus}) => {
+export const LoaderComponent = ({socketStatus}) => {
 	
 	const canPlay = socketStatus === 'connected'
 
@@ -41,7 +41,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
 	return {
-		onJoinSolo: () => dispatch(joinSoloRoomAsync())
+		
 	}
 }
 

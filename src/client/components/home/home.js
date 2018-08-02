@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 import { joinSoloRoomAsync } from '../../actions/room';
 import { Loader } from '../loader/loader';
 
-const HomeComponent = ({history, onJoinSolo, socketStatus}) => {
+export const HomeComponent = ({history, onJoinSolo, socketStatus}) => {
 	const solo = () => {
 		onJoinSolo()
     }
