@@ -5,15 +5,17 @@ import { LoginComponent } from "../components/login/login";
 
 const mapStateToProps = (state) => {
 	return {
-		login: undefined
+		login: state.user.login || ''
 	}
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch, props) => {
+    console.dir(props)
 	return {
 		onSetLogin: login => {
+            console.log('onSetLogin', login)
 			dispatch(setLogin(login))
-		}
+        },
 	}
 }
 
