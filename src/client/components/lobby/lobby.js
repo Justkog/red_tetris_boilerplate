@@ -11,13 +11,13 @@ import { Loader } from '../loader/loader';
 import { AlertNotifier } from '../alert/alert';
 import Chat from '../../components/chat/chat';
 
-const Lobby = ({history, roomName, users, login, onStartGame, onLeaveRoom}) => {
+export const LobbyComponent = ({history, roomName, users, login, onStartGame, onLeaveRoom}) => {
 
 	const admin = R.prop('is_master', users[R.head(R.filter((user) => user == login, R.keys(users)))])
 	const ready = R.all(R.__, R.keys(users)) ((user) => R.prop('ready', users[user]))
 	
 	function startGame() {
-		console.log('starting')
+		// console.log('starting')
 		onStartGame(roomName)
 	}
 
@@ -28,7 +28,7 @@ const Lobby = ({history, roomName, users, login, onStartGame, onLeaveRoom}) => {
 	}
 
 	// users = ['Jblondea', 'Flevesq']
-	console.log('Lobby')
+	// console.log('Lobby')
 
 	return (
 		<Container>
@@ -88,10 +88,7 @@ const mapDispatchToProps = dispatch => {
 		onLeaveRoom: () => {
 			dispatch(leaveRoomAsync())
 		}
-		// onSocketRestart: () => {
-		// 	dispatch(restartSocket())
-		// }
 	}
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Lobby))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LobbyComponent))
