@@ -45,7 +45,6 @@ describe('Spectre react test', function(){
 
         const props = {spectrum: {jc: testSpectre}}
         const wrapper = shallow(React.createElement(SpectreComponent, props));
-        console.log(wrapper.debug())
         expect(wrapper.contains(<h1>jc</h1>)).to.equal(true);
         expect(wrapper.find('div.litle-board').exists()).to.equal(true);
     })
