@@ -4,22 +4,24 @@ import './alert.css'
 import { Alert, Container } from 'reactstrap'
 import * as R from 'ramda'
 
-export const AlertComponent = ({alert}) => {
+export const AlertComponent = ({alerts}) => {
 
-    if (!alert.message)
+    if (R.length(alerts) === 0)
         return null
 	return (
 		<Container className='alert-container'>
-			<Alert color="danger">
-                { alert.message }
-            </Alert>
+			{R.addIndex(R.map)((alert, index) => 
+				<Alert key={index.toString()} color="danger">
+					{ alert.message }
+				</Alert>
+			)(alerts)}
 		</Container>
 	)
 }
 
 const mapStateToProps = (state) => {
 	return {
-		alert: state.alert,
+		alerts: state.alert,
 	}
 }
 
