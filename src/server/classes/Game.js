@@ -148,7 +148,9 @@ export default class Game
     {
       p.reset();
     });
-    if (this.supervisor.io)
+    if (this.supervisor.io) {
       this.supervisor.send_data_to_room(this.room, constants.ROOM_UPDATE, { is_solo: this.is_solo, roomName: this.room, users: this.playersInfos() })
+      this.supervisor.io.emit(constants.ROOMS_LIST_SHOW, { rooms: this.supervisor.list_availables_rooms() });
+    }
   }
 }

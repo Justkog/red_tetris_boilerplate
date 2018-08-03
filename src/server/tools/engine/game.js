@@ -114,6 +114,7 @@ export function game_start(socket, supervisor)
     game.is_running = true;
     const game_data = { boards: game.playersBoards(), tetris: game.allTetris() };
     supervisor.send_data_to_room(game.room, constants.GAME_START, game_data)
+    supervisor.io.emit(constants.ROOMS_LIST_SHOW, { rooms: supervisor.list_availables_rooms() });
   });
 }
 
