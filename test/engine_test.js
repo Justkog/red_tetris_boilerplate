@@ -74,7 +74,7 @@ describe('Fake Engine test', function(){
     player_one.connect();
     player_one.emit(constant.GAME_CREATION_SOLO, { userName: 'name', tetriNumber: 15});
     player_one.on(constant.ROOM_UPDATE, (data) => {
-      expect(JSON.stringify(data.users)).to.be.eq(JSON.stringify({'name': {'score': 0, 'board': emptyBoardN(20, 10), 'ready': false, 'is_master': true }}));
+      expect(data.users).to.be.eql({'name': {'score': 0, 'board': emptyBoardN(20, 10), 'ready': false, 'is_master': true }});
       expect(data.roomName).to.be.not.a('null');
       done()
     });
@@ -86,7 +86,7 @@ describe('Fake Engine test', function(){
     player_one.emit(constant.GAME_CREATION_SOLO, { tetriNumber: 15 });
     player_one.emit(constant.GAME_START, { });
     player_one.on(constant.ROOM_UPDATE, (data) => {
-      if (index < 7)
+      if (index < 5)
         ;
       else
       {
@@ -292,11 +292,12 @@ describe('Fake Engine test', function(){
     init_two_players(player_one, player_two, true)
     player_one.emit(constant.ROOM_LEAVE, { board: [] });
     player_two.on(constant.ROOM_UPDATE, (data) => {
-      if (index < 6)
+      if (index < 3)
         ;
       else
       {
         expect(Object.keys(data.users).length).to.be.eq(1);
+        player_two.off(constant.ROOM_UPDATE)
         done()
       }
       index += 1;
