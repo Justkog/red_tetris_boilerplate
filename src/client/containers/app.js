@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import  { Route, Switch, BrowserRouter, HashRouter, withRouter } from 'react-router-dom'
+import  { Route, Switch } from 'react-router-dom'
 import { Router } from 'react-router'
 import createBrowserHistory from 'history/createBrowserHistory'
 
@@ -11,7 +11,7 @@ import { Login } from './login';
 
 export const history = createBrowserHistory()
 
-const App = ({message}) => {
+export const AppComponent = ({message}) => {
 	return (
 			/* <Route
 				path='/about'
@@ -32,6 +32,6 @@ const mapStateToProps = (state) => {
 		message: state.alert.message
 	}
 }
-export default connect(mapStateToProps, null)(App)
+export default connect(mapStateToProps, null)(AppComponent)
 
 
