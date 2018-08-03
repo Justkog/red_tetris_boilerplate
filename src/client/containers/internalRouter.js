@@ -8,7 +8,7 @@ import { Home } from '../components/home/home';
 
 export const hashUrlRegex = RegExp(/^#([^#[\]]*)\[([^#[\]]*)\]$/);
 
-const InternalRouter = ({history, room, login, game}) => {
+export const InternalRouterComponent = ({history, room, login, game}) => {
 	console.log('InternalRouter', history.location.hash)
 	if (game.started || room.solo)
 		return <GameScreen/>
@@ -18,7 +18,6 @@ const InternalRouter = ({history, room, login, game}) => {
     } else if (login && !hashUrlRegex.test(history.location.hash)) {
         console.log('rooms!')
         return <Redirect to="/rooms"/>
-        // history.push('rooms')
     } else {
         console.log('Home!')
         return <Home/>
@@ -39,4 +38,4 @@ const mapDispatchToProps = dispatch => {
 
 	}
 }
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(InternalRouter))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(InternalRouterComponent))
