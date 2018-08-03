@@ -39,8 +39,6 @@ describe('Alert redux test', function(){
     const store =  configureStore(rootReducer, null, initialState, {
       ALERT_YOUHOU: ({dispatch, getState}) =>  {
         const state = getState()
-        console.log(state)
-        console.log(initialState)
         expect(R.equals(initialState.alert, state.alert)).to.equal(true)
         done()
       }
