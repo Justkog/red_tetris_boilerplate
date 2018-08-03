@@ -10,7 +10,6 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch, props) => {
-    console.dir(props)
 	return {
 		onSetLogin: login => {
             console.log('onSetLogin', login)

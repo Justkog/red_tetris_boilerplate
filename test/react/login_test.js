@@ -16,6 +16,7 @@ import { MemoryRouter } from 'react-router'
 import {configureStore} from '../helpers/server'
 import rootReducer from '../../src/client/reducers'
 import { Provider } from 'react-redux'
+import { Login } from "../../src/client/containers/login";
 
 chai.should()
 chai.use(equalJSX)
@@ -91,6 +92,41 @@ describe('Login react test', function(){
         // console.dir(wrapper.instance().props.login)
         // expect(wrapper.prop('login')).to.equal('lol2');
         expect(onSetLogin.calledTwice).to.equal(true)
+    })
+
+    it('should mapStateToProps and display Login', function(){
+        configure({ adapter: new Adapter() })
+        const initialState = {user: {login: 'jc'}}
+        const store =  configureStore(rootReducer, null, initialState, {
+
+        })
+        const wrapper = mount(
+            <Provider store={store}>
+                <MemoryRouter>
+                    {React.createElement(Login, {})}
+                </MemoryRouter>
+            </Provider>
+        );
+        expect(wrapper.contains(LoginComponent)).to.equal(true)
+        expect(wrapper.find(LoginComponent).prop('login')).to.equal(initialState.user.login)
+    })
+
+    it('should mapDispatchToProps and call dispatch', function(){
+        configure({ adapter: new Adapter() })
+        const initialState = {user: {login: 'jc'}}
+        const store =  configureStore(rootReducer, null, initialState, {
+
+        })
+        const dispatchStub = sinon.stub(store, 'dispatch').callsFake(() => {});
+        const wrapper = mount(
+            <Provider store={store}>
+                <MemoryRouter>
+                    {React.createElement(Login, {})}
+                </MemoryRouter>
+            </Provider>
+        );
+        wrapper.find('Button[children="Play!"]').simulate('click', {})
+        expect(dispatchStub.callCount).to.equal(1)
     })
 
 })
