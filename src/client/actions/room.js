@@ -33,7 +33,7 @@ export const readyPlayer = () => {
 }
 
 export const updateRoom = ({ roomName, users }) => {
-    console.log('updateRoom')
+    // console.log('updateRoom')
     return {
       type: ROOM_UPDATE,
       roomName: roomName,
