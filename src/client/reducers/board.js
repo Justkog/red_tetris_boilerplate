@@ -8,7 +8,7 @@ import { topLogicLinesCount } from "../components/board/board";
 // const emptyBoard = () => R.map((n) => emptyRow(), R.unfold((n) => n > 19 ? false : [n, n+1], 0))
 
 const emptyCell = () => []
-const indestructibleBlock = () => ({destructible: false, color: 'var(--gray)', id: -1})
+export const indestructibleBlock = () => ({destructible: false, color: 'var(--gray)', id: -1})
 
 export const RowN = (columns, cellContent) => R.map((n) => cellContent, R.unfold((n) => n > columns - 1 ? false : [n, n+1], 0))
 export const BoardN = (rows, columns, cellContent) => R.map((n) => RowN(columns, cellContent), R.unfold((n) => n > rows - 1 ? false : [n, n+1], 0))
@@ -170,7 +170,7 @@ const populateMaskedCells = (row, rowMask, content) => {
 // add line at the bottom
 // push up all other lines
 const addIndestructibleLinesState = (board, {activeTetri, count}) => {
-	if (activeTetri)
+	if (activeTetri && !R.isEmpty(activeTetri))
 		board = removeTetriInState(board, activeTetri)
 	while (count > 0) {
 		const bordersMaskedRow = R.last(R.init(bordersMask(board)))
@@ -179,7 +179,8 @@ const addIndestructibleLinesState = (board, {activeTetri, count}) => {
 		board = R.tail(board)
 		count--
 	}
-	board = addTetriInState(board, activeTetri)
+	if (activeTetri && !R.isEmpty(activeTetri))
+		board = addTetriInState(board, activeTetri)
 	return board
 }
 
