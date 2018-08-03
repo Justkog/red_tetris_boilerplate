@@ -44,7 +44,8 @@ export const updateRoom = ({ roomName, users }) => {
 export const joinRoomAsync = (name) => {
 	return (dispatch, getState) => {
     getSocket(getState()).emit(GAME_JOIN, {userName: getUser(getState()).login, roomName: name, tetriNumber: 10})
-		dispatch(joinRoom(name))
+      console.log('GAME_JOIN sent')
+      dispatch(joinRoom(name))
 	}
 }
 

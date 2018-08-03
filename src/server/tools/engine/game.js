@@ -45,7 +45,7 @@ export function game_join(socket, supervisor)
     loginfo(`Listening to ${constants.GAME_JOIN}: `, data);
     let player = supervisor.find_player(socket.id);
 
-    if (!player.name && !supervisor.player_name_available(data.userName))
+    if (player.name != data.userName && !supervisor.player_name_available(data.userName))
     {
       socket.emit(constants.PLAYER_ERROR, { message: 'name already taken' });
       return ;
