@@ -15,7 +15,7 @@ describe('Alert redux test', function(){
     const store =  configureStore(rootReducer, null, initialState, {
       ALERT_POP: ({dispatch, getState}) =>  {
         const state = getState()
-        state.alert.message.should.equal(MESSAGE)
+        state.alert[0].message.should.equal(MESSAGE)
         done()
       }
     })
@@ -23,11 +23,11 @@ describe('Alert redux test', function(){
   });
 
   it('alert depop', function(done){
-    const initialState = {alert: {message: 'test message'}}
+    const initialState = {alert: [{message: 'test message'}]}
     const store =  configureStore(rootReducer, null, initialState, {
       ALERT_DEPOP: ({dispatch, getState}) =>  {
         const state = getState()
-        expect(state.alert.message).to.equal(undefined)
+        expect(state.alert).to.be.eql([])
         done()
       }
     })
@@ -35,7 +35,7 @@ describe('Alert redux test', function(){
   });
 
   it('alert default', function(done){
-    const initialState = {alert: {message: 'test message'}}
+    const initialState = {alert: [{message: 'test message'}]}
     const store =  configureStore(rootReducer, null, initialState, {
       ALERT_YOUHOU: ({dispatch, getState}) =>  {
         const state = getState()

@@ -13,7 +13,7 @@ describe('Fake redux test', function(){
     const store =  configureStore(rootReducer, null, initialState, {
       ALERT_POP: ({dispatch, getState}) =>  {
         const state = getState()
-        state.alert.message.should.equal(MESSAGE)
+        state.alert[0].message.should.equal(MESSAGE)
         done()
       }
     })
