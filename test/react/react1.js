@@ -15,4 +15,11 @@ describe('Fake react test', function(){
     output.should.equalJSX(<Board/>)
   })
 
+  it('works too', function(){
+    const renderer = createRenderer()
+    renderer.render(React.createElement(Board))
+    const output = renderer.getRenderOutput()
+    output.should.equalJSX(<div/>)
+  })
+
 })
