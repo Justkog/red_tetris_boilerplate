@@ -124,6 +124,8 @@ export function game_leave(socket, supervisor)
     let player = supervisor.find_player(socket.id);
     let game = player.game;
 
+    if (!game)
+      return
     game.remove_player(player);
     socket.leave(game.room);
 

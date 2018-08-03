@@ -115,7 +115,7 @@ export default class Game
   remove_player(player)
   {
     player.game = null;
-    this.players.forEach((p, index) =>
+    this.players.slice(0).forEach((p, index) =>
     {
       if (p.socket_id === player.socket_id)
       {
@@ -131,7 +131,7 @@ export default class Game
           this.supervisor.send_data_to_room(this.room, constants.ROOM_UPDATE, { is_solo: this.is_solo, roomName: this.room, users: this.playersInfos() })
           if (this.is_running)
             this.supervisor.send_data_to_room(this.room, constants.PLAYER_END, { users: this.playersInfos(), game_finished: this.all_players_finished() })
-          if (this.all_players_finished())
+          if (this.all_players_finished() && this.is_running)
             this.reset();
         }
         return ;

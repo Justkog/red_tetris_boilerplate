@@ -42,6 +42,8 @@ const hashSetup = (store) => {
 			store.dispatch(overGame())
 			store.dispatch(stopGame())
 		}
+		if (!R.isEmpty(store.getState().room))
+			store.dispatch(leaveRoomAsync())
 		store.dispatch(joinRoomAsync(urlRoom))
 	} else {
 		console.log('reset login')
@@ -72,7 +74,8 @@ const unlisten = history.listen((location, action) => {
 	console.log(action, location.pathname, location.state)
 	// location is an object like window.location
 	if (action === 'POP' && location.pathname === '/rooms') {
-		store.dispatch(leaveRoomAsync())
+		if (!R.isEmpty(store.getState().room))
+			store.dispatch(leaveRoomAsync())
 		if (R.propEq('started', true)(getGame(store.getState()))) {
 			store.dispatch(overGame())
 			store.dispatch(stopGame())
