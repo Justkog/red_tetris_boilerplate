@@ -6,7 +6,7 @@ import { GAME_START, GAME_ERROR, NEXT_TETRI_REQUEST, PLAYER_END, ROOM_LEAVE, PLA
 import { startGame, GAME_STOP, stopGame, GAME_RESET, resetGame, pauseGame, GAME_PAUSE, resumeGame, GAME_RESUME, overGame, GAME_OVER, winGame, GAME_WIN, receiveGameError, registerLoopIntervalID, REGISTER_LOOP_INTERVAL_ID, registerKeyDownUnsubscriber, KEY_DOWN_UNSUBSCRIBE_REGISTER, requestGameStart, GAME_INIT, initGame, GAME_START_REQUEST, HEAD_TETRI_REMOVE, removeHeadTetri, requestNextTetri, tetrisUpdate, TETRIS_UPDATE, playerEnd, waitGameEnd, WAIT_GAME_END, requestGameStartAsync, pullHeadTetri, pullAndAddTetri, registerNextTetri, registerGameStart, registerPlayerEnd, waitGameEndAsync, registerGameError } from '../../src/client/actions/game';
 import sinon from 'sinon';
 import { addTetrimino } from '../../src/client/actions/tetrimino';
-import { joinRoom, ROOM_JOIN, joinSoloRoom, SOLO_ROOM_JOIN, leaveRoom, readyPlayer, updateRoom, registerRoomUpdate } from '../../src/client/actions/room';
+import { joinRoom, ROOM_JOIN, joinSoloRoom, SOLO_ROOM_JOIN, leaveRoom, readyPlayer, updateRoom, registerRoomUpdate, readyPlayerAsync, leaveRoomAsync, joinSoloRoomAsync, joinRoomAsync } from '../../src/client/actions/room';
 
 chai.should()
 
@@ -60,5 +60,41 @@ describe('Room actions test', function(){
     expect(socket.off.calledOnce).to.be.equal(true)
     expect(socket.on.calledOnce).to.be.equal(true)
     expect(dispatchSpy.callCount).to.be.equal(1)
+  })
+
+  it('should readyPlayerAsync', function(){
+    const emitSpy = sinon.spy()
+    const dispatchSpy = sinon.spy()
+    const getStateStub = sinon.stub().callsFake(() => ({socket: {emit: emitSpy}}))
+    readyPlayerAsync()(dispatchSpy, getStateStub)
+    expect(dispatchSpy.callCount).to.be.equal(1)
+    expect(emitSpy.callCount).to.be.equal(1)
+  })
+
+  it('should leaveRoomAsync', function(){
+    const emitSpy = sinon.spy()
+    const dispatchSpy = sinon.spy()
+    const getStateStub = sinon.stub().callsFake(() => ({socket: {emit: emitSpy}, connection: {status: 'connected'}}))
+    leaveRoomAsync()(dispatchSpy, getStateStub)
+    expect(dispatchSpy.callCount).to.be.equal(1)
+    expect(emitSpy.callCount).to.be.equal(1)
+  })
+
+  it('should joinSoloRoomAsync', function(){
+    const emitSpy = sinon.spy()
+    const dispatchSpy = sinon.spy()
+    const getStateStub = sinon.stub().callsFake(() => ({socket: {emit: emitSpy}, user: {login: 'jc'}}))
+    joinSoloRoomAsync()(dispatchSpy, getStateStub)
+    expect(dispatchSpy.callCount).to.be.equal(2)
+    expect(emitSpy.callCount).to.be.equal(1)
+  })
+
+  it('should joinRoomAsync', function(){
+    const emitSpy = sinon.spy()
+    const dispatchSpy = sinon.spy()
+    const getStateStub = sinon.stub().callsFake(() => ({socket: {emit: emitSpy}, user: {login: 'jc'}}))
+    joinRoomAsync('test room')(dispatchSpy, getStateStub)
+    expect(dispatchSpy.callCount).to.be.equal(1)
+    expect(emitSpy.callCount).to.be.equal(1)
   })
 })

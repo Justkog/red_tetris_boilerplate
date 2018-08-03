@@ -60,7 +60,7 @@ export const joinSoloRoomAsync = (name) => {
 export const leaveRoomAsync = (name) => {
 	return (dispatch, getState) => {
     const socket = getSocket(getState())
-    console.log('socket status', getState().connection.status)
+    // console.log('socket status', getState().connection.status)
     if (getState().connection.status === 'connected') {
       console.log('ROOM_LEAVE sent')
       socket.emit(ROOM_LEAVE, {})
