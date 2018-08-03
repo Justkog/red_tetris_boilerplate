@@ -12,8 +12,8 @@ const clampV = R.curry(R.clamp)(0, 23)
 const addClampH = R.compose(clampH, R.add)
 
 // not needed anymore (kept as extra protection)
-const addClampHTransformation = (direction) => R.curry(addClampH)(direction)
-const addClampVTransformation = (direction) => R.curry(R.compose(clampV, R.add))(direction)
+// const addClampHTransformation = (direction) => R.curry(addClampH)(direction)
+// const addClampVTransformation = (direction) => R.curry(R.compose(clampV, R.add))(direction)
 
 export const tetriShadow = (tetri, board) => {
 	let lastValidTetri = tetri
