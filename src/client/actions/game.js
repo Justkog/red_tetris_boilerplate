@@ -153,7 +153,7 @@ export const initGame = ({ boards, tetris}) => ({
 	tetris: tetris,
 })
 
-const removeHeadTetri = () => ({
+export const removeHeadTetri = () => ({
 	type: HEAD_TETRI_REMOVE,
 })
 
@@ -186,7 +186,7 @@ export const tetrisUpdate = ({tetris}) => ({
 	tetris: tetris,
 })
 
-export const requestNextTetrisAsync = (roomName) => {
+export const requestNextTetrisAsync = () => {
 	return (dispatch, getState) => {
 		getSocket(getState()).emit(NEXT_TETRI, {})
 		dispatch(requestNextTetri())
