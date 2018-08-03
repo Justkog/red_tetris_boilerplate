@@ -6,7 +6,7 @@ import { Container } from 'reactstrap'
 import { printableBoard, invertGrid, Cell, Row } from '../board/board'
 import '../board/board.css'
 
-const boardToSpectre = (board) => {
+export const boardToSpectre = (board) => {
   let previousRow = []
   board = R.map((row) => {
     if (R.isEmpty(previousRow))
@@ -23,7 +23,7 @@ const boardToSpectre = (board) => {
   return board
 }
 
-const LittleBoard = (board, name) => {
+export const LittleBoard = ({board, name}) => {
 
   const boardToDraw = boardToSpectre(board)
 
@@ -47,7 +47,7 @@ const LittleBoard = (board, name) => {
   )
 }
 
-const Spectre = ({ spectrum }) => {
+export const SpectreComponent = ({ spectrum }) => {
 
   const keys = (!spectrum) ? [] : R.splitEvery(3, Object.keys(spectrum));
 
@@ -55,9 +55,9 @@ const Spectre = ({ spectrum }) => {
       return (R.addIndex(R.map)((name, index) => {
         return (
           <div key={index.toString()} style={{ height: '20%', display: 'flex', flexDirection: 'column', justifyContent: 'space-around' }}>
-            {console.log('name: ', name)}
+            {/* {console.log('name: ', name)} */}
             <h1>{name}</h1>
-            {LittleBoard(spectrum[name], name) }
+            {LittleBoard({board: spectrum[name], name: name}) }
           </div>
         )
       })(k))
@@ -85,4 +85,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, null)(Spectre)
+export default connect(mapStateToProps, null)(SpectreComponent)
