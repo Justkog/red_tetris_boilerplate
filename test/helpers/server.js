@@ -10,11 +10,11 @@ export const startServer = (params, supervisor, cb) => {
 }
 
 export const configureStore = (reducer, socket, initialState, types) => createStore( 
-  reducer, 
-  initialState, 
+  reducer,
+  initialState,
   applyMiddleware(
-    myMiddleware(types), 
-    socketIoMiddleWare(socket),  
+    myMiddleware(types),
+    socketIoMiddleWare(socket),
     thunk
   )
 )
