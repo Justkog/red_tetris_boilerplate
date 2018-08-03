@@ -1,6 +1,6 @@
-import {configureStore} from './helpers/server'
-import rootReducer from '../src/client/reducers'
-import {popAlert} from '../src/client/actions/alert'
+import {configureStore} from '../helpers/server'
+import rootReducer from '../../src/client/reducers'
+import {popAlert} from '../../src/client/actions/alert'
 import chai from "chai"
 
 const MESSAGE = "message"
