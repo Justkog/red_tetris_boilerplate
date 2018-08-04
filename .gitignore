@@ -5,4 +5,7 @@ log
 tmp
 node_modules
 /coverage/
-/.nyc_output/
+/.nyc_output//build/
+/dist/
+/build/
+.nyc_output/
